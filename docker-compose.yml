@@ -1,0 +1,14 @@
+version: "3"
+services:
+  webserver:
+    build: ./ideahunt
+    volumes:
+      - ./ideahunt:/ideahunt
+    ports:
+      - "5050:5000"
+    env_file:
+      - ./ideahunt/.env
+    stdin_open: true
+    tty: true
+    restart: always
+    entrypoint: python ideahunt/app.py
