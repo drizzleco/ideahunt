@@ -1,7 +1,5 @@
 import graphene
-from graphene import relay
-from graphene_sqlalchemy import SQLAlchemyConnectionField, SQLAlchemyObjectType
-from graphql import GraphQLError
+from graphene_sqlalchemy import SQLAlchemyObjectType
 
 from ideahunt.models import Idea as IdeaModel
 from ideahunt.models import User as UserModel

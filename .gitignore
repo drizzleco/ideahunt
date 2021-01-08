@@ -152,3 +152,4 @@ yarn-error.log
 
 # Ignore postgres docker volume
 docker
+.vscode/
