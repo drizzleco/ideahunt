@@ -1,5 +1,16 @@
 version: "3"
 services:
+  postgres:
+    restart: always
+    image: postgres:11
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./docker/postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ideahunt
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
   webserver:
     build: ./ideahunt
     volumes:
