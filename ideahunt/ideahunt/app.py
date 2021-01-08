@@ -8,9 +8,7 @@ from ideahunt.schema import schema
 db = SQLAlchemy(model_class=Base)
 app = Flask(__name__)
 # TODO: Update this to real security creds later
-app.config[
-    "SQLALCHEMY_DATABASE_URI"
-] = "postgresql://admin:password@postgres:5432/ideahunt"
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://admin:password@postgres:5432/ideahunt"
 db.init_app(app)
 
 app.add_url_rule(
