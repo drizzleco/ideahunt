@@ -34,7 +34,8 @@ const HomeScreen = () => {
 
 HomeScreen.query = gql`
   query IdeasList {
-    idea(id: 5) {
+    ideas {
+      id
       description
       title
     }

@@ -1,16 +1,20 @@
 from flask_login import UserMixin
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, DateTime, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.sql import func
 from werkzeug.security import check_password_hash, generate_password_hash
 
 Base = declarative_base()
+
+db = SQLAlchemy(model_class=Base)
 
 
 class BaseModel(Base):
     __abstract__ = True
     id = Column(Integer, primary_key=True)
-    created_at = Column(DateTime)
-    updated_at = Column(DateTime)
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, onupdate=func.now())
 
 
 class Idea(BaseModel):

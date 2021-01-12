@@ -1,12 +1,10 @@
 from flask import Flask
 from flask_cors import CORS
 from flask_graphql import GraphQLView
-from flask_sqlalchemy import SQLAlchemy
 
-from ideahunt.models import Base
-from ideahunt.schema import schema
+from ideahunt.graphql.schema import schema
+from ideahunt.models import Base, db
 
-db = SQLAlchemy(model_class=Base)
 app = Flask(__name__)
 # TODO: Update this to real security creds later
 app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://admin:password@postgres:5432/ideahunt"
