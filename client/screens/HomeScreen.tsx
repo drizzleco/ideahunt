@@ -53,7 +53,7 @@ const HomeScreen = () => {
     return null;
   }
   if (error) {
-    return `error! ${error.message}`;
+    return <Title>error! {error.message}</Title>;
   }
 
   return (
