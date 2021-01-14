@@ -7,6 +7,7 @@ import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
 import HomeScreen from "../screens/HomeScreen";
 import IdeaScreen from "../screens/IdeaScreen";
+import CreateIdeaScreen from "../screens/CreateIdeaScreen";
 import TabTwoScreen from "../screens/TabTwoScreen";
 import {
   BottomTabParamList,
@@ -68,6 +69,11 @@ function HomeNavigator() {
         name="IdeaScreen"
         component={IdeaScreen}
         options={{ headerTitle: "idea" }}
+      />
+      <HomeStack.Screen
+        name="CreateIdeaScreen"
+        component={CreateIdeaScreen}
+        options={{ headerTitle: "New idea" }}
       />
     </HomeStack.Navigator>
   );

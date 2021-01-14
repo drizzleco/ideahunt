@@ -4,6 +4,7 @@ import { gql, useQuery } from "@apollo/client";
 import styled from "styled-components/native";
 import { FlatList, ListRenderItem } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import CreateIdeaButton from "../components/CreateIdeaButton";
 
 interface Idea {
   id: string;
@@ -57,6 +58,7 @@ const HomeScreen = () => {
 
   return (
     <Container>
+      <CreateIdeaButton />
       <Title> Hi </Title>
       <FlatList
         data={data.ideas}

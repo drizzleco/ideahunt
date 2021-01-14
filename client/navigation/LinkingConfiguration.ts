@@ -10,6 +10,7 @@ export default {
             screens: {
               HomeScreen: "home",
               IdeaScreen: "idea",
+              CreateIdeaScreen: 'new-idea'
             },
           },
           TabTwo: {
