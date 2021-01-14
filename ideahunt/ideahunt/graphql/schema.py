@@ -1,7 +1,10 @@
+from typing import List, Optional
+
 import graphene
 
 from ideahunt.graphql.mutations.create_idea import CreateIdea
-from ideahunt.graphql.objects import IdeaModel, UserModel
+from ideahunt.graphql.objects import IdeaModel
+from ideahunt.models import Idea
 
 
 class Query(graphene.ObjectType):
@@ -9,13 +12,19 @@ class Query(graphene.ObjectType):
     Base Query
     """
 
+    idea = graphene.Field(IdeaModel, id=graphene.ID(required=True))
     ideas = graphene.Field(graphene.List(IdeaModel))
 
-    def resolve_ideas(self, info, **args):
+    def resolve_idea(root, info, id) -> Optional[Idea]:
         """
         Parse idea query and return data
         """
-        print("lksdjflkdsjf")
+        return IdeaModel.get_query(info).filter_by(id=id).first()
+
+    def resolve_ideas(root, info, **args) -> List[Idea]:
+        """
+        Return ideas
+        """
         return IdeaModel.get_query(info).all()
 
 
