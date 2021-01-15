@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@apollo/client@^3.3.6", "@apollo/client@latest":
+"@apollo/client@^3.3.6":
   version "3.3.6"
   resolved "https://registry.yarnpkg.com/@apollo/client/-/client-3.3.6.tgz#f359646308167f38d5bc498dfc2344c888400093"
   integrity sha512-XSm/STyNS8aHdDigLLACKNMHwI0qaQmEHWHtTP+jHe/E1wZRnn66VZMMgwKLy2V4uHISHfmiZ4KpUKDPeJAKqg==
@@ -20,13 +20,6 @@
     ts-invariant "^0.6.0"
     tslib "^1.10.0"
     zen-observable "^0.8.14"
-
-"@apollo/react-hooks@^4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@apollo/react-hooks/-/react-hooks-4.0.0.tgz#7bf7b320c90d276f637d9a84b503e17b840dd4e6"
-  integrity sha512-fCu0cbne3gbUl0QbA8X4L33iuuFVQbC5Jo2MIKRK8CyawR6PoxDpFdFA1kc6033ODZuZZ9Eo4RdeJFlFIIYcLA==
-  dependencies:
-    "@apollo/client" latest
 
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.10.4", "@babel/code-frame@^7.12.11", "@babel/code-frame@^7.8.3":
   version "7.12.11"
@@ -2015,40 +2008,7 @@ anymatch@^3.0.3:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
 
-apollo-link-error@^1.1.13:
-  version "1.1.13"
-  resolved "https://registry.yarnpkg.com/apollo-link-error/-/apollo-link-error-1.1.13.tgz#c1a1bb876ffe380802c8df0506a32c33aad284cd"
-  integrity sha512-jAZOOahJU6bwSqb2ZyskEK1XdgUY9nkmeclCrW7Gddh1uasHVqmoYc4CKdb0/H0Y1J9lvaXKle2Wsw/Zx1AyUg==
-  dependencies:
-    apollo-link "^1.2.14"
-    apollo-link-http-common "^0.2.16"
-    tslib "^1.9.3"
-
-apollo-link-http-common@^0.2.16:
-  version "0.2.16"
-  resolved "https://registry.yarnpkg.com/apollo-link-http-common/-/apollo-link-http-common-0.2.16.tgz#756749dafc732792c8ca0923f9a40564b7c59ecc"
-  integrity sha512-2tIhOIrnaF4UbQHf7kjeQA/EmSorB7+HyJIIrUjJOKBgnXwuexi8aMecRlqTIDWcyVXCeqLhUnztMa6bOH/jTg==
-  dependencies:
-    apollo-link "^1.2.14"
-    ts-invariant "^0.4.0"
-    tslib "^1.9.3"
-
-apollo-link-rest@^0.8.0-beta.0:
-  version "0.8.0-beta.0"
-  resolved "https://registry.yarnpkg.com/apollo-link-rest/-/apollo-link-rest-0.8.0-beta.0.tgz#435055d4bee82182c17974df5a9a606c4edf62a1"
-  integrity sha512-+/cHVXz0jF4SOg3bIVPxCArnpp7ojwhLarT9MLzbAuoaI+Uq+pU9Ob8Xmq4BS3Z+mIdVmnrIyw8EvqEzP7RL0w==
-
-apollo-link@^1.2.14:
-  version "1.2.14"
-  resolved "https://registry.yarnpkg.com/apollo-link/-/apollo-link-1.2.14.tgz#3feda4b47f9ebba7f4160bef8b977ba725b684d9"
-  integrity sha512-p67CMEFP7kOG1JZ0ZkYZwRDa369w5PIjtMjvrQd/HnIV8FRsHRqLqK+oAZQnFa1DDdZtOtHTi+aMIW6EatC2jg==
-  dependencies:
-    apollo-utilities "^1.3.0"
-    ts-invariant "^0.4.0"
-    tslib "^1.9.3"
-    zen-observable-ts "^0.8.21"
-
-apollo-utilities@^1.3.0, apollo-utilities@^1.3.4:
+apollo-utilities@^1.3.4:
   version "1.3.4"
   resolved "https://registry.yarnpkg.com/apollo-utilities/-/apollo-utilities-1.3.4.tgz#6129e438e8be201b6c55b0f13ce49d2c7175c9cf"
   integrity sha512-pk2hiWrCXMAy2fRPwEyhvka+mqwzeP60Jr1tRYi5xru+3ko94HI9o6lK0CT33/w4RDlxWchmdhDCrvdr+pHCig==
@@ -8377,15 +8337,7 @@ yocto-queue@^0.1.0:
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
 
-zen-observable-ts@^0.8.21:
-  version "0.8.21"
-  resolved "https://registry.yarnpkg.com/zen-observable-ts/-/zen-observable-ts-0.8.21.tgz#85d0031fbbde1eba3cd07d3ba90da241215f421d"
-  integrity sha512-Yj3yXweRc8LdRMrCC8nIc4kkjWecPAUVh0TI0OUrWXx6aX790vLcDlWca6I4vsyCGH3LpWxq0dJRcMOFoVqmeg==
-  dependencies:
-    tslib "^1.9.3"
-    zen-observable "^0.8.0"
-
-zen-observable@^0.8.0, zen-observable@^0.8.14:
+zen-observable@^0.8.14:
   version "0.8.15"
   resolved "https://registry.yarnpkg.com/zen-observable/-/zen-observable-0.8.15.tgz#96415c512d8e3ffd920afd3889604e30b9eaac15"
   integrity sha512-PQ2PC7R9rslx84ndNBZB/Dkv8V8fZEpk83RLgXtYd0fwUgEjseMn1Dgajh2x6S8QbZAFa9p2qVCEuYZNgve0dQ==
