@@ -22,6 +22,7 @@
     "@types/styled-components-react-native": "^5.1.0",
     "apollo-link-error": "^1.1.13",
     "apollo-link-rest": "^0.8.0-beta.0",
+    "babel-plugin-transform-inline-environment-variables": "^0.4.3",
     "expo": "^40.0.0",
     "expo-asset": "~8.2.1",
     "expo-constants": "~9.3.0",
