@@ -10,7 +10,8 @@ export default {
             screens: {
               HomeScreen: "home",
               IdeaScreen: "idea",
-              CreateIdeaScreen: 'new-idea'
+              CreateIdeaScreen: "new-idea",
+              EditIdeaScreen: "edit-idea",
             },
           },
           TabTwo: {

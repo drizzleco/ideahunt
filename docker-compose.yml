@@ -13,6 +13,8 @@ services:
       POSTGRES_PASSWORD: password
   webserver:
     build: ./ideahunt
+    depends_on:
+      - postgres
     volumes:
       - ./ideahunt:/ideahunt
     ports:

@@ -3,8 +3,7 @@ import { gql, useQuery } from "@apollo/client";
 
 import styled from "styled-components/native";
 import { FlatList, ListRenderItem } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import CreateIdeaButton from "../components/CreateIdeaButton";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 
 interface Idea {
   id: string;
@@ -28,6 +27,21 @@ const IdeaContainer = styled.TouchableOpacity`
   border-radius: 4px;
 `;
 
+const IdeaButton = styled.Button``;
+
+const CreateIdeaButton = () => {
+  const navigation = useNavigation();
+
+  return (
+    <IdeaButton
+      onPress={() => {
+        navigation.navigate("CreateIdeaScreen");
+      }}
+      title="Add Idea"
+    />
+  );
+};
+
 const IdeaItem = ({ idea }: { idea: Idea }) => {
   const navigation = useNavigation();
 
@@ -42,12 +56,13 @@ const IdeaItem = ({ idea }: { idea: Idea }) => {
   );
 };
 
-const renderItem: ListRenderItem<Idea> = ({ item }) => {
-  return <IdeaItem idea={item} />;
-};
-
 const HomeScreen = () => {
-  const { loading, error, data } = useQuery(HomeScreen.query);
+  const { loading, error, data, refetch } = useQuery(HomeScreen.query);
+  const isFocused = useIsFocused();
+
+  React.useEffect(() => {
+    refetch();
+  }, [isFocused]);
 
   if (loading) {
     return null;
@@ -62,7 +77,7 @@ const HomeScreen = () => {
       <Title> Hi </Title>
       <FlatList
         data={data.ideas}
-        renderItem={renderItem}
+        renderItem={({ item }) => <IdeaItem idea={item} />}
         keyExtractor={(item: Idea) => item.id}
       ></FlatList>
     </Container>

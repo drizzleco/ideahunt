@@ -1,5 +1,6 @@
 import * as React from "react";
 import { gql, useQuery } from "@apollo/client";
+import { useNavigation } from "@react-navigation/native";
 
 import styled from "styled-components/native";
 
@@ -17,6 +18,21 @@ const Description = styled.Text`
   font-size: 10px;
 `;
 
+const IdeaButton = styled.Button``;
+
+const EditIdeaButton = ({ id }) => {
+  const navigation = useNavigation();
+
+  return (
+    <IdeaButton
+      onPress={() => {
+        navigation.navigate("EditIdeaScreen", { id });
+      }}
+      title="Edit Idea"
+    />
+  );
+};
+
 const IdeaScreen = ({ route }) => {
   const { id } = route.params;
   const { loading, error, data } = useQuery(IdeaScreen.query, {
@@ -32,6 +48,7 @@ const IdeaScreen = ({ route }) => {
 
   return (
     <Container>
+      <EditIdeaButton id={data.idea.id} />
       <Title>{data.idea.title}</Title>
       <Description>{data.idea.description}</Description>
     </Container>
