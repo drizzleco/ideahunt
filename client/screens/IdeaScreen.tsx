@@ -1,5 +1,5 @@
 import * as React from "react";
-import { gql, useQuery } from "@apollo/client";
+import { gql, useQuery, useMutation } from "@apollo/client";
 import { useNavigation } from "@react-navigation/native";
 
 import styled from "styled-components/native";
@@ -15,16 +15,16 @@ const Title = styled.Text`
 `;
 
 const Description = styled.Text`
-  font-size: 10px;
+  color: red;
 `;
 
-const IdeaButton = styled.Button``;
+const RegularButton = styled.Button``;
 
 const EditIdeaButton = ({ id }) => {
   const navigation = useNavigation();
 
   return (
-    <IdeaButton
+    <RegularButton
       onPress={() => {
         navigation.navigate("EditIdeaScreen", { id });
       }}
@@ -33,13 +33,38 @@ const EditIdeaButton = ({ id }) => {
   );
 };
 
+const DeleteIdeaButton = ({ id }) => {
+  const navigation = useNavigation();
+  const [deleteIdea] = useMutation(DeleteIdeaButton.mutation);
+
+  return (
+    <RegularButton
+      style={{ backgroundColor: "red" }}
+      onPress={() => {
+        deleteIdea({ variables: { ideaId: id } });
+        navigation.navigate("HomeScreen");
+      }}
+      color={"red"}
+      title="Delete"
+    />
+  );
+};
+
+DeleteIdeaButton.mutation = gql`
+  mutation DeleteIdea($ideaId: ID!) {
+    deleteIdea(ideaId: $ideaId) {
+      id
+    }
+  }
+`;
+
 const IdeaScreen = ({ route }) => {
   const { id } = route.params;
   const { loading, error, data } = useQuery(IdeaScreen.query, {
     variables: { id },
   });
 
-  if (loading) {
+  if (loading || !data.idea) {
     return null;
   }
   if (error) {
@@ -51,6 +76,7 @@ const IdeaScreen = ({ route }) => {
       <EditIdeaButton id={data.idea.id} />
       <Title>{data.idea.title}</Title>
       <Description>{data.idea.description}</Description>
+      <DeleteIdeaButton id={data.idea.id} />
     </Container>
   );
 };

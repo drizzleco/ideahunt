@@ -3,6 +3,7 @@ from typing import List, Optional
 import graphene
 
 from ideahunt.graphql.mutations.create_idea import CreateIdea
+from ideahunt.graphql.mutations.delete_idea import DeleteIdea
 from ideahunt.graphql.mutations.edit_idea import EditIdea
 from ideahunt.graphql.objects import IdeaModel
 from ideahunt.models import Idea
@@ -35,6 +36,7 @@ class Mutation(graphene.ObjectType):
     """
 
     create_idea = CreateIdea.Field()
+    delete_idea = DeleteIdea.Field()
     edit_idea = EditIdea.Field()
 
 

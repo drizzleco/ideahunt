@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask
 from flask_cors import CORS
 from flask_graphql import GraphQLView
@@ -7,7 +9,10 @@ from ideahunt.models import Base, db
 
 app = Flask(__name__)
 # TODO: Update this to real security creds later
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://admin:password@postgres:5432/ideahunt"
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
+    "DATABASE_URL",
+    "postgresql://admin:password@postgres:5432/ideahunt",  # dev server
+)
 # TODO: Remove CORS for *. Only let the client in
 CORS(app, resources={r"/graphql": {"origins": "*"}})
 db.init_app(app)

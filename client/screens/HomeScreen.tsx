@@ -23,8 +23,12 @@ const Title = styled.Text`
 `;
 
 const IdeaContainer = styled.TouchableOpacity`
-  background-color: #f612f3;
+  background-color: #888;
   border-radius: 4px;
+  margin-bottom: 5px;
+  padding-vertical: 10px;
+  padding-horizontal: 20px;
+  min-width: 200px;
 `;
 
 const IdeaButton = styled.Button``;
