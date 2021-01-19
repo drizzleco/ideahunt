@@ -9,7 +9,7 @@ import HomeScreen from "../screens/HomeScreen";
 import IdeaScreen from "../screens/IdeaScreen";
 import CreateIdeaScreen from "../screens/CreateIdeaScreen";
 import EditIdeaScreen from "../screens/EditIdeaScreen";
-import TabTwoScreen from "../screens/TabTwoScreen";
+import ProfileScreen from "../screens/ProfileScreen";
 import {
   BottomTabParamList,
   HomeScreenParamList,
@@ -36,8 +36,8 @@ export default function BottomTabNavigator() {
         }}
       />
       <BottomTab.Screen
-        name="TabTwo"
-        component={TabTwoNavigator}
+        name="Profile"
+        component={ProfileScreen}
         options={{
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="ios-code" color={color} />

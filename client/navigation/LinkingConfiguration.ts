@@ -14,9 +14,9 @@ export default {
               EditIdeaScreen: "edit-idea",
             },
           },
-          TabTwo: {
+          Profile: {
             screens: {
-              TabTwoScreen: "two",
+              ProfileScreen: "profile",
             },
           },
         },
