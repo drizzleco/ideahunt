@@ -28,7 +28,8 @@ const Submit = styled.Button``;
 const LoginScreen = () => {
   const navigation = useNavigation();
   const mutation = useMutation(
-    (login) => axios.post(BACKEND_URL + "/login", login),
+    (login) =>
+      axios.post(BACKEND_URL + "/login", login, { withCredentials: true }),
     {
       onSuccess: async () => {
         navigation.navigate("Root");

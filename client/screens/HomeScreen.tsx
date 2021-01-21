@@ -63,6 +63,7 @@ const IdeaItem = ({ idea }: { idea: Idea }) => {
 const HomeScreen = () => {
   const { loading, error, data, refetch } = useQuery(HomeScreen.query);
   const isFocused = useIsFocused();
+  const navigation = useNavigation();
 
   React.useEffect(() => {
     refetch();
@@ -72,6 +73,7 @@ const HomeScreen = () => {
     return null;
   }
   if (error) {
+    navigation.navigate("Login");
     return <Title>error! {error.message}</Title>;
   }
 
