@@ -1,4 +1,4 @@
-import os, random
+import os
 
 from flask import Flask
 from flask_cors import CORS
@@ -7,7 +7,7 @@ from flask_login import LoginManager, current_user, login_required
 
 from ideahunt.auth import *
 from ideahunt.graphql.schema import schema
-from ideahunt.models import Base, User, db
+from ideahunt.models import User, db
 
 app = Flask(__name__)
 # TODO: Update this to real security creds later
@@ -16,6 +16,8 @@ app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
     "postgresql://admin:password@postgres:5432/ideahunt",  # dev server
 )
 app.config["SECRET_KEY"] = "dummy"
+app.config["SESSION_COOKIE_SECURE"] = True
+app.config["SESSION_COOKIE_SAMESITE"] = "None"
 
 # TODO: Remove CORS for *. Only let the client in
 CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)

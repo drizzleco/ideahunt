@@ -45,7 +45,6 @@ def register():
 
 
 def login():
-    print(request)
     if not request.is_json:
         return jsonify({"message": "Missing JSON in request"}), 400
 

@@ -1,9 +1,9 @@
 FROM python:3.8
-RUN mkdir /ideahunt
-COPY . /ideahunt
-WORKDIR /ideahunt
-RUN pip install poetry
-RUN poetry config virtualenvs.create false
-RUN poetry install --no-interaction
 EXPOSE 5000
-ENTRYPOINT ["gunicorn -b 0.0.0.0:$PORT ideahunt.app:app"]
+RUN pip install poetry
+RUN mkdir /ideahunt
+WORKDIR /ideahunt
+RUN poetry config virtualenvs.create false
+COPY . /ideahunt
+RUN poetry install --no-interaction
+CMD gunicorn --bind 0.0.0.0:$PORT ideahunt.app:app
