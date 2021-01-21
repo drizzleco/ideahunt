@@ -21,7 +21,7 @@ export default {
           },
         },
       },
-      Login: "login",
+      LoginScreen: "login",
       NotFound: "*",
     },
   },
