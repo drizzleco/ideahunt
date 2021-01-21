@@ -73,6 +73,7 @@ const HomeScreen = () => {
     return null;
   }
   if (error) {
+    console.log(error);
     navigation.navigate("LoginScreen");
     return <Title>error! {error.message}</Title>;
   }
