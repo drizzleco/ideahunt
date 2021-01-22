@@ -1,4 +1,3 @@
-from flask_login import UserMixin
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, DateTime, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
@@ -27,7 +26,7 @@ class Idea(BaseModel):
     author_id = Column(Integer)
 
 
-class User(BaseModel, UserMixin):
+class User(BaseModel):
     __tablename__ = "user"
     username = Column(String)
     name = Column(String)

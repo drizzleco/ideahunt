@@ -7,6 +7,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import * as React from "react";
 import { ColorSchemeName } from "react-native";
 import LoginScreen from "../screens/LoginScreen";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import NotFoundScreen from "../screens/NotFoundScreen";
 import { RootStackParamList } from "../types";
@@ -35,15 +36,33 @@ export default function Navigation({
 const Stack = createStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
+  const [userToken, setUserToken] = React.useState();
+
+  React.useEffect(() => {
+    const asyncLoadToken = async () => {
+      let userToken;
+      try {
+        userToken = await AsyncStorage.getItem("ideaHuntToken");
+        setUserToken(userToken);
+      } catch (e) {}
+    };
+    asyncLoadToken();
+  }, []);
+
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Root" component={HomeNavigator} />
-      <Stack.Screen name="LoginScreen" component={LoginScreen} />
-      <Stack.Screen
-        name="NotFound"
-        component={NotFoundScreen}
-        options={{ title: "Oops!" }}
-      />
+      {userToken ? (
+        <>
+          <Stack.Screen name="Root" component={HomeNavigator} />
+          <Stack.Screen
+            name="NotFound"
+            component={NotFoundScreen}
+            options={{ title: "Oops!" }}
+          />
+        </>
+      ) : (
+        <Stack.Screen name="LoginScreen" component={LoginScreen} />
+      )}
     </Stack.Navigator>
   );
 }

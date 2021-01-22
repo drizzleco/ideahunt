@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useMutation } from "react-query";
 import { BACKEND_URL } from "../graphql/Client";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import styled from "styled-components/native";
 
@@ -28,11 +29,16 @@ const Submit = styled.Button``;
 const LoginScreen = () => {
   const navigation = useNavigation();
   const mutation = useMutation(
-    (login) =>
-      axios.post(BACKEND_URL + "/login", login, { withCredentials: true }),
+    (login) => axios.post(BACKEND_URL + "/login", login),
     {
-      onSuccess: async () => {
-        navigation.navigate("Root");
+      onSuccess: async ({ data: { accessToken } }) => {
+        if (accessToken) {
+          try {
+            await AsyncStorage.setItem("ideaHuntToken", accessToken);
+          } catch (e) {
+            console.log(e);
+          }
+        }
       },
     }
   );

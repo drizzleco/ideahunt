@@ -1,5 +1,5 @@
 from flask import jsonify, request
-from flask_login import login_user, logout_user
+from flask_jwt_extended import create_access_token
 
 from ideahunt.models import User, db
 
@@ -37,11 +37,9 @@ def register():
     user = User(username=username, name=name, email=email)
     user.set_password(password)
 
-    db.session.add(user)
-    db.session.commit()
+    access_token = create_access_token(identity=username)
 
-    login_user(user)
-    return jsonify(message="Successfully registered!"), 200
+    return jsonify(message="Successfully registered!", accessToken=access_token), 200
 
 
 def login():
@@ -63,11 +61,6 @@ def login():
     if not user.check_password(password):
         return jsonify({"message": "Invalid password."}), 400
 
-    login_user(user)
-    return jsonify(message="Successfully logged in!"), 200
+    access_token = create_access_token(identity=username)
 
-
-def logout():
-    """Log user out"""
-    logout_user()
-    return jsonify(message="Successfully logged out"), 200
+    return jsonify(message="Successfully logged in!", accessToken=access_token), 200

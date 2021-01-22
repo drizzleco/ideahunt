@@ -3,8 +3,7 @@ import os
 from flask import Flask
 from flask_cors import CORS
 from flask_graphql import GraphQLView
-from flask_login import LoginManager, current_user, login_required
-
+from flask_jwt_extended import JWTManager, jwt_required
 from ideahunt.auth import *
 from ideahunt.graphql.schema import schema
 from ideahunt.models import User, db
@@ -16,21 +15,12 @@ app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
     "postgresql://admin:password@postgres:5432/ideahunt",  # dev server
 )
 app.config["SECRET_KEY"] = "dummy"
-app.config["SESSION_COOKIE_SECURE"] = True
-app.config["SESSION_COOKIE_SAMESITE"] = "None"
+app.config["JWT_SECRET_KEY"] = "dummyo"
 
 # TODO: Remove CORS for *. Only let the client in
 CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 db.init_app(app)
-
-login_manager = LoginManager()
-login_manager.init_app(app)
-
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.filter_by(id=user_id).first()
-
+JWTManager(app)
 
 # GraphQl route config
 def graphql_view():
@@ -39,13 +29,12 @@ def graphql_view():
         schema=schema,
         graphiql=True,
     )
-    return login_required(view)
+    return jwt_required(view)
 
 
 app.add_url_rule("/graphql", methods=["POST", "GET"], view_func=graphql_view())
 app.add_url_rule("/register", methods=["POST"], view_func=register)
 app.add_url_rule("/login", methods=["POST"], view_func=login)
-app.add_url_rule("/logout", methods=["DELETE"], view_func=logout)
 
 
 @app.route("/")
