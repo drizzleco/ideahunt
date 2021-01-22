@@ -37,6 +37,9 @@ def register():
     user = User(username=username, name=name, email=email)
     user.set_password(password)
 
+    db.session.add(user)
+    db.session.commit()
+
     access_token = create_access_token(identity=username)
 
     return jsonify(message="Successfully registered!", accessToken=access_token), 200
