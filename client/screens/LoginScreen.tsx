@@ -5,6 +5,7 @@ import { useMutation } from "react-query";
 import { BACKEND_URL } from "../graphql/Client";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import AuthContext from "../navigation/AuthContext";
 
 import styled from "styled-components/native";
 
@@ -26,10 +27,17 @@ const Input = styled.TextInput``;
 
 const Submit = styled.Button``;
 
+interface LoginParams {
+  username: string;
+  password: string;
+}
+
 const LoginScreen = () => {
   const navigation = useNavigation();
+  const { signIn } = React.useContext(AuthContext);
+
   const mutation = useMutation(
-    (login) => axios.post(BACKEND_URL + "/login", login),
+    (login: LoginParams) => axios.post(BACKEND_URL + "/login", login),
     {
       onSuccess: async ({ data: { accessToken } }) => {
         if (accessToken) {
@@ -38,6 +46,7 @@ const LoginScreen = () => {
           } catch (e) {
             console.log(e);
           }
+          signIn({ userToken: accessToken });
         }
       },
     }

@@ -10,9 +10,10 @@ import LoginScreen from "../screens/LoginScreen";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import NotFoundScreen from "../screens/NotFoundScreen";
-import { RootStackParamList } from "../types";
+import { RootStackParamList, AppState, AppActionTypes } from "../types";
 import HomeNavigator from "./BottomTabNavigator";
 import LinkingConfiguration from "./LinkingConfiguration";
+import AuthContext from "./AuthContext";
 
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
@@ -35,34 +36,63 @@ export default function Navigation({
 // Read more here: https://reactnavigation.org/docs/modal
 const Stack = createStackNavigator<RootStackParamList>();
 
+const reducer = (state: AppState, action: AppActionTypes): AppState => {
+  switch (action.type) {
+    case "SIGN_IN":
+      return {
+        ...state,
+        userToken: action.userToken,
+      };
+    case "SIGN_OUT":
+      return {
+        ...state,
+        userToken: null,
+      };
+    default:
+      throw new Error("Unknown Action");
+  }
+};
+
 function RootNavigator() {
-  const [userToken, setUserToken] = React.useState();
+  const [state, dispatch] = React.useReducer(reducer, { userToken: null });
 
   React.useEffect(() => {
     const asyncLoadToken = async () => {
-      let userToken;
+      let aToken;
       try {
-        userToken = await AsyncStorage.getItem("ideaHuntToken");
-        setUserToken(userToken);
+        aToken = await AsyncStorage.getItem("ideaHuntToken");
       } catch (e) {}
+      dispatch({ type: "SIGN_IN", userToken: aToken });
     };
     asyncLoadToken();
   }, []);
 
+  const authContext = {
+    signIn: async (data: { userToken: string }) => {
+      dispatch({ type: "SIGN_IN", userToken: data.userToken });
+    },
+    signOut: () => dispatch({ type: "SIGN_OUT" }),
+    signUp: async (data: { userToken: string }) => {
+      dispatch({ type: "SIGN_IN", userToken: data.userToken });
+    },
+  };
+
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {userToken ? (
-        <>
-          <Stack.Screen name="Root" component={HomeNavigator} />
-          <Stack.Screen
-            name="NotFound"
-            component={NotFoundScreen}
-            options={{ title: "Oops!" }}
-          />
-        </>
-      ) : (
-        <Stack.Screen name="LoginScreen" component={LoginScreen} />
-      )}
-    </Stack.Navigator>
+    <AuthContext.Provider value={authContext}>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        {state.userToken ? (
+          <>
+            <Stack.Screen name="Root" component={HomeNavigator} />
+            <Stack.Screen
+              name="NotFound"
+              component={NotFoundScreen}
+              options={{ title: "Oops!" }}
+            />
+          </>
+        ) : (
+          <Stack.Screen name="LoginScreen" component={LoginScreen} />
+        )}
+      </Stack.Navigator>
+    </AuthContext.Provider>
   );
 }
