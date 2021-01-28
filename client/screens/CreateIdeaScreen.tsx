@@ -50,7 +50,12 @@ const CreateIdeaScreen = () => {
               onBlur={handleBlur("description")}
               value={values.description}
             />
-            <Submit onPress={handleSubmit} title="Create Idea" />
+            <Submit
+              onPress={() => {
+                handleSubmit();
+              }}
+              title="Create Idea"
+            />
           </Container>
         )}
       </Formik>

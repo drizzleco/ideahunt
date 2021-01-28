@@ -9,7 +9,7 @@ from ideahunt.graphql.schema import schema
 from ideahunt.models import User, db
 
 app = Flask(__name__)
-# TODO: Update this to real security creds later
+# TODO: Update this to real security creds latera
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
     "DATABASE_URL",
     "postgresql://admin:password@postgres:5432/ideahunt",  # dev server

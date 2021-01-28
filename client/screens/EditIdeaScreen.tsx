@@ -2,6 +2,8 @@ import * as React from "react";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { Formik } from "formik";
 import { useNavigation } from "@react-navigation/native";
+import { StackScreenProps } from "@react-navigation/stack";
+import { HomeScreenParamList } from "../types";
 
 import styled from "styled-components/native";
 import IdeaScreen from "./IdeaScreen";
@@ -24,8 +26,13 @@ const Input = styled.TextInput``;
 
 const Submit = styled.Button``;
 
+type EditIdeaScreenProps = StackScreenProps<
+  HomeScreenParamList,
+  "EditIdeaScreen"
+>;
+
 // jank. TODO: make this a modal instead, so we can pass in the data without having to re-query
-const EditIdeaScreen = ({ route }) => {
+const EditIdeaScreen = ({ route }: EditIdeaScreenProps) => {
   const { id } = route.params;
   const navigation = useNavigation();
   const { loading, error, data: queryData } = useQuery(IdeaScreen.query, {
@@ -68,7 +75,12 @@ const EditIdeaScreen = ({ route }) => {
               onBlur={handleBlur("description")}
               value={values.description}
             />
-            <Submit onPress={handleSubmit} title="Submit" />
+            <Submit
+              onPress={() => {
+                handleSubmit();
+              }}
+              title="Submit"
+            />
           </Container>
         )}
       </Formik>

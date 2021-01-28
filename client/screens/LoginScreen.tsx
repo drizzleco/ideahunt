@@ -6,13 +6,20 @@ import { BACKEND_URL } from "../graphql/Client";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import AuthContext from "../navigation/AuthContext";
+import Space from "../components/Space";
 
 import styled from "styled-components/native";
 
 const Container = styled.View`
-  flex: 1;
+  display: flex;
   justify-content: center;
   align-items: center;
+  height: 100%;
+`;
+
+const FormContainer = styled.View`
+  display: flex;
+  max-height: 400px;
 `;
 
 const Title = styled.Text`
@@ -23,7 +30,11 @@ const Label = styled.Text`
   font-size: 20px;
 `;
 
-const Input = styled.TextInput``;
+const Input = styled.TextInput`
+  border: 1px solid;
+  height: 30px;
+  width: 100px;
+`;
 
 const Submit = styled.Button``;
 
@@ -55,39 +66,49 @@ const LoginScreen = () => {
   return (
     <Container>
       <Title>Login</Title>
-      <Formik
-        initialValues={{
-          username: "",
-          password: "",
-        }}
-        onSubmit={(values) => {
-          mutation.mutate(values);
-        }}
-      >
-        {({ handleChange, handleBlur, handleSubmit, values }) => (
-          <Container>
-            <Label>Username</Label>
-            <Input
-              onChangeText={handleChange("username")}
-              onBlur={handleBlur("username")}
-            />
-            <Label>Password</Label>
-            <Input
-              onChangeText={handleChange("password")}
-              onBlur={handleBlur("password")}
-              value={values.password}
-            />
-            <Submit onPress={handleSubmit} title="Submit" />
-            {mutation.isLoading ? <Label>Signing you in...</Label> : null}
-            {mutation.isError ? (
-              <Label>{mutation.error.response.data.message}</Label>
-            ) : null}
-            {mutation.isSuccess ? (
-              <Label>Logged in! To the homepage!!</Label>
-            ) : null}
-          </Container>
-        )}
-      </Formik>
+      <Space height={10} width={10} />
+      <FormContainer>
+        <Formik
+          initialValues={{
+            username: "",
+            password: "",
+          }}
+          onSubmit={(values) => {
+            mutation.mutate(values);
+          }}
+        >
+          {({ handleChange, handleBlur, handleSubmit, values }) => (
+            <Container>
+              <Label>Username</Label>
+              <Input
+                onChangeText={handleChange("username")}
+                onBlur={handleBlur("username")}
+              />
+              <Space height={10} width={0} />
+              <Label>Password</Label>
+              <Input
+                onChangeText={handleChange("password")}
+                onBlur={handleBlur("password")}
+                value={values.password}
+              />
+              <Space height={10} width={0} />
+              <Submit
+                onPress={() => {
+                  handleSubmit();
+                }}
+                title="Submit"
+              />
+              {mutation.isLoading ? <Label>Signing you in...</Label> : null}
+              {mutation.isError ? (
+                <Label>{mutation.error.response.data.message}</Label>
+              ) : null}
+              {mutation.isSuccess ? (
+                <Label>Logged in! To the homepage!!</Label>
+              ) : null}
+            </Container>
+          )}
+        </Formik>
+      </FormContainer>
     </Container>
   );
 };
