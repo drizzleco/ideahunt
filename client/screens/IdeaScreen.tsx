@@ -1,6 +1,8 @@
 import * as React from "react";
 import { gql, useQuery, useMutation } from "@apollo/client";
 import { useNavigation } from "@react-navigation/native";
+import { StackScreenProps } from "@react-navigation/stack";
+import { HomeScreenParamList } from "../types";
 
 import styled from "styled-components/native";
 
@@ -20,7 +22,7 @@ const Description = styled.Text`
 
 const RegularButton = styled.Button``;
 
-const EditIdeaButton = ({ id }) => {
+const EditIdeaButton = ({ id }: { id: string }) => {
   const navigation = useNavigation();
 
   return (
@@ -33,7 +35,7 @@ const EditIdeaButton = ({ id }) => {
   );
 };
 
-const DeleteIdeaButton = ({ id }) => {
+const DeleteIdeaButton = ({ id }: { id: string }) => {
   const navigation = useNavigation();
   const [deleteIdea] = useMutation(DeleteIdeaButton.mutation);
 
@@ -58,7 +60,9 @@ DeleteIdeaButton.mutation = gql`
   }
 `;
 
-const IdeaScreen = ({ route }) => {
+type IdeaScreenProps = StackScreenProps<HomeScreenParamList, "IdeaScreen">;
+
+const IdeaScreen = ({ route }: IdeaScreenProps) => {
   const { id } = route.params;
   const { loading, error, data } = useQuery(IdeaScreen.query, {
     variables: { id },
@@ -67,6 +71,7 @@ const IdeaScreen = ({ route }) => {
   if (loading || !data.idea) {
     return null;
   }
+
   if (error) {
     return <Title>error! {error.message}</Title>;
   }

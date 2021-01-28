@@ -11,7 +11,7 @@ export type BottomTabParamList = {
 
 export type HomeScreenParamList = {
   HomeScreen: undefined;
-  IdeaScreen: undefined;
+  IdeaScreen: { id: string };
 };
 
 export type AppState = {
