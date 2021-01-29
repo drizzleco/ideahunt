@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Formik } from "formik";
+import { useNavigation } from "@react-navigation/native";
 import { useMutation } from "react-query";
 import { BACKEND_URL } from "../graphql/Client";
 import axios from "axios";
@@ -36,22 +37,24 @@ const Label = styled.Text`
 
 const Input = styled.TextInput`
   border: 1px solid;
+  border-radius: 4px;
   height: 30px;
-  width: 100px;
+  width: 200px;
 `;
 
 const Submit = styled.Button``;
 
-interface LoginParams {
+interface RegisterParams {
   username: string;
   password: string;
 }
 
-const LoginScreen = () => {
+const RegisterScreen = () => {
+  const navigation = useNavigation();
   const { signIn } = React.useContext(AuthContext);
 
   const mutation = useMutation(
-    (login: LoginParams) => axios.post(BACKEND_URL + "/login", login),
+    (login: RegisterParams) => axios.post(BACKEND_URL + "/register", login),
     {
       onSuccess: async ({ data: { accessToken } }) => {
         if (accessToken) {
@@ -74,7 +77,10 @@ const LoginScreen = () => {
         <Formik
           initialValues={{
             username: "",
+            name: "",
+            email: "",
             password: "",
+            confirm: "",
           }}
           onSubmit={(values) => {
             mutation.mutate(values);
@@ -82,17 +88,34 @@ const LoginScreen = () => {
         >
           {({ handleChange, handleBlur, handleSubmit, values }) => (
             <Container>
+              <Label>Name</Label>
+              <Input
+                onChangeText={handleChange("name")}
+                onBlur={handleBlur("name")}
+              />
+              <Space height={10} width={0} />
               <Label>Username</Label>
               <Input
                 onChangeText={handleChange("username")}
                 onBlur={handleBlur("username")}
               />
               <Space height={10} width={0} />
+              <Label>Email</Label>
+              <Input
+                onChangeText={handleChange("email")}
+                onBlur={handleBlur("email")}
+              />
+              <Space height={10} width={0} />
               <Label>Password</Label>
               <Input
                 onChangeText={handleChange("password")}
                 onBlur={handleBlur("password")}
-                value={values.password}
+              />
+              <Space height={10} width={0} />
+              <Label>Confirm Password</Label>
+              <Input
+                onChangeText={handleChange("confirm")}
+                onBlur={handleBlur("confirm")}
               />
               <Space height={10} width={0} />
               <Submit
@@ -101,12 +124,12 @@ const LoginScreen = () => {
                 }}
                 title="Submit"
               />
-              {mutation.isLoading ? <Label>Signing you in...</Label> : null}
+              {mutation.isLoading ? <Label>Registering you...</Label> : null}
               {mutation.isError ? (
                 <ErrorLabel>{mutation.error.response.data.message}</ErrorLabel>
               ) : null}
               {mutation.isSuccess ? (
-                <Label>Logged in! To the homepage!!</Label>
+                <Label>Registered! To the homepage!!</Label>
               ) : null}
             </Container>
           )}
@@ -116,4 +139,4 @@ const LoginScreen = () => {
   );
 };
 
-export default LoginScreen;
+export default RegisterScreen;

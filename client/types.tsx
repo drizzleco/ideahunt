@@ -2,6 +2,8 @@ export type RootStackParamList = {
   Root: undefined;
   NotFound: undefined;
   LoginScreen: undefined;
+  RegisterScreen: undefined;
+  NewUserScreen: undefined;
 };
 
 export type BottomTabParamList = {
@@ -14,6 +16,10 @@ export type HomeScreenParamList = {
   IdeaScreen: { id: string };
   CreateIdeaScreen: undefined;
   EditIdeaScreen: { id: string };
+};
+
+export type ProfileParamList = {
+  ProfileScreen: undefined;
 };
 
 export type AppState = {

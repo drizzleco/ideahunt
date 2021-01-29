@@ -13,7 +13,7 @@ import ProfileScreen from "../screens/ProfileScreen";
 import {
   BottomTabParamList,
   HomeScreenParamList,
-  TabTwoParamList,
+  ProfileParamList,
 } from "../types";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
@@ -37,7 +37,7 @@ export default function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="Profile"
-        component={ProfileScreen}
+        component={ProfileNavigator}
         options={{
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="ios-code" color={color} />
@@ -85,15 +85,15 @@ function HomeNavigator() {
   );
 }
 
-const TabTwoStack = createStackNavigator<TabTwoParamList>();
+const TabTwoStack = createStackNavigator<ProfileParamList>();
 
-function TabTwoNavigator() {
+function ProfileNavigator() {
   return (
     <TabTwoStack.Navigator>
       <TabTwoStack.Screen
-        name="TabTwoScreen"
-        component={TabTwoScreen}
-        options={{ headerTitle: "Tab Two Title" }}
+        name="ProfileScreen"
+        component={ProfileScreen}
+        options={{ headerTitle: "Profile" }}
       />
     </TabTwoStack.Navigator>
   );

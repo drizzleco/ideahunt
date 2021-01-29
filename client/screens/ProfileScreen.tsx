@@ -1,19 +1,32 @@
 import * as React from "react";
 
-import EditScreenInfo from "../components/EditScreenInfo";
-import { Text, View } from "../components/Themed";
 import styled from "styled-components/native";
+import AuthContext from "../navigation/AuthContext";
 
-const LogoutButton = styled.Button``;
+const Container = styled.View`
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+`;
 
-const logout = () => {};
+const LogoutButton = styled.Button`
+  display: flex;
+  width: 200px;
+  background-color: blue;
+  border-radius: 4px;
+`;
 
 const ProfileScreen = () => {
+  const { signOut } = React.useContext(AuthContext);
   return (
-    <View>
-      <Text>Profile</Text>
-      <View lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-    </View>
+    <Container>
+      <LogoutButton
+        title="Log Out"
+        onPress={() => {
+          signOut();
+        }}
+      />
+    </Container>
   );
 };
 

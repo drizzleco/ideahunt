@@ -11,9 +11,11 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import NotFoundScreen from "../screens/NotFoundScreen";
 import { RootStackParamList, AppState, AppActionTypes } from "../types";
-import HomeNavigator from "./BottomTabNavigator";
+import BottomTabNavigator from "./BottomTabNavigator";
 import LinkingConfiguration from "./LinkingConfiguration";
 import AuthContext from "./AuthContext";
+import RegisterScreen from "../screens/SignUpScreen";
+import NewUserScreen from "../screens/NewUserScreen";
 
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
@@ -82,7 +84,7 @@ function RootNavigator() {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {state.userToken ? (
           <>
-            <Stack.Screen name="Root" component={HomeNavigator} />
+            <Stack.Screen name="Root" component={BottomTabNavigator} />
             <Stack.Screen
               name="NotFound"
               component={NotFoundScreen}
@@ -90,7 +92,11 @@ function RootNavigator() {
             />
           </>
         ) : (
-          <Stack.Screen name="LoginScreen" component={LoginScreen} />
+          <>
+            <Stack.Screen name="NewUserScreen" component={NewUserScreen} />
+            <Stack.Screen name="LoginScreen" component={LoginScreen} />
+            <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+          </>
         )}
       </Stack.Navigator>
     </AuthContext.Provider>
