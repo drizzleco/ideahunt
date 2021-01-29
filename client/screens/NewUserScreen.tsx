@@ -1,7 +1,8 @@
-import * as React from "react";
 import { useNavigation } from "@react-navigation/native";
-import Space from "../components/Space";
+import * as React from "react";
 import styled from "styled-components/native";
+
+import Space from "../components/Space";
 
 const Container = styled.View`
   display: flex;

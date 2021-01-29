@@ -1,6 +1,6 @@
 import * as React from "react";
-
 import styled from "styled-components/native";
+
 import AuthContext from "../navigation/AuthContext";
 
 const Container = styled.View`

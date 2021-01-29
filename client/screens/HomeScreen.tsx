@@ -1,9 +1,8 @@
-import * as React from "react";
 import { gql, useQuery } from "@apollo/client";
-
-import styled from "styled-components/native";
-import { FlatList, ListRenderItem } from "react-native";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
+import * as React from "react";
+import { FlatList } from "react-native";
+import styled from "styled-components/native";
 
 interface Idea {
   id: string;

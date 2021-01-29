@@ -1,11 +1,12 @@
-import * as React from "react";
 import { gql, useMutation, useQuery } from "@apollo/client";
-import { Formik } from "formik";
 import { useNavigation } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
+import { Formik } from "formik";
+import * as React from "react";
+import styled from "styled-components/native";
+
 import { HomeScreenParamList } from "../types";
 
-import styled from "styled-components/native";
 import IdeaScreen from "./IdeaScreen";
 
 const Container = styled.View`

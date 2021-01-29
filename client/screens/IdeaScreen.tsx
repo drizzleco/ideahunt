@@ -1,10 +1,10 @@
-import * as React from "react";
 import { gql, useQuery, useMutation } from "@apollo/client";
 import { useNavigation } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
-import { HomeScreenParamList } from "../types";
-
+import * as React from "react";
 import styled from "styled-components/native";
+
+import { HomeScreenParamList } from "../types";
 
 const Container = styled.View`
   flex: 1;

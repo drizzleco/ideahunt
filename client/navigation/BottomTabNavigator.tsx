@@ -5,10 +5,10 @@ import * as React from "react";
 
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
-import HomeScreen from "../screens/HomeScreen";
-import IdeaScreen from "../screens/IdeaScreen";
 import CreateIdeaScreen from "../screens/CreateIdeaScreen";
 import EditIdeaScreen from "../screens/EditIdeaScreen";
+import HomeScreen from "../screens/HomeScreen";
+import IdeaScreen from "../screens/IdeaScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import {
   BottomTabParamList,
@@ -30,7 +30,7 @@ export default function BottomTabNavigator() {
         name="Home"
         component={HomeNavigator}
         options={{
-          tabBarIcon: ({ color }) => (
+          tabBarIcon: ({ color }: { color: string }) => (
             <TabBarIcon name="ios-code" color={color} />
           ),
         }}
@@ -39,7 +39,7 @@ export default function BottomTabNavigator() {
         name="Profile"
         component={ProfileNavigator}
         options={{
-          tabBarIcon: ({ color }) => (
+          tabBarIcon: ({ color }: { color: string }) => (
             <TabBarIcon name="ios-code" color={color} />
           ),
         }}

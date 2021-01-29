@@ -1,8 +1,7 @@
-import * as React from "react";
 import { gql, useMutation } from "@apollo/client";
-import { Formik } from "formik";
 import { useNavigation } from "@react-navigation/native";
-
+import { Formik } from "formik";
+import * as React from "react";
 import styled from "styled-components/native";
 
 const Container = styled.View`
@@ -23,9 +22,21 @@ const Input = styled.TextInput``;
 
 const Submit = styled.Button``;
 
+const ErrorLabel = styled.Text`
+  font-size: 20px;
+  color: red;
+`;
+
+interface GeneratedIdea {
+  title: string;
+  description: string;
+}
+
 const CreateIdeaScreen = () => {
   const navigation = useNavigation();
-  const [createIdea, { data }] = useMutation(CreateIdeaScreen.mutation);
+  const [createIdea, { error }] = useMutation<{ createIdea: GeneratedIdea }>(
+    CreateIdeaScreen.mutation
+  );
   return (
     <Container>
       <Title>Create a new idea!</Title>
@@ -56,6 +67,7 @@ const CreateIdeaScreen = () => {
               }}
               title="Create Idea"
             />
+            {error ? <ErrorLabel> {error.message} </ErrorLabel> : null}
           </Container>
         )}
       </Formik>

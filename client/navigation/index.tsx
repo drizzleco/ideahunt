@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   NavigationContainer,
   DefaultTheme,
@@ -6,16 +7,16 @@ import {
 import { createStackNavigator } from "@react-navigation/stack";
 import * as React from "react";
 import { ColorSchemeName } from "react-native";
-import LoginScreen from "../screens/LoginScreen";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
+import LoginScreen from "../screens/LoginScreen";
+import NewUserScreen from "../screens/NewUserScreen";
 import NotFoundScreen from "../screens/NotFoundScreen";
+import RegisterScreen from "../screens/SignUpScreen";
 import { RootStackParamList, AppState, AppActionTypes } from "../types";
+
+import AuthContext from "./AuthContext";
 import BottomTabNavigator from "./BottomTabNavigator";
 import LinkingConfiguration from "./LinkingConfiguration";
-import AuthContext from "./AuthContext";
-import RegisterScreen from "../screens/SignUpScreen";
-import NewUserScreen from "../screens/NewUserScreen";
 
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
@@ -63,7 +64,9 @@ function RootNavigator() {
       let aToken;
       try {
         aToken = await AsyncStorage.getItem("ideaHuntToken");
-      } catch (e) {}
+      } catch (e) {
+        console.log(e);
+      }
       dispatch({ type: "SIGN_IN", userToken: aToken });
     };
     asyncLoadToken();

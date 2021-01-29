@@ -1,13 +1,13 @@
-import * as React from "react";
-import { Formik } from "formik";
-import { useMutation } from "react-query";
-import { BACKEND_URL } from "../graphql/Client";
-import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import AuthContext from "../navigation/AuthContext";
-import Space from "../components/Space";
-
+import axios from "axios";
+import { Formik } from "formik";
+import * as React from "react";
+import { useMutation } from "react-query";
 import styled from "styled-components/native";
+
+import Space from "../components/Space";
+import { BACKEND_URL } from "../graphql/Client";
+import AuthContext from "../navigation/AuthContext";
 
 const Container = styled.View`
   display: flex;

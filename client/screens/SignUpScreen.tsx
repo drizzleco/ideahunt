@@ -1,14 +1,13 @@
-import * as React from "react";
-import { Formik } from "formik";
-import { useNavigation } from "@react-navigation/native";
-import { useMutation } from "react-query";
-import { BACKEND_URL } from "../graphql/Client";
-import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import AuthContext from "../navigation/AuthContext";
-import Space from "../components/Space";
-
+import axios from "axios";
+import { Formik } from "formik";
+import * as React from "react";
+import { useMutation } from "react-query";
 import styled from "styled-components/native";
+
+import Space from "../components/Space";
+import { BACKEND_URL } from "../graphql/Client";
+import AuthContext from "../navigation/AuthContext";
 
 const Container = styled.View`
   display: flex;
@@ -50,7 +49,6 @@ interface RegisterParams {
 }
 
 const RegisterScreen = () => {
-  const navigation = useNavigation();
   const { signIn } = React.useContext(AuthContext);
 
   const mutation = useMutation(
@@ -71,7 +69,7 @@ const RegisterScreen = () => {
 
   return (
     <Container>
-      <Title>Login</Title>
+      <Title>Register</Title>
       <Space height={10} width={10} />
       <FormContainer>
         <Formik
@@ -86,7 +84,7 @@ const RegisterScreen = () => {
             mutation.mutate(values);
           }}
         >
-          {({ handleChange, handleBlur, handleSubmit, values }) => (
+          {({ handleChange, handleBlur, handleSubmit }) => (
             <Container>
               <Label>Name</Label>
               <Input
