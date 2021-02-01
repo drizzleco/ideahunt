@@ -24,4 +24,6 @@ services:
     stdin_open: true
     tty: true
     restart: always
-    entrypoint: python ideahunt/app.py
+    environment:
+      PORT: 5000
+    entrypoint: python api.py

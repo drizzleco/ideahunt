@@ -6,4 +6,4 @@ WORKDIR /ideahunt
 RUN poetry config virtualenvs.create false
 COPY . /ideahunt
 RUN poetry install --no-interaction
-CMD gunicorn --bind 0.0.0.0:$PORT ideahunt.app:app
+CMD entrypoint.sh
