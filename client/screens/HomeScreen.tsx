@@ -82,7 +82,7 @@ const HomeScreen = () => {
       <CreateIdeaButton />
       <Title> Hi </Title>
       <FlatList
-        data={data.ideas}
+        data={data.viewer.ideas}
         renderItem={({ item }) => <IdeaItem idea={item} />}
         keyExtractor={(item: Idea) => item.id}
       ></FlatList>
@@ -92,10 +92,13 @@ const HomeScreen = () => {
 
 HomeScreen.query = gql`
   query IdeasList {
-    ideas {
+    viewer {
       id
-      description
-      title
+      ideas {
+        id
+        description
+        title
+      }
     }
   }
 `;

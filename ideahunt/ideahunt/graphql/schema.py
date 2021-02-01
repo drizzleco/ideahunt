@@ -5,8 +5,10 @@ import graphene
 from ideahunt.graphql.mutations.create_idea import CreateIdea
 from ideahunt.graphql.mutations.delete_idea import DeleteIdea
 from ideahunt.graphql.mutations.edit_idea import EditIdea
-from ideahunt.graphql.objects import IdeaModel
-from ideahunt.models import Idea
+from ideahunt.graphql.objects import IdeaModel, UserModel
+from ideahunt.helpers import get_viewer
+from ideahunt.models import db, Idea, User
+
 
 
 class Query(graphene.ObjectType):
@@ -16,18 +18,16 @@ class Query(graphene.ObjectType):
 
     idea = graphene.Field(IdeaModel, id=graphene.ID(required=True))
     ideas = graphene.Field(graphene.List(IdeaModel))
+    viewer = graphene.Field(UserModel)
 
     def resolve_idea(root, info, id) -> Optional[Idea]:
-        """
-        Parse idea query and return data
-        """
         return IdeaModel.get_query(info).filter_by(id=id).first()
 
     def resolve_ideas(root, info, **args) -> List[Idea]:
-        """
-        Return ideas
-        """
         return IdeaModel.get_query(info).all()
+
+    def resolve_viewer(root, info, **args) -> User:
+        return get_viewer()
 
 
 class Mutation(graphene.ObjectType):

@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as React from "react";
 import styled from "styled-components/native";
 
@@ -22,8 +23,14 @@ const ProfileScreen = () => {
     <Container>
       <LogoutButton
         title="Log Out"
-        onPress={() => {
-          signOut();
+        onPress={async () => {
+          try {
+            await AsyncStorage.removeItem("ideaHuntToken");
+            signOut();
+          }
+          catch(e) {
+            console.log(e);
+          }
         }}
       />
     </Container>
