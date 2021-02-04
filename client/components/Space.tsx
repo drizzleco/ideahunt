@@ -1,8 +1,8 @@
 import styled from "styled-components/native";
 
 type WidthHeightSpace = {
-  width: number | null;
-  height: number | null;
+  width?: number;
+  height?: number;
 };
 
 const Space = styled.View<WidthHeightSpace>`

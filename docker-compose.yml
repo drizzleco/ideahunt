@@ -26,4 +26,5 @@ services:
     restart: always
     environment:
       PORT: 5000
+      FLASK_APP: api.py
     entrypoint: python api.py

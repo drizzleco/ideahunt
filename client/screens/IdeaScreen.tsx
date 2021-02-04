@@ -2,9 +2,18 @@ import { gql, useQuery, useMutation } from "@apollo/client";
 import { useNavigation } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
 import * as React from "react";
+import { FlatList, Text } from "react-native";
 import styled from "styled-components/native";
-
+import Space from "../components/Space";
 import { HomeScreenParamList } from "../types";
+
+interface Comment {
+  id: string;
+  description: string;
+  createdAt: Date;
+  updatedAt: Date;
+  author: { name: string };
+}
 
 const Container = styled.View`
   flex: 1;
@@ -60,11 +69,88 @@ DeleteIdeaButton.mutation = gql`
   }
 `;
 
+const CommentField = styled.TextInput``;
+
+const NewComment = ({ ideaId, refetch }: { ideaId: string; refetch: any }) => {
+  const navigation = useNavigation();
+  const [description, setDescription] = React.useState("");
+  const [createComment] = useMutation(NewComment.mutation, {
+    onCompleted: () => {
+      setDescription("");
+      refetch();
+    },
+  });
+
+  return (
+    <>
+      <CommentField
+        value={description}
+        onChangeText={(text) => setDescription(text)}
+      />
+      <RegularButton
+        onPress={() => {
+          createComment({ variables: { ideaId, description } });
+        }}
+        color={"green"}
+        title="Comment"
+      />
+    </>
+  );
+};
+
+NewComment.mutation = gql`
+  mutation createComment($ideaId: ID!, $description: String!) {
+    createComment(ideaId: $ideaId, description: $description) {
+      comment {
+        id
+      }
+    }
+  }
+`;
+
+const CommentContainer = styled.View`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 320px;
+  padding: 10px;
+  border-radius: 30px;
+  border: 1px solid black;
+`;
+
+const CommentRow = styled.View`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+`;
+
+const CommentText = styled.Text`
+  font-size: 20px;
+`;
+
+const AuthorName = styled.Text`
+  font-weight: bold;
+`;
+
+const CommentItem = ({ comment }: { comment: Comment }) => {
+  return (
+    <CommentContainer>
+      <CommentRow>
+        <AuthorName>{comment.author.name}</AuthorName>
+        <Space width={10} />
+        <Text>{comment.createdAt}</Text>
+      </CommentRow>
+      <Space height={10} />
+      <CommentText>{comment.description}</CommentText>
+    </CommentContainer>
+  );
+};
+
 type IdeaScreenProps = StackScreenProps<HomeScreenParamList, "IdeaScreen">;
 
 const IdeaScreen = ({ route }: IdeaScreenProps) => {
   const { id } = route.params;
-  const { loading, error, data } = useQuery(IdeaScreen.query, {
+  const { loading, error, data, refetch } = useQuery(IdeaScreen.query, {
     variables: { id },
   });
 
@@ -82,6 +168,12 @@ const IdeaScreen = ({ route }: IdeaScreenProps) => {
       <Title>{data.idea.title}</Title>
       <Description>{data.idea.description}</Description>
       <DeleteIdeaButton id={data.idea.id} />
+      <NewComment ideaId={data.idea.id} refetch={refetch} />
+      <FlatList
+        data={data.idea.comments}
+        renderItem={({ item }) => <CommentItem comment={item} />}
+        keyExtractor={(item: Comment) => item.id}
+      ></FlatList>
     </Container>
   );
 };
@@ -92,6 +184,18 @@ IdeaScreen.query = gql`
       id
       description
       title
+      createdAt
+      updatedAt
+      comments {
+        id
+        description
+        createdAt
+        updatedAt
+        author {
+          id
+          name
+        }
+      }
     }
   }
 `;

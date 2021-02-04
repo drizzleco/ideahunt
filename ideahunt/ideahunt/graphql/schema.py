@@ -5,10 +5,12 @@ import graphene
 from ideahunt.graphql.mutations.create_idea import CreateIdea
 from ideahunt.graphql.mutations.delete_idea import DeleteIdea
 from ideahunt.graphql.mutations.edit_idea import EditIdea
+from ideahunt.graphql.mutations.create_comment import CreateComment
+from ideahunt.graphql.mutations.delete_comment import DeleteComment
+from ideahunt.graphql.mutations.edit_comment import EditComment
 from ideahunt.graphql.objects import IdeaModel, UserModel
 from ideahunt.helpers import get_viewer
 from ideahunt.models import db, Idea, User
-
 
 
 class Query(graphene.ObjectType):
@@ -35,9 +37,15 @@ class Mutation(graphene.ObjectType):
     Base Mutation
     """
 
+    # Idea Mutations
     create_idea = CreateIdea.Field()
     delete_idea = DeleteIdea.Field()
     edit_idea = EditIdea.Field()
+    
+    # Comment Mutations
+    create_comment = CreateComment.Field()
+    delete_comment = DeleteComment.Field()
+    edit_comment = EditComment.Field()
 
 
 schema = graphene.Schema(query=Query, mutation=Mutation)

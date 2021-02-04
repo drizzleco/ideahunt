@@ -23,9 +23,21 @@ class Idea(BaseModel):
     title = Column(String)
     status = Column(String)
     version = Column(Integer)
-    author_id = Column(Integer, ForeignKey('user.id'))
+    author_id = Column(Integer, ForeignKey("user.id"))
 
     author = relationship("User", back_populates="ideas")
+    comments = relationship("Comment", back_populates="idea")
+
+
+class Comment(BaseModel):
+    __tablename__ = "comment"
+    description = Column(String)
+
+    author_id = Column(Integer, ForeignKey("user.id"))
+    idea_id = Column(Integer, ForeignKey("idea.id"))
+
+    author = relationship("User", back_populates="comments")
+    idea = relationship("Idea", back_populates="comments")
 
 
 class User(BaseModel):
@@ -36,6 +48,7 @@ class User(BaseModel):
     password = Column(String)
 
     ideas = relationship("Idea", back_populates="author")
+    comments = relationship("Comment", back_populates="author")
 
     def set_password(self, password):
         self.password = generate_password_hash(password)
