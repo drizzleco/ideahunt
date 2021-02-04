@@ -6,4 +6,4 @@ WORKDIR /ideahunt
 RUN poetry config virtualenvs.create false
 COPY . /ideahunt
 RUN poetry install --no-interaction
-CMD entrypoint.sh
+CMD /ideahunt/entrypoint.sh
