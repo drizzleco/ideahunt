@@ -9,7 +9,7 @@ export default {
           Home: {
             screens: {
               HomeScreen: "home",
-              IdeaScreen: "idea",
+              IdeaScreen: "idea/:id?",
               CreateIdeaScreen: "new-idea",
               EditIdeaScreen: "edit-idea",
             },

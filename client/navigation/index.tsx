@@ -58,6 +58,7 @@ const reducer = (state: AppState, action: AppActionTypes): AppState => {
 
 function RootNavigator() {
   const [state, dispatch] = React.useReducer(reducer, { userToken: null });
+  const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
     const asyncLoadToken = async () => {
@@ -68,6 +69,7 @@ function RootNavigator() {
         console.log(e);
       }
       dispatch({ type: "SIGN_IN", userToken: aToken });
+      setLoading(false);
     };
     asyncLoadToken();
   }, []);
@@ -81,6 +83,8 @@ function RootNavigator() {
       dispatch({ type: "SIGN_IN", userToken: data.userToken });
     },
   };
+
+  if (loading) return null;
 
   return (
     <AuthContext.Provider value={authContext}>

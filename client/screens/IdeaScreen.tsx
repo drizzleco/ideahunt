@@ -1,23 +1,18 @@
 import { gql, useQuery, useMutation } from "@apollo/client";
+import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { useNavigation } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
-import * as React from "react";
-import {
-  FlatList,
-  Text,
-  TouchableOpacity,
-  Button,
-  TextInput,
-} from "react-native";
-import styled from "styled-components/native";
-import Space from "../components/Space";
-import { HomeScreenParamList } from "../types";
 import * as dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import utc from "dayjs/plugin/utc";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import _ from "lodash";
+import * as React from "react";
+import { FlatList, Text, Button, TextInput } from "react-native";
+import styled from "styled-components/native";
+
+import Space from "../components/Space";
+import { HomeScreenParamList } from "../types";
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
@@ -90,7 +85,6 @@ const CommentField = styled.TextInput`
 `;
 
 const NewComment = ({ ideaId, refetch }: { ideaId: string; refetch: any }) => {
-  const navigation = useNavigation();
   const [description, setDescription] = React.useState("");
   const [createComment] = useMutation(NewComment.mutation, {
     onCompleted: () => {
