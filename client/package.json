@@ -15,6 +15,9 @@
   "dependencies": {
     "@apollo/client": "^3.3.6",
     "@expo/vector-icons": "^12.0.0",
+    "@fortawesome/fontawesome-svg-core": "^1.2.34",
+    "@fortawesome/free-solid-svg-icons": "^5.15.2",
+    "@fortawesome/react-native-fontawesome": "^0.2.6",
     "@react-native-async-storage/async-storage": "^1.13.3",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/bottom-tabs": "^5.11.1",
@@ -36,6 +39,7 @@
     "graphql-anywhere": "^4.2.0",
     "graphql-tag": "^2.11.0",
     "invariant": "^2.2.4",
+    "lodash": "^4.17.20",
     "prettier": "^2.2.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
@@ -44,12 +48,14 @@
     "react-native-gesture-handler": "~1.8.0",
     "react-native-safe-area-context": "3.1.9",
     "react-native-screens": "~2.15.0",
+    "react-native-svg": "^12.1.0",
     "react-native-web": "~0.13.12",
     "react-query": "^3.5.16",
     "styled-components": "^5.2.1"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
+    "@types/lodash": "^4.14.168",
     "@types/react": "~16.9.35",
     "@types/react-native": "~0.63.2",
     "@types/react-query": "^1.1.2",

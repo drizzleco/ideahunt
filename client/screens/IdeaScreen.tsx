@@ -2,13 +2,22 @@ import { gql, useQuery, useMutation } from "@apollo/client";
 import { useNavigation } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
 import * as React from "react";
-import { FlatList, Text } from "react-native";
+import {
+  FlatList,
+  Text,
+  TouchableOpacity,
+  Button,
+  TextInput,
+} from "react-native";
 import styled from "styled-components/native";
 import Space from "../components/Space";
 import { HomeScreenParamList } from "../types";
 import * as dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import utc from "dayjs/plugin/utc";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import _ from "lodash";
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
@@ -74,7 +83,11 @@ DeleteIdeaButton.mutation = gql`
   }
 `;
 
-const CommentField = styled.TextInput``;
+const CommentField = styled.TextInput`
+  border: 1px solid black;
+  height: 200px;
+  width: 200px;
+`;
 
 const NewComment = ({ ideaId, refetch }: { ideaId: string; refetch: any }) => {
   const navigation = useNavigation();
@@ -89,6 +102,8 @@ const NewComment = ({ ideaId, refetch }: { ideaId: string; refetch: any }) => {
   return (
     <>
       <CommentField
+        multiline={true}
+        numberOfLines={6}
         value={description}
         onChangeText={(text) => setDescription(text)}
       />
@@ -115,18 +130,22 @@ NewComment.mutation = gql`
 
 const CommentContainer = styled.View`
   display: flex;
-  align-items: center;
   flex-direction: column;
   width: 320px;
-  padding: 10px;
+  padding: 20px;
   border-radius: 30px;
   border: 1px solid black;
+  margin-bottom: 10px;
+`;
+const CommentInfoContainer = styled.View`
+  display: flex;
+  flex-direction: row;
 `;
 
 const CommentRow = styled.View`
   display: flex;
+  flex: 1;
   flex-direction: row;
-  justify-content: flex-start;
 `;
 
 const CommentText = styled.Text`
@@ -137,16 +156,130 @@ const AuthorName = styled.Text`
   font-weight: bold;
 `;
 
-const CommentItem = ({ comment }: { comment: Comment }) => {
+const EmptySpace = styled.View`
+  display: flex;
+  flex: 1;
+`;
+
+const IconContainer = styled.TouchableOpacity`
+  width: 20px;
+  height: 20px;
+`;
+
+const Icon = ({ icon, onPress }) => {
+  return (
+    <IconContainer onPress={onPress}>
+      <FontAwesomeIcon icon={icon} />
+    </IconContainer>
+  );
+};
+
+const DeleteCommentButton = ({ commentId, refetch }) => {
+  const [deleteComment] = useMutation(DeleteCommentButton.mutation, {
+    onCompleted: refetch,
+  });
+  return (
+    <Icon
+      icon={faTrashAlt}
+      onPress={() => {
+        deleteComment({ variables: { commentId } });
+      }}
+    />
+  );
+};
+
+DeleteCommentButton.mutation = gql`
+  mutation DeleteComment($commentId: ID!) {
+    deleteComment(commentId: $commentId) {
+      id
+    }
+  }
+`;
+
+const EditContainer = styled.View``;
+
+const EditInput = styled.TextInput`
+  min-width: 200px;
+`;
+
+const ButtonWrapper = styled.View`
+  flex-direction: row;
+  justify-content: flex-end;
+`;
+
+const EditCommentInput = ({ comment, refetch, setIsEditing }) => {
+  const [description, setDescription] = React.useState(comment.description);
+  const [editComment] = useMutation(EditCommentInput.mutation, {
+    onCompleted: () => {
+      refetch();
+      setIsEditing(false);
+    },
+  });
+  return (
+    <EditContainer>
+      <TextInput
+        multiline={true}
+        numberOfLines={6}
+        value={description}
+        onChangeText={(text) => setDescription(text)}
+      />
+      <ButtonWrapper>
+        <Button
+          color={"gray"}
+          title={"Cancel"}
+          onPress={() => {
+            setIsEditing(false);
+          }}
+        />
+        <Space width={10} />
+        <Button
+          title={"Save"}
+          onPress={() => {
+            editComment({ variables: { commentId: comment.id, description } });
+          }}
+        />
+      </ButtonWrapper>
+    </EditContainer>
+  );
+};
+
+EditCommentInput.mutation = gql`
+  mutation EditComment($commentId: ID!, $description: String!) {
+    editComment(commentId: $commentId, description: $description) {
+      comment {
+        id
+      }
+    }
+  }
+`;
+
+const CommentItem = ({ comment, refetch }: { comment: Comment }) => {
+  const [isEditing, setIsEditing] = React.useState(false);
+
   return (
     <CommentContainer>
       <CommentRow>
-        <AuthorName>{comment.author.name}</AuthorName>
-        <Space width={10} />
-        <Text>{dayjs.utc(comment.createdAt).fromNow()}</Text>
+        <CommentInfoContainer>
+          <AuthorName>{comment.author.name}</AuthorName>
+          <Space width={10} />
+          <Text>{dayjs.utc(comment.createdAt).fromNow()}</Text>
+        </CommentInfoContainer>
+        <EmptySpace />
+        <CommentInfoContainer>
+          <Icon icon={faEdit} onPress={() => setIsEditing(!isEditing)} />
+          <DeleteCommentButton commentId={comment.id} refetch={refetch} />
+        </CommentInfoContainer>
       </CommentRow>
-      <Space height={10} />
-      <CommentText>{comment.description}</CommentText>
+      <Space height={20} />
+      {!isEditing ? (
+        <CommentText>{comment.description}</CommentText>
+      ) : (
+        <EditCommentInput
+          comment={comment}
+          refetch={refetch}
+          setIsEditing={setIsEditing}
+        />
+      )}
     </CommentContainer>
   );
 };
@@ -175,8 +308,10 @@ const IdeaScreen = ({ route }: IdeaScreenProps) => {
       <DeleteIdeaButton id={data.idea.id} />
       <NewComment ideaId={data.idea.id} refetch={refetch} />
       <FlatList
-        data={data.idea.comments}
-        renderItem={({ item }) => <CommentItem comment={item} />}
+        data={_.sortBy(data.idea.comments, "createdAt").reverse()}
+        renderItem={({ item }) => (
+          <CommentItem comment={item} refetch={refetch} />
+        )}
         keyExtractor={(item: Comment) => item.id}
       ></FlatList>
     </Container>

@@ -12,11 +12,11 @@ class EditComment(graphene.Mutation):
     comment = graphene.Field(lambda: CommentModel)
 
     class Arguments:
-        comment = graphene.String(required=True)
+        description = graphene.String(required=True)
         comment_id = graphene.ID(required=True)
 
     def mutate(root, info, **kwargs):
         comment = Comment.query.get(kwargs.get("comment_id"))
-        comment.description = kwargs.get("comment")
+        comment.description = kwargs.get("description")
         db.session.commit()
         return EditComment(comment=comment)
