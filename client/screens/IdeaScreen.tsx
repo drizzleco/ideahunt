@@ -6,7 +6,12 @@ import { FlatList, Text } from "react-native";
 import styled from "styled-components/native";
 import Space from "../components/Space";
 import { HomeScreenParamList } from "../types";
+import * as dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import utc from "dayjs/plugin/utc";
 
+dayjs.extend(relativeTime);
+dayjs.extend(utc);
 interface Comment {
   id: string;
   description: string;
@@ -138,7 +143,7 @@ const CommentItem = ({ comment }: { comment: Comment }) => {
       <CommentRow>
         <AuthorName>{comment.author.name}</AuthorName>
         <Space width={10} />
-        <Text>{comment.createdAt}</Text>
+        <Text>{dayjs.utc(comment.createdAt).fromNow()}</Text>
       </CommentRow>
       <Space height={10} />
       <CommentText>{comment.description}</CommentText>
