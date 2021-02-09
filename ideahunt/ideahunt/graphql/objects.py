@@ -1,7 +1,10 @@
+from typing import Optional
+
 import graphene
 from graphene import ResolveInfo
 from graphene_sqlalchemy import SQLAlchemyObjectType
 
+from ideahunt.helpers import get_viewer
 from ideahunt.models import Comment, Idea, Like, User
 
 
@@ -15,6 +18,14 @@ class IdeaModel(SQLAlchemyObjectType):
         model = Idea
 
     like_count = graphene.Int()
+    viewer_like = graphene.Field(lambda: LikeModel)
+
+    def resolve_viewer_like(parent: Idea, info: ResolveInfo) -> Optional[Like]:
+        viewer = get_viewer()
+        return Like.query.filter(
+            Like.idea_id == parent.id,
+            Like.author_id == viewer.id,
+        ).first()
 
     def resolve_like_count(parent: Idea, info: ResolveInfo) -> int:
         return Like.query.filter(Like.idea_id == parent.id).count()

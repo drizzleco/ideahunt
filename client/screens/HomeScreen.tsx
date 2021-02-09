@@ -5,11 +5,16 @@ import { FlatList } from "react-native";
 import styled from "styled-components/native";
 import Space from "../components/Space";
 
+interface Like {
+  id: string;
+}
+
 interface Idea {
   id: string;
   description: string;
   title: string;
   likeCount: number;
+  viewerLike?: Like;
 }
 
 const Container = styled.View`
@@ -32,7 +37,7 @@ const IdeaContainer = styled.TouchableOpacity`
 `;
 
 const LikeContainer = styled.TouchableOpacity`
-  background-color: #d3d3d3;
+  background-color: ${(props) => props.color};
   border-radius: 20px;
   height: 40px;
   width: 40px;
@@ -62,22 +67,53 @@ const CreateIdeaButton = () => {
   );
 };
 
-const IdeaItem = ({ idea, refetch }: { idea: Idea; refetch: any }) => {
-  const navigation = useNavigation();
-  const [createLike] = useMutation(IdeaItem.mutation, {
+const LikeItem = ({ idea, refetch }: { idea: Idea; refetch: any }) => {
+  const [createLike] = useMutation(LikeItem.createMutation, {
+    onCompleted: refetch,
+  });
+  const [deleteLike] = useMutation(LikeItem.deleteMutation, {
     onCompleted: refetch,
   });
 
   return (
+    <LikeContainer
+      color={idea.viewerLike ? "#ADD8E6" : "#ffffff"}
+      onPress={() => {
+        idea.viewerLike
+          ? deleteLike({ variables: { likeId: idea.viewerLike.id } })
+          : createLike({ variables: { ideaId: idea.id } });
+      }}
+    >
+      {idea.likeCount}
+    </LikeContainer>
+  );
+};
+
+LikeItem.createMutation = gql`
+  mutation LikeItem_CreateLike($ideaId: ID!) {
+    createLike(ideaId: $ideaId) {
+      like {
+        id
+      }
+    }
+  }
+`;
+
+LikeItem.deleteMutation = gql`
+  mutation LikeItem_DeleteLike($likeId: ID!) {
+    deleteLike(likeId: $likeId) {
+      id
+    }
+  }
+`;
+
+const IdeaItem = ({ idea, refetch }: { idea: Idea; refetch: any }) => {
+  const navigation = useNavigation();
+
+  return (
     <>
       <IdeaContent>
-        <LikeContainer
-          onPress={() => {
-            createLike({ variables: { ideaId: idea.id } });
-          }}
-        >
-          {idea.likeCount}
-        </LikeContainer>
+        <LikeItem idea={idea} refetch={refetch} />
         <IdeaContainer
           onPress={() => {
             navigation.navigate("IdeaScreen", { id: idea.id });
@@ -90,16 +126,6 @@ const IdeaItem = ({ idea, refetch }: { idea: Idea; refetch: any }) => {
     </>
   );
 };
-
-IdeaItem.mutation = gql`
-  mutation IdeaItem_CreateLike($ideaId: ID!) {
-    createLike(ideaId: $ideaId) {
-      like {
-        id
-      }
-    }
-  }
-`;
 
 const HomeScreen = () => {
   const { loading, error, data, refetch } = useQuery(HomeScreen.query);
@@ -141,6 +167,9 @@ HomeScreen.query = gql`
         description
         title
         likeCount
+        viewerLike {
+          id
+        }
       }
     }
   }
