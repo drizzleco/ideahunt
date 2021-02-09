@@ -1,8 +1,8 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
+from sqlalchemy.sql import func
 from werkzeug.security import check_password_hash, generate_password_hash
 
 Base = declarative_base()
@@ -27,6 +27,7 @@ class Idea(BaseModel):
 
     author = relationship("User", back_populates="ideas")
     comments = relationship("Comment", back_populates="idea")
+    likes = relationship("Like", back_populates="idea")
 
 
 class Comment(BaseModel):
@@ -38,6 +39,18 @@ class Comment(BaseModel):
 
     author = relationship("User", back_populates="comments")
     idea = relationship("Idea", back_populates="comments")
+    likes = relationship("Like", back_populates="comment")
+
+
+class Like(BaseModel):
+    __tablename__ = "like"
+    author_id = Column(Integer, ForeignKey("user.id"))
+    comment_id = Column(Integer, ForeignKey("comment.id"))
+    idea_id = Column(Integer, ForeignKey("idea.id"))
+
+    author = relationship("User", back_populates="likes")
+    idea = relationship("Idea", back_populates="likes")
+    comment = relationship("Comment", back_populates="likes")
 
 
 class User(BaseModel):
@@ -49,6 +62,7 @@ class User(BaseModel):
 
     ideas = relationship("Idea", back_populates="author")
     comments = relationship("Comment", back_populates="author")
+    likes = relationship("Like", back_populates="author")
 
     def set_password(self, password):
         self.password = generate_password_hash(password)

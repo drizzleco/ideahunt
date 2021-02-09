@@ -1,6 +1,6 @@
 from graphene_sqlalchemy import SQLAlchemyObjectType
 
-from ideahunt.models import Idea, User, Comment
+from ideahunt.models import Comment, Idea, Like, User
 
 
 class UserModel(SQLAlchemyObjectType):
@@ -28,3 +28,12 @@ class CommentModel(SQLAlchemyObjectType):
 
     class Meta:
         model = Comment
+
+
+class LikeModel(SQLAlchemyObjectType):
+    """
+    Like Model
+    """
+
+    class Meta:
+        model = Like
