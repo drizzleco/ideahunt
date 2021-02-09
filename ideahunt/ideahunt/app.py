@@ -2,9 +2,10 @@ import os
 
 from flask import Flask
 from flask_cors import CORS
-from flask_migrate import Migrate
 from flask_graphql import GraphQLView
 from flask_jwt_extended import JWTManager, jwt_required
+from flask_migrate import Migrate
+
 from ideahunt.auth import *
 from ideahunt.graphql.schema import schema
 from ideahunt.models import User, db
@@ -34,7 +35,6 @@ def create_app():
             graphiql=True,
         )
         return jwt_required(view)
-
 
     app.add_url_rule("/graphql", methods=["POST", "GET"], view_func=graphql_view())
     app.add_url_rule("/register", methods=["POST"], view_func=register)

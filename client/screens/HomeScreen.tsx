@@ -21,6 +21,7 @@ const Container = styled.View`
   flex: 1;
   align-items: center;
   justify-content: center;
+  background-color: #fffff7;
 `;
 
 const Title = styled.Text`
@@ -29,14 +30,17 @@ const Title = styled.Text`
 `;
 
 const IdeaContainer = styled.TouchableOpacity`
-  background-color: #888;
-  border-radius: 4px;
+  background-color: #faf0e6;
+  border-radius: 20px;
   padding-vertical: 10px;
   padding-horizontal: 20px;
   min-width: 200px;
 `;
 
-const LikeContainer = styled.TouchableOpacity`
+interface LikeContainerProps {
+  color: string;
+}
+const LikeContainer = styled.TouchableOpacity<LikeContainerProps>`
   background-color: ${(props) => props.color};
   border-radius: 20px;
   height: 40px;

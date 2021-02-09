@@ -1,8 +1,8 @@
 import graphene
 
 from ideahunt.graphql.objects import IdeaModel
-from ideahunt.models import Idea, db
 from ideahunt.helpers import get_viewer
+from ideahunt.models import Idea, db
 
 
 class CreateIdea(graphene.Mutation):

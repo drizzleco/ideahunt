@@ -1,8 +1,8 @@
 import graphene
 
 from ideahunt.graphql.objects import CommentModel
-from ideahunt.models import Comment, db
 from ideahunt.helpers import get_viewer
+from ideahunt.models import Comment, db
 
 
 class CreateComment(graphene.Mutation):

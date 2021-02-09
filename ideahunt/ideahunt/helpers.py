@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 from flask_jwt_extended.utils import get_jwt_identity
-from ideahunt.models import db, User
 from sqlalchemy.orm.session import Session
+
+from ideahunt.models import User, db
 
 
 def get_viewer() -> User:

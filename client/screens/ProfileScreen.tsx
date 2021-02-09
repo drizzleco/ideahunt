@@ -27,8 +27,7 @@ const ProfileScreen = () => {
           try {
             await AsyncStorage.removeItem("ideaHuntToken");
             signOut();
-          }
-          catch(e) {
+          } catch (e) {
             console.log(e);
           }
         }}
