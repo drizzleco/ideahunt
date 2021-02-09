@@ -1,13 +1,15 @@
-import { gql, useQuery } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import * as React from "react";
 import { FlatList } from "react-native";
 import styled from "styled-components/native";
+import Space from "../components/Space";
 
 interface Idea {
   id: string;
   description: string;
   title: string;
+  likeCount: number;
 }
 
 const Container = styled.View`
@@ -24,10 +26,25 @@ const Title = styled.Text`
 const IdeaContainer = styled.TouchableOpacity`
   background-color: #888;
   border-radius: 4px;
-  margin-bottom: 5px;
   padding-vertical: 10px;
   padding-horizontal: 20px;
   min-width: 200px;
+`;
+
+const LikeContainer = styled.TouchableOpacity`
+  background-color: #d3d3d3;
+  border-radius: 20px;
+  height: 40px;
+  width: 40px;
+  padding-vertical: 10px;
+  padding-horizontal: 20px;
+  justify-content: center;
+  align-items: center;
+`;
+
+const IdeaContent = styled.View`
+  flex-direction: row;
+  align-items: center;
 `;
 
 const IdeaButton = styled.Button``;
@@ -45,19 +62,44 @@ const CreateIdeaButton = () => {
   );
 };
 
-const IdeaItem = ({ idea }: { idea: Idea }) => {
+const IdeaItem = ({ idea, refetch }: { idea: Idea; refetch: any }) => {
   const navigation = useNavigation();
+  const [createLike] = useMutation(IdeaItem.mutation, {
+    onCompleted: refetch,
+  });
 
   return (
-    <IdeaContainer
-      onPress={() => {
-        navigation.navigate("IdeaScreen", { id: idea.id });
-      }}
-    >
-      <Title>{idea.title}</Title>
-    </IdeaContainer>
+    <>
+      <IdeaContent>
+        <LikeContainer
+          onPress={() => {
+            createLike({ variables: { ideaId: idea.id } });
+          }}
+        >
+          {idea.likeCount}
+        </LikeContainer>
+        <IdeaContainer
+          onPress={() => {
+            navigation.navigate("IdeaScreen", { id: idea.id });
+          }}
+        >
+          <Title>{idea.title}</Title>
+        </IdeaContainer>
+      </IdeaContent>
+      <Space height={4} />
+    </>
   );
 };
+
+IdeaItem.mutation = gql`
+  mutation IdeaItem_CreateLike($ideaId: ID!) {
+    createLike(ideaId: $ideaId) {
+      like {
+        id
+      }
+    }
+  }
+`;
 
 const HomeScreen = () => {
   const { loading, error, data, refetch } = useQuery(HomeScreen.query);
@@ -83,7 +125,7 @@ const HomeScreen = () => {
       <Title> Hi </Title>
       <FlatList
         data={data.viewer.ideas}
-        renderItem={({ item }) => <IdeaItem idea={item} />}
+        renderItem={({ item }) => <IdeaItem idea={item} refetch={refetch} />}
         keyExtractor={(item: Idea) => item.id}
       ></FlatList>
     </Container>
@@ -98,6 +140,7 @@ HomeScreen.query = gql`
         id
         description
         title
+        likeCount
       }
     }
   }
