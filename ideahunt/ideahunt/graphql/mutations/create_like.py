@@ -21,10 +21,18 @@ class CreateLike(graphene.Mutation):
         comment_id = kwargs.get("comment_id")
         if not idea_id and not comment_id:
             raise ValueError("No idea or comment")
+        if idea_id and comment_id:
+            raise ValueError("Can't like both an idea and comment")
         existing_like = Like.query.filter(
             or_(
-                and_(Like.idea_id == idea_id, Like.author_id == viewer.id),
-                and_(Like.comment_id == comment_id, Like.comment_id == viewer.id),
+                and_(
+                    Like.idea_id.isnot(None), Like.idea_id == idea_id, Like.author_id == viewer.id
+                ),
+                and_(
+                    Like.comment_id.isnot(None),
+                    Like.comment_id == comment_id,
+                    Like.author_id == viewer.id,
+                ),
             )
         ).first()
         if existing_like:

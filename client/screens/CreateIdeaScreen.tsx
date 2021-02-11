@@ -51,6 +51,7 @@ const CreateIdeaScreen = () => {
           <Container>
             <Label>Title</Label>
             <Input
+              autoCapitalize={"none"}
               onChangeText={handleChange("title")}
               onBlur={handleBlur("title")}
               value={values.title}

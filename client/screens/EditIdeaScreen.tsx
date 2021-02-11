@@ -6,6 +6,7 @@ import * as React from "react";
 import styled from "styled-components/native";
 
 import { HomeScreenParamList } from "../types";
+import Loading from "../components/Loading";
 
 import IdeaScreen from "./IdeaScreen";
 
@@ -41,7 +42,7 @@ const EditIdeaScreen = ({ route }: EditIdeaScreenProps) => {
   });
   const [editIdea] = useMutation(EditIdeaScreen.mutation);
   if (loading) {
-    return null;
+    return <Loading color={"blue"} size={"large"} />;
   }
 
   if (error) {
@@ -66,6 +67,7 @@ const EditIdeaScreen = ({ route }: EditIdeaScreenProps) => {
           <Container>
             <Label>Title</Label>
             <Input
+              autoCapitalize={"none"}
               onChangeText={handleChange("title")}
               onBlur={handleBlur("title")}
               value={values.title}

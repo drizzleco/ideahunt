@@ -39,3 +39,25 @@ interface SignOutAction {
 }
 
 export type AppActionTypes = SignInAction | SignOutAction;
+
+export interface Like {
+  id: string;
+}
+
+export interface Idea {
+  id: string;
+  description: string;
+  title: string;
+  likeCount: number;
+  viewerLike?: Like;
+}
+
+export interface Comment {
+  id: string;
+  description: string;
+  createdAt: Date;
+  updatedAt: Date;
+  author: { name: string };
+  likeCount: number;
+  viewerLike: { id: string };
+}

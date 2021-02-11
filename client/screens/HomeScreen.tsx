@@ -2,20 +2,11 @@ import { gql, useMutation, useQuery } from "@apollo/client";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import * as React from "react";
 import { FlatList } from "react-native";
+import { Idea, Like } from "../types";
 import styled from "styled-components/native";
 import Space from "../components/Space";
-
-interface Like {
-  id: string;
-}
-
-interface Idea {
-  id: string;
-  description: string;
-  title: string;
-  likeCount: number;
-  viewerLike?: Like;
-}
+import Loading from "../components/Loading";
+import IdeaLikeItem from "../components/IdeaLikeItem";
 
 const Container = styled.View`
   flex: 1;
@@ -35,20 +26,6 @@ const IdeaContainer = styled.TouchableOpacity`
   padding-vertical: 10px;
   padding-horizontal: 20px;
   min-width: 200px;
-`;
-
-interface LikeContainerProps {
-  color: string;
-}
-const LikeContainer = styled.TouchableOpacity<LikeContainerProps>`
-  background-color: ${(props) => props.color};
-  border-radius: 20px;
-  height: 40px;
-  width: 40px;
-  padding-vertical: 10px;
-  padding-horizontal: 20px;
-  justify-content: center;
-  align-items: center;
 `;
 
 const IdeaContent = styled.View`
@@ -71,53 +48,13 @@ const CreateIdeaButton = () => {
   );
 };
 
-const LikeItem = ({ idea, refetch }: { idea: Idea; refetch: any }) => {
-  const [createLike] = useMutation(LikeItem.createMutation, {
-    onCompleted: refetch,
-  });
-  const [deleteLike] = useMutation(LikeItem.deleteMutation, {
-    onCompleted: refetch,
-  });
-
-  return (
-    <LikeContainer
-      color={idea.viewerLike ? "#ADD8E6" : "#ffffff"}
-      onPress={() => {
-        idea.viewerLike
-          ? deleteLike({ variables: { likeId: idea.viewerLike.id } })
-          : createLike({ variables: { ideaId: idea.id } });
-      }}
-    >
-      {idea.likeCount}
-    </LikeContainer>
-  );
-};
-
-LikeItem.createMutation = gql`
-  mutation LikeItem_CreateLike($ideaId: ID!) {
-    createLike(ideaId: $ideaId) {
-      like {
-        id
-      }
-    }
-  }
-`;
-
-LikeItem.deleteMutation = gql`
-  mutation LikeItem_DeleteLike($likeId: ID!) {
-    deleteLike(likeId: $likeId) {
-      id
-    }
-  }
-`;
-
 const IdeaItem = ({ idea, refetch }: { idea: Idea; refetch: any }) => {
   const navigation = useNavigation();
 
   return (
     <>
       <IdeaContent>
-        <LikeItem idea={idea} refetch={refetch} />
+        <IdeaLikeItem idea={idea} refetch={refetch} />
         <IdeaContainer
           onPress={() => {
             navigation.navigate("IdeaScreen", { id: idea.id });
@@ -141,7 +78,7 @@ const HomeScreen = () => {
   }, [isFocused]);
 
   if (loading) {
-    return null;
+    return <Loading color={"blue"} size={"large"} />;
   }
   if (error) {
     console.log(error);

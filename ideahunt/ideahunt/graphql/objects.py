@@ -35,6 +35,19 @@ class CommentModel(SQLAlchemyObjectType):
     class Meta:
         model = Comment
 
+    like_count = graphene.Int()
+    viewer_like = graphene.Field(lambda: LikeModel)
+
+    def resolve_viewer_like(parent: Comment, info: ResolveInfo) -> Optional[Like]:
+        viewer = get_viewer()
+        return Like.query.filter(
+            Like.comment_id == parent.id,
+            Like.author_id == viewer.id,
+        ).first()
+
+    def resolve_like_count(parent: Comment, info: ResolveInfo) -> int:
+        return Like.query.filter(Like.comment_id == parent.id).count()
+
 
 class LikeModel(SQLAlchemyObjectType):
     class Meta:

@@ -2,7 +2,7 @@ import { createHttpLink, ApolloClient, InMemoryCache } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:5050";
+export const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:5050"; //"https://drizzle-ideahunt.herokuapp.com";
 
 const cache = new InMemoryCache();
 const link = createHttpLink({

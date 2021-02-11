@@ -4,6 +4,7 @@ import React from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { QueryClient, QueryClientProvider } from "react-query";
 
+import Loading from "./components/Loading";
 import { client } from "./graphql/Client";
 import useCachedResources from "./hooks/useCachedResources";
 import useColorScheme from "./hooks/useColorScheme";
@@ -16,7 +17,7 @@ export default function App() {
   const isLoadingComplete = useCachedResources();
 
   if (!isLoadingComplete) {
-    return null;
+    return <Loading color={"blue"} size={"large"} />;
   }
 
   return (

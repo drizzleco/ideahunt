@@ -84,12 +84,14 @@ const LoginScreen = () => {
             <Container>
               <Label>Username</Label>
               <Input
+                autoCapitalize={"none"}
                 onChangeText={handleChange("username")}
                 onBlur={handleBlur("username")}
               />
               <Space height={10} width={0} />
               <Label>Password</Label>
               <Input
+                autoCapitalize={"none"}
                 onChangeText={handleChange("password")}
                 onBlur={handleBlur("password")}
                 value={values.password}

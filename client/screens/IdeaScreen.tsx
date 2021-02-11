@@ -1,28 +1,19 @@
 import { gql, useQuery, useMutation } from "@apollo/client";
-import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faTrashAlt, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { useNavigation } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
-import * as dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
-import utc from "dayjs/plugin/utc";
 import _ from "lodash";
 import * as React from "react";
 import { FlatList, Text, Button, TextInput } from "react-native";
 import styled from "styled-components/native";
+import { formatDistance } from "date-fns";
 
+import { Idea } from "../types";
+import Loading from "../components/Loading";
 import Space from "../components/Space";
+import CommentLikeItem from "../components/CommentLikeItem";
 import { HomeScreenParamList } from "../types";
-
-dayjs.extend(relativeTime);
-dayjs.extend(utc);
-interface Comment {
-  id: string;
-  description: string;
-  createdAt: Date;
-  updatedAt: Date;
-  author: { name: string };
-}
 
 const Container = styled.View`
   flex: 1;
@@ -96,6 +87,7 @@ const NewComment = ({ ideaId, refetch }: { ideaId: string; refetch: any }) => {
   return (
     <>
       <CommentField
+        autoCapitalize={"none"}
         multiline={true}
         numberOfLines={6}
         value={description}
@@ -129,11 +121,14 @@ const CommentContainer = styled.View`
   padding: 20px;
   border-radius: 30px;
   border: 1px solid black;
+  min-height: 100px;
   margin-bottom: 10px;
 `;
 const CommentInfoContainer = styled.View`
   display: flex;
   flex-direction: row;
+  justify-content: center;
+  align-items: center;
 `;
 
 const CommentRow = styled.View`
@@ -156,6 +151,8 @@ const EmptySpace = styled.View`
 `;
 
 const IconContainer = styled.TouchableOpacity`
+  align-items: center;
+  justify-content: center;
   width: 20px;
   height: 20px;
 `;
@@ -191,10 +188,6 @@ DeleteCommentButton.mutation = gql`
 `;
 
 const EditContainer = styled.View``;
-
-const EditInput = styled.TextInput`
-  min-width: 200px;
-`;
 
 const ButtonWrapper = styled.View`
   flex-direction: row;
@@ -247,7 +240,13 @@ EditCommentInput.mutation = gql`
   }
 `;
 
-const CommentItem = ({ comment, refetch }: { comment: Comment }) => {
+const CommentItem = ({
+  comment,
+  refetch,
+}: {
+  comment: Comment;
+  refetch: any;
+}) => {
   const [isEditing, setIsEditing] = React.useState(false);
 
   return (
@@ -256,10 +255,19 @@ const CommentItem = ({ comment, refetch }: { comment: Comment }) => {
         <CommentInfoContainer>
           <AuthorName>{comment.author.name}</AuthorName>
           <Space width={10} />
-          <Text>{dayjs.utc(comment.createdAt).fromNow()}</Text>
+          <Text>
+            {formatDistance(
+              new Date(comment.createdAt),
+              Date.now() + new Date().getTimezoneOffset() * 60 * 1000,
+              {
+                addSuffix: true,
+              }
+            )}
+          </Text>
         </CommentInfoContainer>
         <EmptySpace />
         <CommentInfoContainer>
+          <CommentLikeItem comment={comment} refetch={refetch} />
           <Icon icon={faEdit} onPress={() => setIsEditing(!isEditing)} />
           <DeleteCommentButton commentId={comment.id} refetch={refetch} />
         </CommentInfoContainer>
@@ -287,7 +295,7 @@ const IdeaScreen = ({ route }: IdeaScreenProps) => {
   });
 
   if (loading || !data.idea) {
-    return null;
+    return <Loading size={"large"} color={"blue"} />;
   }
 
   if (error) {
@@ -325,6 +333,10 @@ IdeaScreen.query = gql`
         description
         createdAt
         updatedAt
+        likeCount
+        viewerLike {
+          id
+        }
         author {
           id
           name

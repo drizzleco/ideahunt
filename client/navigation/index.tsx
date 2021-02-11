@@ -14,6 +14,7 @@ import NotFoundScreen from "../screens/NotFoundScreen";
 import RegisterScreen from "../screens/SignUpScreen";
 import { RootStackParamList, AppState, AppActionTypes } from "../types";
 
+import Loading from "../components/Loading";
 import AuthContext from "./AuthContext";
 import BottomTabNavigator from "./BottomTabNavigator";
 import LinkingConfiguration from "./LinkingConfiguration";
@@ -84,7 +85,7 @@ function RootNavigator() {
     },
   };
 
-  if (loading) return null;
+  if (loading) return <Loading color={"blue"} size={"large"} />;
 
   return (
     <AuthContext.Provider value={authContext}>
