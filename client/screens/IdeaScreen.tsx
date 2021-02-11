@@ -9,7 +9,7 @@ import { FlatList, Text, Button, TextInput } from "react-native";
 import styled from "styled-components/native";
 import { formatDistance } from "date-fns";
 
-import { Idea } from "../types";
+import { Comment } from "../types";
 import Loading from "../components/Loading";
 import Space from "../components/Space";
 import CommentLikeItem from "../components/CommentLikeItem";
