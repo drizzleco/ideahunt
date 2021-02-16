@@ -3,14 +3,32 @@ from typing import Optional
 import graphene
 from graphene import ResolveInfo
 from graphene_sqlalchemy import SQLAlchemyObjectType
+from sqlalchemy import func
 
 from ideahunt.helpers import get_viewer
-from ideahunt.models import Comment, Idea, Like, User
+from ideahunt.models import Comment, Follow, Idea, Like, User
 
 
 class UserModel(SQLAlchemyObjectType):
     class Meta:
         model = User
+
+    follower_count = graphene.Int()
+    following_count = graphene.Int()
+
+    def resolve_follower_count(parent: User, info: ResolveInfo) -> int:
+        return (
+            Follow.query.filter(Follow.user_id == parent.id)
+            .with_entities(func.count(Follow.user_id))
+            .scalar()
+        )
+
+    def resolve_following_count(parent: User, info: ResolveInfo) -> int:
+        return (
+            Follow.query.filter(Follow.followee_id == parent.id)
+            .with_entities(func.count(Follow.followee_id))
+            .scalar()
+        )
 
 
 class IdeaModel(SQLAlchemyObjectType):

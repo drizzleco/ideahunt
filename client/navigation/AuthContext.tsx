@@ -6,5 +6,10 @@ interface AuthFunctions {
   signUp: (data: { userToken: string }) => void;
 }
 
-const AuthContext = React.createContext<AuthFunctions | null>(null);
+const AuthContext = React.createContext<AuthFunctions>({
+  signIn: (data) => {},
+  signOut: () => {},
+  signUp: (data) => {},
+});
+
 export default AuthContext;
