@@ -51,9 +51,9 @@ const RowContainer = styled.View`
 
 const ProfileScreen = () => {
   const { signOut } = React.useContext(AuthContext);
-  const { loading, error, data, refetch } = useQuery(ProfileScreen.query);
+  const { loading, data } = useQuery(ProfileScreen.query);
 
-  if (loading) {
+  if (loading || !data) {
     return <Loading color={"blue"} size={"large"} />;
   }
 
