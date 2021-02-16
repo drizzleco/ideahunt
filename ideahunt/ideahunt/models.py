@@ -2,6 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
+from sqlalchemy.schema import Index, PrimaryKeyConstraint
 from sqlalchemy.sql import func
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -13,6 +14,14 @@ db = SQLAlchemy(model_class=Base)
 class BaseModel(Base):
     __abstract__ = True
     id = Column(Integer, primary_key=True)
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, onupdate=func.now())
+
+
+class BaseManyModel(Base):
+    """ In BaseManyModel, we don't need ids as primary keys """
+
+    __abstract__ = True
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, onupdate=func.now())
 
@@ -53,6 +62,18 @@ class Like(BaseModel):
     comment = relationship("Comment", back_populates="likes")
 
 
+class Follow(BaseManyModel):
+    __tablename__ = "follow"
+
+    user_id = Column(Integer, ForeignKey("user.id"))
+    followee_id = Column(Integer, ForeignKey("user.id"))
+
+    __table_args__ = (
+        PrimaryKeyConstraint("user_id", "followee_id"),
+        Index("followee_follower", "followee_id", "user_id"),
+    )
+
+
 class User(BaseModel):
     __tablename__ = "user"
     username = Column(String, unique=True)
@@ -63,6 +84,13 @@ class User(BaseModel):
     ideas = relationship("Idea", back_populates="author")
     comments = relationship("Comment", back_populates="author")
     likes = relationship("Like", back_populates="author")
+    following = relationship(
+        "User",
+        "follow",
+        primaryjoin=lambda: User.id == Follow.user_id,
+        secondaryjoin=lambda: User.id == Follow.followee_id,
+        backref="followers",
+    )
 
     def set_password(self, password):
         self.password = generate_password_hash(password)
