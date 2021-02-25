@@ -1,12 +1,15 @@
-import { gql, useMutation, useQuery } from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import * as React from "react";
 import { FlatList } from "react-native";
-import { Idea, Like } from "../types";
 import styled from "styled-components/native";
-import Space from "../components/Space";
-import Loading from "../components/Loading";
+
+import IconButton from "../components/IconButton";
 import IdeaLikeItem from "../components/IdeaLikeItem";
+import Loading from "../components/Loading";
+import Space from "../components/Space";
+import { Idea } from "../types";
 
 const Container = styled.View`
   flex: 1;
@@ -68,6 +71,18 @@ const IdeaItem = ({ idea, refetch }: { idea: Idea; refetch: any }) => {
   );
 };
 
+const SearchButton = () => {
+  const navigation = useNavigation();
+
+  return (
+    <IconButton
+      onPress={() => navigation.navigate("SearchScreen")}
+      icon={faSearch}
+      color={"gray"}
+    />
+  );
+};
+
 const HomeScreen = () => {
   const { loading, error, data, refetch } = useQuery(HomeScreen.query);
   const isFocused = useIsFocused();
@@ -88,6 +103,7 @@ const HomeScreen = () => {
 
   return (
     <Container>
+      <SearchButton />
       <CreateIdeaButton />
       <Title> Hi </Title>
       <FlatList

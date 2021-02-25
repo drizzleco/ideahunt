@@ -5,8 +5,8 @@ import { Formik } from "formik";
 import * as React from "react";
 import styled from "styled-components/native";
 
-import { HomeScreenParamList } from "../types";
 import Loading from "../components/Loading";
+import { HomeScreenParamList } from "../types";
 
 import IdeaScreen from "./IdeaScreen";
 

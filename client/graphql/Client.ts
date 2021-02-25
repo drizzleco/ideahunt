@@ -37,8 +37,8 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (networkError) {
     console.log(`[Network error]: ${networkError}`);
     // Remove token and reload page. Need a better fix later
-    AsyncStorage.removeItem("ideaHuntToken");
-    location.reload();
+    // AsyncStorage.removeItem("ideaHuntToken");
+    // location.reload();
   }
 });
 

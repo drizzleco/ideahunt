@@ -13,6 +13,7 @@ export type BottomTabParamList = {
 
 export type HomeScreenParamList = {
   HomeScreen: undefined;
+  SearchScreen: undefined;
   IdeaScreen: { id: string };
   CreateIdeaScreen: undefined;
   EditIdeaScreen: { id: string };
@@ -60,4 +61,12 @@ export interface Comment {
   author: { name: string };
   likeCount: number;
   viewerLike: { id: string };
+}
+
+export interface User {
+  id: string;
+  name: string;
+  username: string;
+  followerCount: number;
+  followingCount: number;
 }

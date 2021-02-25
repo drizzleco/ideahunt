@@ -1,19 +1,18 @@
 import { gql, useQuery, useMutation } from "@apollo/client";
-import { faEdit, faTrashAlt, faHeart } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { useNavigation } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
+import { formatDistance } from "date-fns";
 import _ from "lodash";
 import * as React from "react";
 import { FlatList, Text, Button, TextInput } from "react-native";
 import styled from "styled-components/native";
-import { formatDistance } from "date-fns";
 
-import { Comment } from "../types";
+import CommentLikeItem from "../components/CommentLikeItem";
 import Loading from "../components/Loading";
 import Space from "../components/Space";
-import CommentLikeItem from "../components/CommentLikeItem";
-import { HomeScreenParamList } from "../types";
+import { Comment, HomeScreenParamList } from "../types";
 
 const Container = styled.View`
   flex: 1;
@@ -75,7 +74,7 @@ const CommentField = styled.TextInput`
   width: 200px;
 `;
 
-const NewComment = ({ ideaId, refetch }: { ideaId: string; refetch: any }) => {
+const NewComment = ({ ideaId, tch }: { ideaId: string; refetch: any }) => {
   const [description, setDescription] = React.useState("");
   const [createComment] = useMutation(NewComment.mutation, {
     onCompleted: () => {

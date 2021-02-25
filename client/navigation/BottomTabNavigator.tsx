@@ -10,6 +10,8 @@ import EditIdeaScreen from "../screens/EditIdeaScreen";
 import HomeScreen from "../screens/HomeScreen";
 import IdeaScreen from "../screens/IdeaScreen";
 import ProfileScreen from "../screens/ProfileScreen";
+import SearchScreen from "../screens/SearchScreen";
+import UserProfileScreen from "../screens/UserProfileScreen";
 import {
   BottomTabParamList,
   HomeScreenParamList,
@@ -67,9 +69,19 @@ function HomeNavigator() {
         options={{ headerTitle: "ideaHunt" }}
       />
       <HomeStack.Screen
+        name="SearchScreen"
+        component={SearchScreen}
+        options={{ headerTitle: "Search" }}
+      />
+      <HomeStack.Screen
         name="IdeaScreen"
         component={IdeaScreen}
         options={{ headerTitle: "idea" }}
+      />
+      <HomeStack.Screen
+        name="UserProfileScreen"
+        component={UserProfileScreen}
+        options={{ headerTitle: "User" }}
       />
       <HomeStack.Screen
         name="CreateIdeaScreen"

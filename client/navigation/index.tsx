@@ -8,13 +8,13 @@ import { createStackNavigator } from "@react-navigation/stack";
 import * as React from "react";
 import { ColorSchemeName } from "react-native";
 
+import Loading from "../components/Loading";
 import LoginScreen from "../screens/LoginScreen";
 import NewUserScreen from "../screens/NewUserScreen";
 import NotFoundScreen from "../screens/NotFoundScreen";
 import RegisterScreen from "../screens/SignUpScreen";
 import { RootStackParamList, AppState, AppActionTypes } from "../types";
 
-import Loading from "../components/Loading";
 import AuthContext from "./AuthContext";
 import BottomTabNavigator from "./BottomTabNavigator";
 import LinkingConfiguration from "./LinkingConfiguration";

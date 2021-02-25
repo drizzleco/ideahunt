@@ -1,11 +1,11 @@
-import { gql, useMutation, useQuery } from "@apollo/client";
-import { Idea, Comment, Like } from "../types";
+import { gql, useMutation } from "@apollo/client";
 import { faHeart as hollowHeart } from "@fortawesome/free-regular-svg-icons";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import * as React from "react";
-
 import styled from "styled-components/native";
+
+import IconButton from "../components/IconButton";
+import { Comment } from "../types";
 
 const LikeContainer = styled.View`
   flex-direction: row;
@@ -18,21 +18,6 @@ const LikeCount = styled.Text`
   color: black;
   font-size: 10px;
 `;
-
-const IconContainer = styled.TouchableOpacity`
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-`;
-
-const IconButton = ({ icon, onPress, color }) => {
-  return (
-    <IconContainer onPress={onPress}>
-      <FontAwesomeIcon icon={icon} color={color} />
-    </IconContainer>
-  );
-};
 
 const CommentLikeItem = ({
   comment,

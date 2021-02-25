@@ -15,19 +15,28 @@ class UserModel(SQLAlchemyObjectType):
 
     follower_count = graphene.Int()
     following_count = graphene.Int()
+    follows_user = graphene.Field(graphene.Boolean, user_id=graphene.ID(required=True))
 
-    def resolve_follower_count(parent: User, info: ResolveInfo) -> int:
+    def resolve_following_count(parent: User, info: ResolveInfo) -> int:
         return (
             Follow.query.filter(Follow.user_id == parent.id)
             .with_entities(func.count(Follow.user_id))
             .scalar()
         )
 
-    def resolve_following_count(parent: User, info: ResolveInfo) -> int:
+    def resolve_follower_count(parent: User, info: ResolveInfo) -> int:
         return (
             Follow.query.filter(Follow.followee_id == parent.id)
             .with_entities(func.count(Follow.followee_id))
             .scalar()
+        )
+
+    def resolve_follows_user(parent: User, info: ResolveInfo, user_id: graphene.ID) -> bool:
+        return (
+            Follow.query.filter(Follow.followee_id == user_id)
+            .filter(Follow.user_id == parent.id)
+            .first()
+            is not None
         )
 
 
@@ -70,3 +79,8 @@ class CommentModel(SQLAlchemyObjectType):
 class LikeModel(SQLAlchemyObjectType):
     class Meta:
         model = Like
+
+
+class FollowModel(SQLAlchemyObjectType):
+    class Meta:
+        model = Follow
