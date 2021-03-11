@@ -74,7 +74,7 @@ const CommentField = styled.TextInput`
   width: 200px;
 `;
 
-const NewComment = ({ ideaId, tch }: { ideaId: string; refetch: any }) => {
+const NewComment = ({ ideaId, refetch }: { ideaId: string; refetch: any }) => {
   const [description, setDescription] = React.useState("");
   const [createComment] = useMutation(NewComment.mutation, {
     onCompleted: () => {
@@ -242,9 +242,11 @@ EditCommentInput.mutation = gql`
 const CommentItem = ({
   comment,
   refetch,
+  viewerId,
 }: {
   comment: Comment;
   refetch: any;
+  viewerId: string;
 }) => {
   const [isEditing, setIsEditing] = React.useState(false);
 
@@ -267,8 +269,12 @@ const CommentItem = ({
         <EmptySpace />
         <CommentInfoContainer>
           <CommentLikeItem comment={comment} refetch={refetch} />
-          <Icon icon={faEdit} onPress={() => setIsEditing(!isEditing)} />
-          <DeleteCommentButton commentId={comment.id} refetch={refetch} />
+          {viewerId === comment.author.id && (
+            <Icon icon={faEdit} onPress={() => setIsEditing(!isEditing)} />
+          )}
+          {viewerId === comment.author.id && (
+            <DeleteCommentButton commentId={comment.id} refetch={refetch} />
+          )}
         </CommentInfoContainer>
       </CommentRow>
       <Space height={20} />
@@ -303,15 +309,23 @@ const IdeaScreen = ({ route }: IdeaScreenProps) => {
 
   return (
     <Container>
-      <EditIdeaButton id={data.idea.id} />
+      {data.viewer.id === data.idea.author.id && (
+        <EditIdeaButton id={data.idea.id} />
+      )}
       <Title>{data.idea.title}</Title>
       <Description>{data.idea.description}</Description>
-      <DeleteIdeaButton id={data.idea.id} />
+      {data.viewer.id === data.idea.author.id && (
+        <DeleteIdeaButton id={data.idea.id} />
+      )}
       <NewComment ideaId={data.idea.id} refetch={refetch} />
       <FlatList
         data={_.sortBy(data.idea.comments, "createdAt").reverse()}
         renderItem={({ item }) => (
-          <CommentItem comment={item} refetch={refetch} />
+          <CommentItem
+            comment={item}
+            refetch={refetch}
+            viewerId={data.viewer.id}
+          />
         )}
         keyExtractor={(item: Comment) => item.id}
       ></FlatList>
@@ -321,12 +335,19 @@ const IdeaScreen = ({ route }: IdeaScreenProps) => {
 
 IdeaScreen.query = gql`
   query IdeasScreen($id: ID!) {
+    viewer {
+      id
+    }
     idea(id: $id) {
       id
       description
       title
       createdAt
       updatedAt
+      author {
+        id
+        name
+      }
       comments {
         id
         description

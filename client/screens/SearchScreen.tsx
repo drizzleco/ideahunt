@@ -78,8 +78,6 @@ const SearchScreen = () => {
   const { loading, data } = useQuery(SearchScreen.query);
   const [searchQuery, setSearchQuery] = React.useState("");
 
-  console.log(searchQuery);
-
   if (loading) {
     return <Loading color={"blue"} size={"large"} />;
   }

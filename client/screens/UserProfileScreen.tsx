@@ -3,6 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as React from "react";
 import styled from "styled-components/native";
 
+import IdeasList from "../components/IdeasList";
 import Loading from "../components/Loading";
 import Profile from "../components/Profile";
 import Space from "../components/Space";
@@ -23,7 +24,6 @@ const FollowButtonContainer = styled.Button`
 
 const FollowButton = ({ followeeId, refetch }: { followeeId: string }) => {
   const [followUser, { data, loading }] = useMutation(FollowButton.mutation);
-  console.log(followeeId);
   return (
     <FollowButtonContainer
       title={"Follow"}
@@ -50,7 +50,6 @@ const UnfollowButton = ({ followeeId, refetch }: { followeeId: string }) => {
   const [UnfollowUser, { data, loading }] = useMutation(
     UnfollowButton.mutation
   );
-  console.log(followeeId);
   return (
     <FollowButtonContainer
       title={"Unfollow"}
@@ -80,7 +79,6 @@ const LogoutButton = styled.Button`
 const UserProfileScreen = ({ route }) => {
   const { userId } = route.params;
   const { signOut } = React.useContext(AuthContext);
-  console.log(userId);
   const { loading, data, refetch } = useQuery(UserProfileScreen.query, {
     variables: { userId },
   });
@@ -88,8 +86,6 @@ const UserProfileScreen = ({ route }) => {
   if (loading || !data) {
     return <Loading color={"blue"} size={"large"} />;
   }
-
-  console.log(data.viewer.followsUser);
 
   return (
     <Container>
@@ -101,6 +97,7 @@ const UserProfileScreen = ({ route }) => {
         ) : (
           <FollowButton followeeId={data.user.id} refetch={refetch} />
         ))}
+      <IdeasList ideas={data.user.ideas} refetch={refetch} />
       {data.user.id === data.viewer.id && (
         <LogoutButton
           title="Log Out"
@@ -120,6 +117,7 @@ const UserProfileScreen = ({ route }) => {
 
 UserProfileScreen.query = gql`
   ${Profile.fragment}
+  ${IdeasList.fragment}
   query UserProfileScreen($userId: ID!) {
     viewer {
       ...Profile
@@ -127,6 +125,7 @@ UserProfileScreen.query = gql`
     }
     user(userId: $userId) {
       id
+      ...IdeasList
       ...Profile
     }
   }

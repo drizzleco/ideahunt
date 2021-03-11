@@ -58,7 +58,7 @@ export interface Comment {
   description: string;
   createdAt: Date;
   updatedAt: Date;
-  author: { name: string };
+  author: { id: string; name: string };
   likeCount: number;
   viewerLike: { id: string };
 }
