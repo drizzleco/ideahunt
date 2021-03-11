@@ -4,6 +4,10 @@ import { Formik } from "formik";
 import * as React from "react";
 import styled from "styled-components/native";
 
+import Button from "../components/Button";
+import Space from "../components/Space";
+import TextInput from "../components/TextInput";
+
 const Container = styled.View`
   flex: 1;
   justify-content: center;
@@ -19,8 +23,6 @@ const Label = styled.Text`
 `;
 
 const Input = styled.TextInput``;
-
-const Submit = styled.Button``;
 
 const ErrorLabel = styled.Text`
   font-size: 20px;
@@ -44,25 +46,31 @@ const CreateIdeaScreen = () => {
         initialValues={{ title: "", description: "" }}
         onSubmit={(values) => {
           createIdea({ variables: values });
-          navigation.goBack();
+          navigation.push("HomeScreen");
         }}
       >
         {({ handleChange, handleBlur, handleSubmit, values }) => (
           <Container>
             <Label>Title</Label>
-            <Input
+            <Space height={8} />
+            <TextInput
               autoCapitalize={"none"}
               onChangeText={handleChange("title")}
               onBlur={handleBlur("title")}
               value={values.title}
             />
+            <Space height={20} />
             <Label>Description</Label>
-            <Input
+            <Space height={8} />
+            <TextInput
               onChangeText={handleChange("description")}
               onBlur={handleBlur("description")}
               value={values.description}
+              multiline={true}
+              numberOfLines={4}
             />
-            <Submit
+            <Space height={20} />
+            <Button
               onPress={() => {
                 handleSubmit();
               }}

@@ -35,7 +35,10 @@ const IdeaItem = ({ idea, refetch }: { idea: Idea; refetch: any }) => {
         <IdeaLikeItem idea={idea} refetch={refetch} />
         <IdeaContainer
           onPress={() => {
-            navigation.navigate("IdeaScreen", { id: idea.id });
+            navigation.navigate("Home", {
+              screen: "IdeaScreen",
+              params: { id: idea.id },
+            });
           }}
         >
           <Title>{idea.title}</Title>
@@ -46,13 +49,19 @@ const IdeaItem = ({ idea, refetch }: { idea: Idea; refetch: any }) => {
   );
 };
 
+const Container = styled.View`
+  flex: 1;
+`;
+
 const IdeasList = ({ ideas, refetch }: { ideas: Idea[]; refetch: any }) => {
   return (
-    <FlatList
-      data={ideas}
-      renderItem={({ item }) => <IdeaItem idea={item} refetch={refetch} />}
-      keyExtractor={(item: Idea) => item.id}
-    ></FlatList>
+    <Container>
+      <FlatList
+        data={ideas}
+        renderItem={({ item }) => <IdeaItem idea={item} refetch={refetch} />}
+        keyExtractor={(item: Idea) => item.id}
+      ></FlatList>
+    </Container>
   );
 };
 

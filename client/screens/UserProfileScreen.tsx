@@ -3,6 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as React from "react";
 import styled from "styled-components/native";
 
+import Button from "../components/Button";
 import IdeasList from "../components/IdeasList";
 import Loading from "../components/Loading";
 import Profile from "../components/Profile";
@@ -15,17 +16,10 @@ const Container = styled.View`
   justify-content: center;
 `;
 
-const FollowButtonContainer = styled.Button`
-  display: flex;
-  width: 200px;
-  background-color: blue;
-  border-radius: 4px;
-`;
-
 const FollowButton = ({ followeeId, refetch }: { followeeId: string }) => {
   const [followUser, { data, loading }] = useMutation(FollowButton.mutation);
   return (
-    <FollowButtonContainer
+    <Button
       title={"Follow"}
       onPress={() => {
         followUser({ variables: { followeeId } });
@@ -47,14 +41,14 @@ FollowButton.mutation = gql`
 `;
 
 const UnfollowButton = ({ followeeId, refetch }: { followeeId: string }) => {
-  const [UnfollowUser, { data, loading }] = useMutation(
+  const [unfollowUser, { data, loading }] = useMutation(
     UnfollowButton.mutation
   );
   return (
-    <FollowButtonContainer
+    <Button
       title={"Unfollow"}
       onPress={() => {
-        UnfollowUser({ variables: { followeeId } });
+        unfollowUser({ variables: { followeeId } });
         refetch();
       }}
     />
@@ -68,12 +62,6 @@ UnfollowButton.mutation = gql`
       followeeId
     }
   }
-`;
-const LogoutButton = styled.Button`
-  display: flex;
-  width: 200px;
-  background-color: blue;
-  border-radius: 4px;
 `;
 
 const UserProfileScreen = ({ route }) => {
@@ -90,27 +78,14 @@ const UserProfileScreen = ({ route }) => {
   return (
     <Container>
       <Profile user={data.user} />
-      <Space height={40} />
       {data.user.id !== data.viewer.id &&
         (data.viewer.followsUser ? (
           <UnfollowButton followeeId={data.user.id} refetch={refetch} />
         ) : (
           <FollowButton followeeId={data.user.id} refetch={refetch} />
         ))}
+      <Space height={10} />
       <IdeasList ideas={data.user.ideas} refetch={refetch} />
-      {data.user.id === data.viewer.id && (
-        <LogoutButton
-          title="Log Out"
-          onPress={() => {
-            try {
-              AsyncStorage.removeItem("ideaHuntToken");
-              signOut();
-            } catch (e) {
-              console.log(e);
-            }
-          }}
-        />
-      )}
     </Container>
   );
 };

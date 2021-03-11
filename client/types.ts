@@ -9,6 +9,7 @@ export type RootStackParamList = {
 export type BottomTabParamList = {
   Home: undefined;
   Profile: undefined;
+  Search: undefined;
 };
 
 export type HomeScreenParamList = {
@@ -21,6 +22,11 @@ export type HomeScreenParamList = {
 
 export type ProfileParamList = {
   ProfileScreen: undefined;
+};
+
+export type SearchParamList = {
+  SearchScreen: undefined;
+  UserProfileScreen: { userId: string };
 };
 
 export type AppState = {

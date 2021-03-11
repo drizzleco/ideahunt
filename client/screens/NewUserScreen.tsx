@@ -2,6 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import * as React from "react";
 import styled from "styled-components/native";
 
+import Button from "../components/Button";
 import Space from "../components/Space";
 
 const Container = styled.View`
@@ -15,13 +16,6 @@ const Title = styled.Text`
   font-size: 40px;
 `;
 
-const RegularButton = styled.Button`
-  display: flex;
-  width: 200px;
-  background-color: blue;
-  border-radius: 4px;
-`;
-
 const NewUserScreen = () => {
   const navigation = useNavigation();
 
@@ -29,14 +23,14 @@ const NewUserScreen = () => {
     <Container>
       <Title>Welcome to the land of ideas~</Title>
       <Space height={40} width={0} />
-      <RegularButton
+      <Button
         title="Register"
         onPress={() => {
           navigation.navigate("RegisterScreen");
         }}
       />
       <Space height={10} width={0} />
-      <RegularButton
+      <Button
         title="Login"
         onPress={() => {
           navigation.navigate("LoginScreen");

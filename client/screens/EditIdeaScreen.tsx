@@ -5,7 +5,10 @@ import { Formik } from "formik";
 import * as React from "react";
 import styled from "styled-components/native";
 
+import Button from "../components/Button";
 import Loading from "../components/Loading";
+import Space from "../components/Space";
+import TextInput from "../components/TextInput";
 import { HomeScreenParamList } from "../types";
 
 import IdeaScreen from "./IdeaScreen";
@@ -25,8 +28,6 @@ const Label = styled.Text`
 `;
 
 const Input = styled.TextInput``;
-
-const Submit = styled.Button``;
 
 type EditIdeaScreenProps = StackScreenProps<
   HomeScreenParamList,
@@ -60,29 +61,35 @@ const EditIdeaScreen = ({ route }: EditIdeaScreenProps) => {
         }}
         onSubmit={(values) => {
           editIdea({ variables: values });
-          navigation.goBack();
+          navigation.push("HomeScreen");
         }}
       >
         {({ handleChange, handleBlur, handleSubmit, values }) => (
           <Container>
             <Label>Title</Label>
-            <Input
+            <Space height={8} />
+            <TextInput
               autoCapitalize={"none"}
               onChangeText={handleChange("title")}
               onBlur={handleBlur("title")}
               value={values.title}
             />
+            <Space height={20} />
             <Label>Description</Label>
-            <Input
+            <Space height={8} />
+            <TextInput
               onChangeText={handleChange("description")}
               onBlur={handleBlur("description")}
               value={values.description}
+              multiline={true}
+              numberOfLines={4}
             />
-            <Submit
+            <Space height={20} />
+            <Button
               onPress={() => {
                 handleSubmit();
               }}
-              title="Submit"
+              title="Save!"
             />
           </Container>
         )}

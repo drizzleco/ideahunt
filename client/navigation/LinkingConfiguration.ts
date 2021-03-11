@@ -9,11 +9,15 @@ export default {
           Home: {
             screens: {
               HomeScreen: "home",
-              SearchScreen: "search",
-              UserProfileScreen: "user/:userId?",
               IdeaScreen: "idea/:id?",
               CreateIdeaScreen: "new-idea",
               EditIdeaScreen: "edit-idea",
+            },
+          },
+          Search: {
+            screens: {
+              SearchScreen: "search",
+              UserProfileScreen: "user/:userId?",
             },
           },
           Profile: {

@@ -1,8 +1,12 @@
 import { Ionicons } from "@expo/vector-icons";
+import {
+  faHome,
+  faSearch,
+  faUserCircle,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
-import { faHome, faUserCircle } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import * as React from "react";
 
 import Colors from "../constants/Colors";
@@ -18,6 +22,7 @@ import {
   BottomTabParamList,
   HomeScreenParamList,
   ProfileParamList,
+  SearchParamList,
 } from "../types";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
@@ -36,6 +41,15 @@ export default function BottomTabNavigator() {
         options={{
           tabBarIcon: ({ color }: { color: string }) => (
             <FontAwesomeIcon icon={faHome} color={color} />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name="Search"
+        component={SearchNavigator}
+        options={{
+          tabBarIcon: ({ color }: { color: string }) => (
+            <FontAwesomeIcon icon={faSearch} color={color} />
           ),
         }}
       />
@@ -81,11 +95,6 @@ function HomeNavigator() {
         options={{ headerTitle: "idea", title: "Idea" }}
       />
       <HomeStack.Screen
-        name="UserProfileScreen"
-        component={UserProfileScreen}
-        options={{ headerTitle: "User", title: "Profile" }}
-      />
-      <HomeStack.Screen
         name="CreateIdeaScreen"
         component={CreateIdeaScreen}
         options={{ headerTitle: "New idea", title: "New Idea" }}
@@ -110,5 +119,24 @@ function ProfileNavigator() {
         options={{ headerTitle: "Profile", title: "Profile" }}
       />
     </TabTwoStack.Navigator>
+  );
+}
+
+const SearchStack = createStackNavigator<SearchParamList>();
+
+function SearchNavigator() {
+  return (
+    <SearchStack.Navigator>
+      <SearchStack.Screen
+        name="SearchScreen"
+        component={SearchScreen}
+        options={{ headerTitle: "Search", title: "Search" }}
+      />
+      <HomeStack.Screen
+        name="UserProfileScreen"
+        component={UserProfileScreen}
+        options={{ headerTitle: "User", title: "Profile" }}
+      />
+    </SearchStack.Navigator>
   );
 }

@@ -1,17 +1,27 @@
 import { gql, useQuery, useMutation } from "@apollo/client";
-import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEdit,
+  faPenSquare,
+  faToiletPaperSlash,
+  faTrash,
+  faTrashAlt,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { useNavigation } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
 import { formatDistance } from "date-fns";
 import _ from "lodash";
 import * as React from "react";
-import { FlatList, Text, Button, TextInput } from "react-native";
+import { FlatList, Text } from "react-native";
 import styled from "styled-components/native";
 
+import Button from "../components/Button";
 import CommentLikeItem from "../components/CommentLikeItem";
+import IconButton from "../components/IconButton";
 import Loading from "../components/Loading";
+import Row from "../components/Row";
 import Space from "../components/Space";
+import TextInput from "../components/TextInput";
 import { Comment, HomeScreenParamList } from "../types";
 
 const Container = styled.View`
@@ -25,20 +35,21 @@ const Title = styled.Text`
 `;
 
 const Description = styled.Text`
-  color: red;
+  color: #309430;
+  font-size: 30px;
 `;
-
-const RegularButton = styled.Button``;
 
 const EditIdeaButton = ({ id }: { id: string }) => {
   const navigation = useNavigation();
 
   return (
-    <RegularButton
+    <IconButton
+      size={30}
+      color={"salmon"}
       onPress={() => {
         navigation.navigate("EditIdeaScreen", { id });
       }}
-      title="Edit Idea"
+      icon={faPenSquare}
     />
   );
 };
@@ -48,14 +59,14 @@ const DeleteIdeaButton = ({ id }: { id: string }) => {
   const [deleteIdea] = useMutation(DeleteIdeaButton.mutation);
 
   return (
-    <RegularButton
-      style={{ backgroundColor: "red" }}
+    <IconButton
       onPress={() => {
         deleteIdea({ variables: { ideaId: id } });
         navigation.navigate("HomeScreen");
       }}
       color={"red"}
-      title="Delete"
+      size={30}
+      icon={faToiletPaperSlash}
     />
   );
 };
@@ -68,14 +79,9 @@ DeleteIdeaButton.mutation = gql`
   }
 `;
 
-const CommentField = styled.TextInput`
-  border: 1px solid black;
-  height: 200px;
-  width: 200px;
-`;
-
 const NewComment = ({ ideaId, refetch }: { ideaId: string; refetch: any }) => {
   const [description, setDescription] = React.useState("");
+  const [showCommentBox, setShowCommentBox] = React.useState(false);
   const [createComment] = useMutation(NewComment.mutation, {
     onCompleted: () => {
       setDescription("");
@@ -85,20 +91,46 @@ const NewComment = ({ ideaId, refetch }: { ideaId: string; refetch: any }) => {
 
   return (
     <>
-      <CommentField
-        autoCapitalize={"none"}
-        multiline={true}
-        numberOfLines={6}
-        value={description}
-        onChangeText={(text) => setDescription(text)}
-      />
-      <RegularButton
-        onPress={() => {
-          createComment({ variables: { ideaId, description } });
-        }}
-        color={"green"}
-        title="Comment"
-      />
+      <Space height={10} />
+      {showCommentBox && (
+        <>
+          <TextInput
+            autoCapitalize={"none"}
+            multiline={true}
+            numberOfLines={6}
+            value={description}
+            style={{ minHeight: 200 }}
+            onChangeText={(text) => setDescription(text)}
+          />
+          <Space height={10} />
+          <Button
+            onPress={() => {
+              setShowCommentBox(false);
+              setDescription("");
+            }}
+            style={{ backgroundColor: "rgba(255,0,0,0.9)" }}
+            title="Cancel"
+          />
+          <Space height={10} />
+          <Button
+            onPress={() => {
+              createComment({ variables: { ideaId, description } });
+            }}
+            style={{ backgroundColor: "rgba(0,180,190,0.9)" }}
+            title="Save"
+          />
+        </>
+      )}
+      {!showCommentBox && (
+        <Button
+          onPress={() => {
+            setShowCommentBox(true);
+          }}
+          style={{ backgroundColor: "rgba(0,180,190,0.9)" }}
+          title="Comment"
+        />
+      )}
+      <Space height={10} />
     </>
   );
 };
@@ -309,13 +341,14 @@ const IdeaScreen = ({ route }: IdeaScreenProps) => {
 
   return (
     <Container>
-      {data.viewer.id === data.idea.author.id && (
-        <EditIdeaButton id={data.idea.id} />
-      )}
       <Title>{data.idea.title}</Title>
       <Description>{data.idea.description}</Description>
+
       {data.viewer.id === data.idea.author.id && (
-        <DeleteIdeaButton id={data.idea.id} />
+        <Row>
+          <EditIdeaButton id={data.idea.id} />
+          <DeleteIdeaButton id={data.idea.id} />
+        </Row>
       )}
       <NewComment ideaId={data.idea.id} refetch={refetch} />
       <FlatList

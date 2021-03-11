@@ -5,7 +5,9 @@ import * as React from "react";
 import { useMutation } from "react-query";
 import styled from "styled-components/native";
 
+import Button from "../components/Button";
 import Space from "../components/Space";
+import TextInput from "../components/TextInput";
 import { BACKEND_URL } from "../graphql/Client";
 import AuthContext from "../navigation/AuthContext";
 
@@ -40,8 +42,6 @@ const Input = styled.TextInput`
   height: 30px;
   width: 200px;
 `;
-
-const Submit = styled.Button``;
 
 interface RegisterParams {
   username: string;
@@ -87,43 +87,45 @@ const RegisterScreen = () => {
           {({ handleChange, handleBlur, handleSubmit }) => (
             <Container>
               <Label>Name</Label>
-              <Input
+              <TextInput
                 autoCapitalize={"none"}
                 onChangeText={handleChange("name")}
                 onBlur={handleBlur("name")}
               />
               <Space height={10} width={0} />
               <Label>Username</Label>
-              <Input
+              <TextInput
                 autoCapitalize={"none"}
                 onChangeText={handleChange("username")}
                 onBlur={handleBlur("username")}
               />
               <Space height={10} width={0} />
               <Label>Email</Label>
-              <Input
+              <TextInput
                 autoCapitalize={"none"}
                 onChangeText={handleChange("email")}
                 onBlur={handleBlur("email")}
               />
               <Space height={10} width={0} />
               <Label>Password</Label>
-              <Input
+              <TextInput
+                secureTextEntry={true}
                 onChangeText={handleChange("password")}
                 onBlur={handleBlur("password")}
               />
               <Space height={10} width={0} />
               <Label>Confirm Password</Label>
-              <Input
+              <TextInput
+                secureTextEntry={true}
                 onChangeText={handleChange("confirm")}
                 onBlur={handleBlur("confirm")}
               />
               <Space height={10} width={0} />
-              <Submit
+              <Button
                 onPress={() => {
                   handleSubmit();
                 }}
-                title="Submit"
+                title="Sign up!"
               />
               {mutation.isLoading ? <Label>Registering you...</Label> : null}
               {mutation.isError ? (

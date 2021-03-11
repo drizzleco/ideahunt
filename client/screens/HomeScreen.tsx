@@ -4,9 +4,10 @@ import { useIsFocused, useNavigation } from "@react-navigation/native";
 import * as React from "react";
 import styled from "styled-components/native";
 
-import IconButton from "../components/IconButton";
+import Button from "../components/Button";
 import IdeasList from "../components/IdeasList";
 import Loading from "../components/Loading";
+import Space from "../components/Space";
 
 const Container = styled.View`
   flex: 1;
@@ -16,33 +17,19 @@ const Container = styled.View`
 `;
 
 const Title = styled.Text`
-  font-size: 20px;
+  font-size: 40px;
   font-weight: bold;
 `;
-
-const IdeaButton = styled.Button``;
 
 const CreateIdeaButton = () => {
   const navigation = useNavigation();
 
   return (
-    <IdeaButton
+    <Button
       onPress={() => {
         navigation.navigate("CreateIdeaScreen");
       }}
       title="Add Idea"
-    />
-  );
-};
-
-const SearchButton = () => {
-  const navigation = useNavigation();
-
-  return (
-    <IconButton
-      onPress={() => navigation.navigate("SearchScreen")}
-      icon={faSearch}
-      color={"gray"}
     />
   );
 };
@@ -67,9 +54,10 @@ const HomeScreen = () => {
 
   return (
     <Container>
-      <SearchButton />
+      <Title> Idea Palace</Title>
+      <Space height={30} />
       <CreateIdeaButton />
-      <Title> List of Ideas </Title>
+      <Space height={10} />
       <IdeasList ideas={data.viewer.ideas} refetch={refetch} />
     </Container>
   );

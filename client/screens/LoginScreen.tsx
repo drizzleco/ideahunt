@@ -5,7 +5,9 @@ import * as React from "react";
 import { useMutation } from "react-query";
 import styled from "styled-components/native";
 
+import Button from "../components/Button";
 import Space from "../components/Space";
+import TextInput from "../components/TextInput";
 import { BACKEND_URL } from "../graphql/Client";
 import AuthContext from "../navigation/AuthContext";
 
@@ -33,14 +35,6 @@ const ErrorLabel = styled.Text`
 const Label = styled.Text`
   font-size: 20px;
 `;
-
-const Input = styled.TextInput`
-  border: 1px solid;
-  height: 30px;
-  width: 100px;
-`;
-
-const Submit = styled.Button``;
 
 interface LoginParams {
   username: string;
@@ -83,25 +77,27 @@ const LoginScreen = () => {
           {({ handleChange, handleBlur, handleSubmit, values }) => (
             <Container>
               <Label>Username</Label>
-              <Input
+              <TextInput
                 autoCapitalize={"none"}
                 onChangeText={handleChange("username")}
                 onBlur={handleBlur("username")}
               />
               <Space height={10} width={0} />
               <Label>Password</Label>
-              <Input
+              <TextInput
                 autoCapitalize={"none"}
                 onChangeText={handleChange("password")}
                 onBlur={handleBlur("password")}
+                secureTextEntry={true}
                 value={values.password}
               />
               <Space height={10} width={0} />
-              <Submit
+              <Button
                 onPress={() => {
                   handleSubmit();
                 }}
-                title="Submit"
+                title="Login"
+                width={200}
               />
               {mutation.isLoading ? <Label>Signing you in...</Label> : null}
               {mutation.isError ? (

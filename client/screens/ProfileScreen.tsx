@@ -3,6 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as React from "react";
 import styled from "styled-components/native";
 
+import Button from "../components/Button";
 import Loading from "../components/Loading";
 import Profile from "../components/Profile";
 import Space from "../components/Space";
@@ -12,13 +13,6 @@ const Container = styled.View`
   flex: 1;
   align-items: center;
   justify-content: center;
-`;
-
-const LogoutButton = styled.Button`
-  display: flex;
-  width: 200px;
-  background-color: blue;
-  border-radius: 4px;
 `;
 
 const ProfileScreen = () => {
@@ -33,7 +27,7 @@ const ProfileScreen = () => {
     <Container>
       <Profile user={data.viewer} />
       <Space height={40} />
-      <LogoutButton
+      <Button
         title="Log Out"
         onPress={async () => {
           try {
