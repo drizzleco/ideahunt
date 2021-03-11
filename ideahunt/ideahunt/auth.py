@@ -40,7 +40,7 @@ def register():
     db.session.add(user)
     db.session.commit()
 
-    access_token = create_access_token(identity=username)
+    access_token = create_access_token(identity=username, expires_delta=False)
 
     return jsonify(message="Successfully registered!", accessToken=access_token), 200
 
@@ -64,6 +64,6 @@ def login():
     if not user.check_password(password):
         return jsonify({"message": "Invalid password."}), 400
 
-    access_token = create_access_token(identity=username)
+    access_token = create_access_token(identity=username, expires_delta=False)
 
     return jsonify(message="Successfully logged in!", accessToken=access_token), 200
