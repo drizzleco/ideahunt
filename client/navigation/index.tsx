@@ -101,9 +101,21 @@ function RootNavigator() {
           </>
         ) : (
           <>
-            <Stack.Screen name="NewUserScreen" component={NewUserScreen} />
-            <Stack.Screen name="LoginScreen" component={LoginScreen} />
-            <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+            <Stack.Screen
+              name="NewUserScreen"
+              component={NewUserScreen}
+              options={{ title: "Welcome to ideaHunt!" }}
+            />
+            <Stack.Screen
+              name="LoginScreen"
+              component={LoginScreen}
+              options={{ title: "Login" }}
+            />
+            <Stack.Screen
+              name="RegisterScreen"
+              component={RegisterScreen}
+              options={{ title: "Register" }}
+            />
           </>
         )}
       </Stack.Navigator>

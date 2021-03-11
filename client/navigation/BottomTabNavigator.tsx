@@ -1,6 +1,8 @@
 import { Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
+import { faHome, faUserCircle } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import * as React from "react";
 
 import Colors from "../constants/Colors";
@@ -33,7 +35,7 @@ export default function BottomTabNavigator() {
         component={HomeNavigator}
         options={{
           tabBarIcon: ({ color }: { color: string }) => (
-            <TabBarIcon name="ios-code" color={color} />
+            <FontAwesomeIcon icon={faHome} color={color} />
           ),
         }}
       />
@@ -42,7 +44,7 @@ export default function BottomTabNavigator() {
         component={ProfileNavigator}
         options={{
           tabBarIcon: ({ color }: { color: string }) => (
-            <TabBarIcon name="ios-code" color={color} />
+            <FontAwesomeIcon icon={faUserCircle} color={color} />
           ),
         }}
       />
@@ -66,32 +68,32 @@ function HomeNavigator() {
       <HomeStack.Screen
         name="HomeScreen"
         component={HomeScreen}
-        options={{ headerTitle: "ideaHunt" }}
+        options={{ headerTitle: "ideaHunt", title: "Home" }}
       />
       <HomeStack.Screen
         name="SearchScreen"
         component={SearchScreen}
-        options={{ headerTitle: "Search" }}
+        options={{ headerTitle: "Search", title: "Search" }}
       />
       <HomeStack.Screen
         name="IdeaScreen"
         component={IdeaScreen}
-        options={{ headerTitle: "idea" }}
+        options={{ headerTitle: "idea", title: "Idea" }}
       />
       <HomeStack.Screen
         name="UserProfileScreen"
         component={UserProfileScreen}
-        options={{ headerTitle: "User" }}
+        options={{ headerTitle: "User", title: "Profile" }}
       />
       <HomeStack.Screen
         name="CreateIdeaScreen"
         component={CreateIdeaScreen}
-        options={{ headerTitle: "New idea" }}
+        options={{ headerTitle: "New idea", title: "New Idea" }}
       />
       <HomeStack.Screen
         name="EditIdeaScreen"
         component={EditIdeaScreen}
-        options={{ headerTitle: "Edit idea" }}
+        options={{ headerTitle: "Edit idea", title: "Edit Idea" }}
       />
     </HomeStack.Navigator>
   );
@@ -105,7 +107,7 @@ function ProfileNavigator() {
       <TabTwoStack.Screen
         name="ProfileScreen"
         component={ProfileScreen}
-        options={{ headerTitle: "Profile" }}
+        options={{ headerTitle: "Profile", title: "Profile" }}
       />
     </TabTwoStack.Navigator>
   );
