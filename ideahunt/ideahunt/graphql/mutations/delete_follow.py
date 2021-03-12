@@ -1,7 +1,7 @@
 import graphene
 
-from ideahunt.models import Follow, db
 from ideahunt.helpers import get_viewer
+from ideahunt.models import Follow, db
 
 
 class DeleteFollow(graphene.Mutation):

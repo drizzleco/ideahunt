@@ -3,15 +3,15 @@ from typing import List, Optional
 import graphene
 
 from ideahunt.graphql.mutations.create_comment import CreateComment
+from ideahunt.graphql.mutations.create_follow import CreateFollow
 from ideahunt.graphql.mutations.create_idea import CreateIdea
 from ideahunt.graphql.mutations.create_like import CreateLike
 from ideahunt.graphql.mutations.delete_comment import DeleteComment
+from ideahunt.graphql.mutations.delete_follow import DeleteFollow
 from ideahunt.graphql.mutations.delete_idea import DeleteIdea
 from ideahunt.graphql.mutations.delete_like import DeleteLike
 from ideahunt.graphql.mutations.edit_comment import EditComment
 from ideahunt.graphql.mutations.edit_idea import EditIdea
-from ideahunt.graphql.mutations.create_follow import CreateFollow
-from ideahunt.graphql.mutations.delete_follow import DeleteFollow
 from ideahunt.graphql.objects import IdeaModel, UserModel
 from ideahunt.helpers import get_viewer
 from ideahunt.models import Idea, User, db

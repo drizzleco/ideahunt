@@ -7,8 +7,9 @@ from flask_jwt_extended import JWTManager, jwt_required
 from flask_migrate import Migrate
 
 from ideahunt.auth import *
+from ideahunt.graphql.graphqlview import IdeahuntGraphQLView
 from ideahunt.graphql.schema import schema
-from ideahunt.models import User, db
+from ideahunt.models import db
 
 
 def create_app():
@@ -29,7 +30,7 @@ def create_app():
 
     # GraphQl route config
     def graphql_view():
-        view = GraphQLView.as_view(
+        view = IdeahuntGraphQLView.as_view(
             "graphql",
             schema=schema,
             graphiql=True,
