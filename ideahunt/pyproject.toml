@@ -51,6 +51,9 @@ isort = "^5.7.0"
 Flask-Cors = "^3.0.10"
 Flask-JWT-Extended = "^3.25.0"
 Flask-Migrate = "^2.6.0"
+mypy = "^0.812"
+sqlalchemy-stubs = "^0.4"
+graphene-stubs = "^0.15"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

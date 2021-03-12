@@ -1,7 +1,7 @@
-from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import BaseQuery, SQLAlchemy
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, scoped_session, sessionmaker
 from sqlalchemy.schema import Index, PrimaryKeyConstraint
 from sqlalchemy.sql import func
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -13,6 +13,7 @@ db = SQLAlchemy(model_class=Base)
 
 class BaseModel(Base):
     __abstract__ = True
+    query: BaseQuery
     id = Column(Integer, primary_key=True)
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, onupdate=func.now())
@@ -22,6 +23,7 @@ class BaseManyModel(Base):
     """ In BaseManyModel, we don't need ids as primary keys """
 
     __abstract__ = True
+    query: BaseQuery
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, onupdate=func.now())
 

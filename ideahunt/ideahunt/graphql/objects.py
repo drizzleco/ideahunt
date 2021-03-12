@@ -48,10 +48,10 @@ class IdeaModel(SQLAlchemyObjectType):
     viewer_like = graphene.Field(lambda: LikeModel)
 
     def resolve_viewer_like(parent: Idea, info: ResolveInfo) -> Optional[Like]:
-        return info.context["dataloaders"]["idea_viewer_like_dataloader"].load(parent.id)
+        return info.context["dataloaders"]["idea_viewer_like_dataloader"].load(parent.id)  # type: ignore
 
     def resolve_like_count(parent: Idea, info: ResolveInfo) -> int:
-        return info.context["dataloaders"]["idea_like_count_dataloader"].load(parent.id)
+        return info.context["dataloaders"]["idea_like_count_dataloader"].load(parent.id)  # type: ignore
 
 
 class CommentModel(SQLAlchemyObjectType):
@@ -62,10 +62,10 @@ class CommentModel(SQLAlchemyObjectType):
     viewer_like = graphene.Field(lambda: LikeModel)
 
     def resolve_viewer_like(parent: Comment, info: ResolveInfo) -> Optional[Like]:
-        return info.context["dataloaders"]["comment_viewer_like_dataloader"].load(parent.id)
+        return info.context["dataloaders"]["comment_viewer_like_dataloader"].load(parent.id)  # type: ignore
 
     def resolve_like_count(parent: Comment, info: ResolveInfo) -> int:
-        return info.context["dataloaders"]["comment_like_count_dataloader"].load(parent.id)
+        return info.context["dataloaders"]["comment_like_count_dataloader"].load(parent.id)  # type: ignore
 
 
 class LikeModel(SQLAlchemyObjectType):
