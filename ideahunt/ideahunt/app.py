@@ -5,6 +5,8 @@ from flask_cors import CORS
 from flask_graphql import GraphQLView
 from flask_jwt_extended import JWTManager, jwt_required
 from flask_migrate import Migrate
+from flask_sockets import Sockets
+from graphql_ws.gevent import GeventSubscriptionServer
 
 from ideahunt.auth import *
 from ideahunt.graphql.graphqlview import IdeahuntGraphQLView
@@ -27,6 +29,7 @@ def create_app():
     db.init_app(app)
     JWTManager(app)
     Migrate(app, db)
+    Sockets(app)
 
     # GraphQl route config
     def graphql_view():
@@ -40,5 +43,9 @@ def create_app():
     app.add_url_rule("/graphql", methods=["POST", "GET"], view_func=graphql_view())
     app.add_url_rule("/register", methods=["POST"], view_func=register)
     app.add_url_rule("/login", methods=["POST"], view_func=login)
+
+
+    subscription_server = GeventSubscriptionServer(schema)
+    app.app_protocol = lambda environ_path_info: 'graphql-ws'
 
     return app

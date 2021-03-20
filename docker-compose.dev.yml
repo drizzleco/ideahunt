@@ -1,0 +1,3 @@
+services:
+  webserver:
+    entrypoint: python api.py
