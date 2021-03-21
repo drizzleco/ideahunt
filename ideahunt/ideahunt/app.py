@@ -1,9 +1,9 @@
 import os
 
-from flask import Flask
+from flask import Flask, make_response
 from flask_cors import CORS
-from flask_graphql import GraphQLView
 from flask_jwt_extended import JWTManager, jwt_required
+from flask_jwt_extended.view_decorators import jwt_optional
 from flask_migrate import Migrate
 from flask_sockets import Sockets
 from graphql_ws.gevent import GeventSubscriptionServer
@@ -11,6 +11,7 @@ from graphql_ws.gevent import GeventSubscriptionServer
 from ideahunt.auth import *
 from ideahunt.graphql.graphqlview import IdeahuntGraphQLView
 from ideahunt.graphql.schema import schema
+from ideahunt.graphql.template import render_graphiql
 from ideahunt.models import db
 
 
@@ -29,23 +30,27 @@ def create_app():
     db.init_app(app)
     JWTManager(app)
     Migrate(app, db)
-    Sockets(app)
-
-    # GraphQl route config
-    def graphql_view():
-        view = IdeahuntGraphQLView.as_view(
-            "graphql",
-            schema=schema,
-            graphiql=True,
-        )
-        return jwt_required(view)
-
-    app.add_url_rule("/graphql", methods=["POST", "GET"], view_func=graphql_view())
-    app.add_url_rule("/register", methods=["POST"], view_func=register)
-    app.add_url_rule("/login", methods=["POST"], view_func=login)
-
+    sockets = Sockets(app)
 
     subscription_server = GeventSubscriptionServer(schema)
-    app.app_protocol = lambda environ_path_info: 'graphql-ws'
+    app.app_protocol = lambda environ_path_info: "graphql-ws"
+
+    def echo_socket(ws):
+        subscription_server.handle(ws)
+        return []
+
+    sockets.route("/subscriptions")(echo_socket)
+    # GraphQl route config
+    def graphql_view():
+        view = IdeahuntGraphQLView.as_view("graphql", schema=schema, graphiql=True)
+        return jwt_optional(view)
+
+    def graphiql_view():
+        return make_response(render_graphiql())
+
+    app.add_url_rule("/graphql", methods=["GET", "POST", "PUT", "DELETE"], view_func=graphql_view())
+    app.route("/graphiql")(graphiql_view)
+    app.add_url_rule("/register", methods=["POST"], view_func=register)
+    app.add_url_rule("/login", methods=["POST"], view_func=login)
 
     return app

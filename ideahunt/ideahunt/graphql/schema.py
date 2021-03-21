@@ -1,6 +1,7 @@
 from typing import List, Optional
 
 import graphene
+from rx import Observable
 
 from ideahunt.graphql.mutations.create_comment import CreateComment
 from ideahunt.graphql.mutations.create_follow import CreateFollow
@@ -18,10 +19,6 @@ from ideahunt.models import Idea, User, db
 
 
 class Query(graphene.ObjectType):
-    """
-    Base Query
-    """
-
     idea = graphene.Field(IdeaModel, id=graphene.ID(required=True))
     ideas = graphene.Field(graphene.List(IdeaModel))
     viewer = graphene.Field(UserModel)
@@ -45,10 +42,6 @@ class Query(graphene.ObjectType):
 
 
 class Mutation(graphene.ObjectType):
-    """
-    Base Mutation
-    """
-
     # Idea Mutations
     create_idea = CreateIdea.Field()
     delete_idea = DeleteIdea.Field()
@@ -68,4 +61,15 @@ class Mutation(graphene.ObjectType):
     delete_follow = DeleteFollow.Field()
 
 
-schema = graphene.Schema(query=Query, mutation=Mutation)
+class Subscription(graphene.ObjectType):
+    count_seconds = graphene.Float(up_to=graphene.Int())
+
+    def resolve_count_seconds(root, info, up_to):
+        return (
+            Observable.interval(1000)
+            .map(lambda i: "{0}".format(i))
+            .take_while(lambda i: int(i) <= up_to)
+        )
+
+
+schema = graphene.Schema(query=Query, mutation=Mutation, subscription=Subscription)
