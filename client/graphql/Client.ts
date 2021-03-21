@@ -32,14 +32,13 @@ const wsLink = new WebSocketLink({
   uri: "ws://localhost:5050/subscriptions",
   options: {
     reconnect: true,
+    connectionParams: async () => {
+      const token = await AsyncStorage.getItem("ideaHuntToken");
+      return { token };
+    },
   },
 });
 
-// The split function takes three parameters:
-//
-// * A function that's called for each operation to execute
-// * The Link to use for an operation if the function returns a "truthy" value
-// * The Link to use for an operation if the function returns a "falsy" value
 const splitLink = split(
   ({ query }) => {
     const definition = getMainDefinition(query);

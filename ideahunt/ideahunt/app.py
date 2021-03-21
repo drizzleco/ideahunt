@@ -2,15 +2,15 @@ import os
 
 from flask import Flask, make_response
 from flask_cors import CORS
-from flask_jwt_extended import JWTManager, jwt_required
+from flask_jwt_extended import JWTManager
 from flask_jwt_extended.view_decorators import jwt_optional
 from flask_migrate import Migrate
 from flask_sockets import Sockets
-from graphql_ws.gevent import GeventSubscriptionServer
 
 from ideahunt.auth import *
 from ideahunt.graphql.graphqlview import IdeahuntGraphQLView
 from ideahunt.graphql.schema import schema
+from ideahunt.graphql.subscription_server import IdeahuntSubscriptionServer
 from ideahunt.graphql.template import render_graphiql
 from ideahunt.models import db
 
@@ -32,7 +32,7 @@ def create_app():
     Migrate(app, db)
     sockets = Sockets(app)
 
-    subscription_server = GeventSubscriptionServer(schema)
+    subscription_server = IdeahuntSubscriptionServer(schema)
     app.app_protocol = lambda environ_path_info: "graphql-ws"
 
     def echo_socket(ws):

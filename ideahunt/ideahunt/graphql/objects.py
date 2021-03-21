@@ -5,7 +5,6 @@ from graphene import ResolveInfo
 from graphene_sqlalchemy import SQLAlchemyObjectType
 from sqlalchemy import func
 
-from ideahunt.helpers import get_viewer
 from ideahunt.models import Comment, Follow, Idea, Like, User
 
 

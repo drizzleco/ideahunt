@@ -1,6 +1,7 @@
-from typing import List, Optional
+from typing import List, Optional, Union
 
 import graphene
+from graphene import ResolveInfo
 from rx import Observable
 
 from ideahunt.graphql.mutations.create_comment import CreateComment
@@ -15,7 +16,7 @@ from ideahunt.graphql.mutations.edit_comment import EditComment
 from ideahunt.graphql.mutations.edit_idea import EditIdea
 from ideahunt.graphql.objects import IdeaModel, UserModel
 from ideahunt.helpers import get_viewer
-from ideahunt.models import Idea, User, db
+from ideahunt.models import Idea, User
 
 
 class Query(graphene.ObjectType):
@@ -25,19 +26,19 @@ class Query(graphene.ObjectType):
     users = graphene.Field(graphene.List(UserModel))
     user = graphene.Field(UserModel, user_id=graphene.ID(required=True))
 
-    def resolve_idea(root, info, id) -> Optional[Idea]:
+    def resolve_idea(root, info: ResolveInfo, id: Union[str, int]) -> Optional[Idea]:
         return IdeaModel.get_query(info).filter_by(id=id).first()
 
-    def resolve_ideas(root, info, **args) -> List[Idea]:
+    def resolve_ideas(root, info: ResolveInfo, **args) -> List[Idea]:
         return IdeaModel.get_query(info).all()
 
-    def resolve_viewer(root, info, **args) -> User:
+    def resolve_viewer(root, info: ResolveInfo, **args) -> User:
         return get_viewer()
 
-    def resolve_users(root, info, **args) -> List[User]:
+    def resolve_users(root, info: ResolveInfo, **args) -> List[User]:
         return UserModel.get_query(info).all()
 
-    def resolve_user(root, info, user_id) -> Optional[User]:
+    def resolve_user(root, info: ResolveInfo, user_id: Union[str, int]) -> Optional[User]:
         return UserModel.get_query(info).filter_by(id=user_id).first()
 
 
@@ -62,9 +63,9 @@ class Mutation(graphene.ObjectType):
 
 
 class Subscription(graphene.ObjectType):
-    count_seconds = graphene.Float(up_to=graphene.Int())
+    count_seconds = graphene.Field(graphene.Float, up_to=graphene.Int(required=True))
 
-    def resolve_count_seconds(root, info, up_to):
+    def resolve_count_seconds(root, info: ResolveInfo, up_to: int) -> Observable:
         return (
             Observable.interval(1000)
             .map(lambda i: "{0}".format(i))
