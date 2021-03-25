@@ -8,7 +8,7 @@ import styled from "styled-components/native";
 import Button from "../components/Button";
 import Space from "../components/Space";
 import TextInput from "../components/TextInput";
-import { BACKEND_URL } from "../graphql/Client";
+import { BACKEND_URL, HTTP_PROTOCOL } from "../graphql/Client";
 import AuthContext from "../navigation/AuthContext";
 
 const Container = styled.View`
@@ -52,7 +52,8 @@ const RegisterScreen = () => {
   const { signIn } = React.useContext(AuthContext);
 
   const mutation = useMutation(
-    (login: RegisterParams) => axios.post(BACKEND_URL + "/register", login),
+    (login: RegisterParams) =>
+      axios.post(HTTP_PROTOCOL + BACKEND_URL + "/register", login),
     {
       onSuccess: async ({ data: { accessToken } }) => {
         if (accessToken) {
