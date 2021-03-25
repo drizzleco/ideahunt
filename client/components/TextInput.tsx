@@ -6,7 +6,6 @@ const Input = styled.TextInput`
   font-size: 20px;
   width: 200px;
   padding: 4px;
-  outline: none;
 `;
 
 export default Input;

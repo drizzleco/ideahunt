@@ -16,3 +16,9 @@ API + DB:
 ```bash
 docker-compose up
 ```
+
+## Deploying
+
+Expo App
+
+`NODE_ENV=production BACKEND_URL=drizzle-ideahunt.herokuapp.com expo publish`

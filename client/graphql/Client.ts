@@ -10,11 +10,11 @@ import { onError } from "@apollo/client/link/error";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { WebSocketLink } from "@apollo/client/link/ws";
 import { getMainDefinition } from "@apollo/client/utilities";
-export const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:5050"; //"https://drizzle-ideahunt.herokuapp.com";
+export const BACKEND_URL = process.env.BACKEND_URL || "localhost:5050";
 
 const cache = new InMemoryCache();
 const httpLink = createHttpLink({
-  uri: BACKEND_URL + "/graphql",
+  uri: "https://" + BACKEND_URL + "/graphql",
   credentials: "include",
 });
 
@@ -29,7 +29,7 @@ const authLink = setContext(async (_, { headers }) => {
 });
 
 const wsLink = new WebSocketLink({
-  uri: "ws://localhost:5050/subscriptions",
+  uri: `ws://${BACKEND_URL}/subscriptions`,
   options: {
     reconnect: true,
     connectionParams: async () => {

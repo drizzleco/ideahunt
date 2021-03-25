@@ -105,19 +105,19 @@ const NewComment = ({ ideaId, refetch }: { ideaId: string; refetch: any }) => {
           <Space height={10} />
           <Button
             onPress={() => {
+              createComment({ variables: { ideaId, description } });
+            }}
+            style={{ backgroundColor: "rgba(0,180,190,0.9)" }}
+            title="Save"
+          />
+          <Space height={10} />
+          <Button
+            onPress={() => {
               setShowCommentBox(false);
               setDescription("");
             }}
             style={{ backgroundColor: "rgba(255,0,0,0.9)" }}
             title="Cancel"
-          />
-          <Space height={10} />
-          <Button
-            onPress={() => {
-              createComment({ variables: { ideaId, description } });
-            }}
-            style={{ backgroundColor: "rgba(0,180,190,0.9)" }}
-            title="Save"
           />
         </>
       )}
