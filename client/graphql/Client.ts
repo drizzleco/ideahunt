@@ -12,9 +12,14 @@ import { WebSocketLink } from "@apollo/client/link/ws";
 import { getMainDefinition } from "@apollo/client/utilities";
 export const BACKEND_URL = process.env.BACKEND_URL || "localhost:5050";
 
+const HTTP_PROTOCOL =
+  process.env.NODE_ENV === "production" ? "https://" : "http://";
+
+const WS_PROTOCOL = process.env.NODE_ENV === "production" ? "wss://" : "ws://";
+
 const cache = new InMemoryCache();
 const httpLink = createHttpLink({
-  uri: "https://" + BACKEND_URL + "/graphql",
+  uri: HTTP_PROTOCOL + BACKEND_URL + "/graphql",
   credentials: "include",
 });
 
@@ -29,7 +34,7 @@ const authLink = setContext(async (_, { headers }) => {
 });
 
 const wsLink = new WebSocketLink({
-  uri: `ws://${BACKEND_URL}/subscriptions`,
+  uri: WS_PROTOCOL + BACKEND_URL + "/subscriptions",
   options: {
     reconnect: true,
     connectionParams: async () => {
