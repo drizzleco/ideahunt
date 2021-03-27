@@ -3,7 +3,6 @@ import {
   faEdit,
   faPenSquare,
   faToiletPaperSlash,
-  faTrash,
   faTrashAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";

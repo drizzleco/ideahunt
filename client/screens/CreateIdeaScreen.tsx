@@ -22,8 +22,6 @@ const Label = styled.Text`
   font-size: 20px;
 `;
 
-const Input = styled.TextInput``;
-
 const ErrorLabel = styled.Text`
   font-size: 20px;
   color: red;

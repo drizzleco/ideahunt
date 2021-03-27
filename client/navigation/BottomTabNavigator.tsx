@@ -1,4 +1,3 @@
-import { Ionicons } from "@expo/vector-icons";
 import {
   faHome,
   faSearch,
@@ -12,10 +11,10 @@ import * as React from "react";
 
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
+import ChatScreen from "../screens/ChatScreen";
 import CreateIdeaScreen from "../screens/CreateIdeaScreen";
 import EditIdeaScreen from "../screens/EditIdeaScreen";
 import HomeScreen from "../screens/HomeScreen";
-import ChatScreen from "../screens/ChatScreen";
 import IdeaScreen from "../screens/IdeaScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import SearchScreen from "../screens/SearchScreen";
@@ -75,12 +74,6 @@ export default function BottomTabNavigator() {
       />
     </BottomTab.Navigator>
   );
-}
-
-// You can explore the built-in icon families and icons on the web at:
-// https://icons.expo.fyi/
-function TabBarIcon(props: { name: string; color: string }) {
-  return <Ionicons size={30} style={{ marginBottom: -3 }} {...props} />;
 }
 
 // Each tab has its own navigation stack, you can read more about this pattern here:

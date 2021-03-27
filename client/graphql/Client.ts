@@ -10,7 +10,10 @@ import { onError } from "@apollo/client/link/error";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { WebSocketLink } from "@apollo/client/link/ws";
 import { getMainDefinition } from "@apollo/client/utilities";
-export const BACKEND_URL = process.env.BACKEND_URL || "localhost:5050";
+export const BACKEND_URL =
+  process.env.NODE_ENV === "production"
+    ? process.env.BACKEND_URL
+    : "localhost:5050";
 
 export const HTTP_PROTOCOL =
   process.env.NODE_ENV === "production" ? "https://" : "http://";

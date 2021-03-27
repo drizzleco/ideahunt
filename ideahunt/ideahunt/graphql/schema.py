@@ -26,6 +26,7 @@ class Query(graphene.ObjectType):
     viewer = graphene.Field(UserModel)
     users = graphene.Field(graphene.List(UserModel))
     user = graphene.Field(UserModel, user_id=graphene.ID(required=True))
+    messages = graphene.Field(graphene.List(graphene.String))
 
     def resolve_idea(root, info: ResolveInfo, id: Union[str, int]) -> Optional[Idea]:
         return IdeaModel.get_query(info).filter_by(id=id).first()
@@ -41,6 +42,9 @@ class Query(graphene.ObjectType):
 
     def resolve_user(root, info: ResolveInfo, user_id: Union[str, int]) -> Optional[User]:
         return UserModel.get_query(info).filter_by(id=user_id).first()
+
+    def resolve_messages(roo, info: ResolveInfo) -> List[str]:
+        return []
 
 
 class Mutation(graphene.ObjectType):

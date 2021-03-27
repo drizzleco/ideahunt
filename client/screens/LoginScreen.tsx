@@ -102,7 +102,10 @@ const LoginScreen = () => {
               />
               {mutation.isLoading ? <Label>Signing you in...</Label> : null}
               {mutation.isError ? (
-                <ErrorLabel>{mutation.error.response.data.message}</ErrorLabel>
+                <>
+                <ErrorLabel>{HTTP_PROTOCOL + BACKEND_URL + "/login"}</ErrorLabel>
+                <ErrorLabel>{HTTP_PROTOCOL + BACKEND_URL + "/login"}</ErrorLabel>
+                </>
               ) : null}
               {mutation.isSuccess ? (
                 <Label>Logged in! To the homepage!!</Label>
