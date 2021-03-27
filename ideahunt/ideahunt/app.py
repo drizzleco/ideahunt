@@ -1,5 +1,3 @@
-import os
-
 from flask import Flask, make_response
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
@@ -8,6 +6,7 @@ from flask_migrate import Migrate
 from flask_sockets import Sockets
 
 from ideahunt.auth import *
+from ideahunt.config import Config
 from ideahunt.graphql.graphqlview import IdeahuntGraphQLView
 from ideahunt.graphql.schema import schema
 from ideahunt.graphql.subscription_server import IdeahuntSubscriptionServer
@@ -15,15 +14,9 @@ from ideahunt.graphql.template import render_graphiql
 from ideahunt.models import db
 
 
-def create_app():
+def create_app(config=Config):
     app = Flask(__name__)
-    # TODO: Update this to real security creds later
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
-        "DATABASE_URL",
-        "postgresql://admin:password@postgres:5432/ideahunt",  # dev server
-    )
-    app.config["SECRET_KEY"] = "dummy"
-    app.config["JWT_SECRET_KEY"] = "dummyo"
+    app.config.from_object(Config)
 
     # TODO: Remove CORS for *. Only let the client in
     CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
