@@ -27,8 +27,6 @@ const Label = styled.Text`
   font-size: 20px;
 `;
 
-const Input = styled.TextInput``;
-
 type EditIdeaScreenProps = StackScreenProps<
   HomeScreenParamList,
   "EditIdeaScreen"

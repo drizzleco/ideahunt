@@ -12,6 +12,9 @@ from ideahunt.graphql.schema import schema
 from ideahunt.graphql.subscription_server import IdeahuntSubscriptionServer
 from ideahunt.graphql.template import render_graphiql
 from ideahunt.models import db
+from ideahunt.redis import IdeaHuntRedis
+
+redis_base = IdeaHuntRedis()
 
 
 def create_app(config=Config):
@@ -23,6 +26,7 @@ def create_app(config=Config):
     db.init_app(app)
     JWTManager(app)
     Migrate(app, db)
+    redis_base.init_app(app)
     sockets = Sockets(app)
 
     subscription_server = IdeahuntSubscriptionServer(schema)

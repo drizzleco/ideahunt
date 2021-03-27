@@ -8,6 +8,7 @@ from ideahunt.graphql.mutations.create_comment import CreateComment
 from ideahunt.graphql.mutations.create_follow import CreateFollow
 from ideahunt.graphql.mutations.create_idea import CreateIdea
 from ideahunt.graphql.mutations.create_like import CreateLike
+from ideahunt.graphql.mutations.create_message import CreateMessage
 from ideahunt.graphql.mutations.delete_comment import DeleteComment
 from ideahunt.graphql.mutations.delete_follow import DeleteFollow
 from ideahunt.graphql.mutations.delete_idea import DeleteIdea
@@ -61,9 +62,27 @@ class Mutation(graphene.ObjectType):
     create_follow = CreateFollow.Field()
     delete_follow = DeleteFollow.Field()
 
+    create_message = CreateMessage.Field()
+
 
 class Subscription(graphene.ObjectType):
     count_seconds = graphene.Field(graphene.Float, up_to=graphene.Int(required=True))
+    echo_message = graphene.Field(graphene.String)
+
+    def resolve_echo_message(root, info: ResolveInfo) -> Observable:
+        from ideahunt.app import redis_base
+
+        def redis_listener(observable):
+            pubsub = redis_base.pubsub
+            pubsub.subscribe("chat")
+            for message in pubsub.listen():
+                print(message)
+                if message["type"] != "message":
+                    continue
+                data = str(message["data"])
+                observable.on_next(data)
+
+        return Observable.create(redis_listener)
 
     def resolve_count_seconds(root, info: ResolveInfo, up_to: int) -> Observable:
         return (

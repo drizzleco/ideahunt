@@ -6,5 +6,6 @@ class Config:
         "DATABASE_URL",
         "postgresql://admin:password@postgres:5432/ideahunt",  # dev server
     )
+    REDIS_URL = os.environ.get("REDIS_URL", "redis://redis:6379/0")
     SECRET_KEY = "dummy"
     JWT_SECRET_KEY = "dummyo"

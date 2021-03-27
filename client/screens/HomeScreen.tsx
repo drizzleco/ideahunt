@@ -33,24 +33,6 @@ const CreateIdeaButton = () => {
   );
 };
 
-const SecondsCounter = () => {
-  const upTo = 10;
-  const { data, loading } = useSubscription(SecondsCounter.subscription, {
-    variables: { upTo },
-  });
-
-  if (loading || !data) {
-    return null;
-  }
-  return <Title>{data.countSeconds}</Title>;
-};
-
-SecondsCounter.subscription = gql`
-  subscription SecondsCounter($upTo: Int!) {
-    countSeconds(upTo: $upTo)
-  }
-`;
-
 const HomeScreen = () => {
   const { loading, error, data, refetch } = useQuery(HomeScreen.query);
   const isFocused = useIsFocused();
@@ -72,7 +54,6 @@ const HomeScreen = () => {
   return (
     <Container>
       <Title> Idea Palace</Title>
-      <SecondsCounter />
       <Space height={30} />
       <CreateIdeaButton />
       <Space height={10} />

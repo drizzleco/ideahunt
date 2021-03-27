@@ -20,7 +20,7 @@ interface ButtonProps {
   color: string;
 }
 
-const Button = (props) => {
+const Button = (props: any) => {
   return (
     <DefaultButton {...props}>
       <ButtonText>{props.title}</ButtonText>

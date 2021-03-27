@@ -8,6 +8,7 @@ export type RootStackParamList = {
 
 export type BottomTabParamList = {
   Home: undefined;
+  Chat: undefined;
   Profile: undefined;
   Search: undefined;
 };
@@ -18,6 +19,10 @@ export type HomeScreenParamList = {
   IdeaScreen: { id: string };
   CreateIdeaScreen: undefined;
   EditIdeaScreen: { id: string };
+};
+
+export type ChatParamList = {
+  ChatScreen: undefined;
 };
 
 export type ProfileParamList = {

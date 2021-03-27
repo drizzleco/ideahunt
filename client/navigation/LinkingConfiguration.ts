@@ -20,6 +20,11 @@ export default {
               UserProfileScreen: "user/:userId?",
             },
           },
+          Chat: {
+            screens: {
+              ChatScreen: "chat",
+            },
+          },
           Profile: {
             screens: {
               ProfileScreen: "profile",

@@ -2,6 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import {
   faHome,
   faSearch,
+  faComment,
   faUserCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -14,6 +15,7 @@ import useColorScheme from "../hooks/useColorScheme";
 import CreateIdeaScreen from "../screens/CreateIdeaScreen";
 import EditIdeaScreen from "../screens/EditIdeaScreen";
 import HomeScreen from "../screens/HomeScreen";
+import ChatScreen from "../screens/ChatScreen";
 import IdeaScreen from "../screens/IdeaScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import SearchScreen from "../screens/SearchScreen";
@@ -50,6 +52,15 @@ export default function BottomTabNavigator() {
         options={{
           tabBarIcon: ({ color }: { color: string }) => (
             <FontAwesomeIcon icon={faSearch} color={color} />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name="Chat"
+        component={ChatNavigator}
+        options={{
+          tabBarIcon: ({ color }: { color: string }) => (
+            <FontAwesomeIcon icon={faComment} color={color} />
           ),
         }}
       />
@@ -108,17 +119,31 @@ function HomeNavigator() {
   );
 }
 
-const TabTwoStack = createStackNavigator<ProfileParamList>();
+const ChatStack = createStackNavigator<ChatParamList>();
+
+function ChatNavigator() {
+  return (
+    <ChatStack.Navigator>
+      <ChatStack.Screen
+        name="ChatScreen"
+        component={ChatScreen}
+        options={{ headerTitle: "Chat", title: "Chat" }}
+      />
+    </ChatStack.Navigator>
+  );
+}
+
+const ProfileStack = createStackNavigator<ProfileParamList>();
 
 function ProfileNavigator() {
   return (
-    <TabTwoStack.Navigator>
-      <TabTwoStack.Screen
+    <ProfileStack.Navigator>
+      <ProfileStack.Screen
         name="ProfileScreen"
         component={ProfileScreen}
         options={{ headerTitle: "Profile", title: "Profile" }}
       />
-    </TabTwoStack.Navigator>
+    </ProfileStack.Navigator>
   );
 }
 
