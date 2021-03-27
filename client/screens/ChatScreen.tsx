@@ -2,6 +2,7 @@ import { gql, useMutation, useQuery, useSubscription } from "@apollo/client";
 import _ from "lodash";
 import * as React from "react";
 import { useForm, Controller } from "react-hook-form";
+import { KeyboardAvoidingView, ScrollView } from "react-native";
 import styled from "styled-components/native";
 
 import Button from "../components/Button";
@@ -137,8 +138,24 @@ const ChatScreen = () => {
       <Title> Chat</Title>
       <SecondsCounter />
       <EmptySpace />
-      <EchoMessage />
-      <CreateMessageButton />
+      <KeyboardAvoidingView
+        style={{
+          flex: 1,
+          flexDirection: "column",
+          justifyContent: "center",
+          width: "100%",
+        }}
+        behavior="padding"
+        enabled
+        keyboardVerticalOffset={100}
+      >
+        <ScrollView>
+          <Container>
+            <EchoMessage />
+            <CreateMessageButton />
+          </Container>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </Container>
   );
 };
