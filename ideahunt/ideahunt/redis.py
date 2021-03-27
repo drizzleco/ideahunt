@@ -1,6 +1,6 @@
 from typing import Optional
 
-from flask import _app_ctx_stack
+from flask import _app_ctx_stack  # type: ignore
 from flask.app import Flask
 from redis import Redis
 from redis.client import PubSub
@@ -30,3 +30,4 @@ class IdeaHuntRedis:
             if not hasattr(ctx, "redis_pubsub"):
                 ctx.redis_pubsub = self.client.pubsub()
             return ctx.redis_pubsub
+        raise Exception("No App Context!!")

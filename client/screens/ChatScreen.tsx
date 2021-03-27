@@ -76,10 +76,10 @@ EchoMessage.subscription = gql`
 const CreateMessageButton = () => {
   const [createMessage] = useMutation(CreateMessageButton.mutation);
   const { control, handleSubmit, errors } = useForm();
-  const onSubmit = (data, e) => {
+  const onSubmit = (data) => {
     createMessage({ variables: data });
   };
-  const onError = (errors, e) => console.log(errors);
+  const onError = (errors) => console.log(errors);
 
   return (
     <Row>

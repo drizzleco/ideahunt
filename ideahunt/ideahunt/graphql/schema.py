@@ -83,7 +83,7 @@ class Subscription(graphene.ObjectType):
                 print(message)
                 if message["type"] != "message":
                     continue
-                data = str(message["data"])
+                data = message["data"].decode()
                 observable.on_next(data)
 
         return Observable.create(redis_listener)
