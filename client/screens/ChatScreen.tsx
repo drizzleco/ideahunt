@@ -40,6 +40,20 @@ const EmptySpace = styled.View`
   flex: 1;
 `;
 
+const ChatView = styled.View`
+  flex: 1;
+`;
+
+const MessagesContainer = styled.View`
+  flex: 1;
+  align-items: center;
+  justify-content: flex-end;
+`;
+
+const MessageContainer = styled.View`
+  align-items: center;
+`;
+
 const EchoMessage = () => {
   const { subscribeToMore, data, loading } = useQuery(EchoMessage.query);
 
@@ -58,7 +72,9 @@ const EchoMessage = () => {
     return null;
   }
   return data.messages.map((message: string, index: number) => (
-    <Title key={index}>{message}</Title>
+    <MessageContainer key={`MessagesContainer.${index}`}>
+      <Title key={index}>{message}</Title>
+    </MessageContainer>
   ));
 };
 
@@ -83,7 +99,7 @@ const CreateMessageButton = () => {
   const onError = (errors) => console.log(errors);
 
   return (
-    <Row>
+    <Row style={{ width: "100%" }}>
       <Field>
         <Controller
           control={control}
@@ -133,29 +149,41 @@ SecondsCounter.subscription = gql`
 `;
 
 const ChatScreen = () => {
+  const scrollViewRef = React.useRef<ScrollView>(null);
+
   return (
     <Container>
-      <Title> Chat</Title>
-      <SecondsCounter />
-      <EmptySpace />
-      <KeyboardAvoidingView
-        style={{
-          flex: 1,
-          flexDirection: "column",
-          justifyContent: "center",
-          width: "100%",
-        }}
-        behavior="padding"
-        enabled
-        keyboardVerticalOffset={100}
-      >
-        <ScrollView>
-          <Container>
-            <EchoMessage />
-            <CreateMessageButton />
-          </Container>
-        </ScrollView>
-      </KeyboardAvoidingView>
+      <Title>Chat</Title>
+      <ChatView>
+        <KeyboardAvoidingView
+          style={{
+            flex: 1,
+            flexDirection: "column",
+            justifyContent: "center",
+            width: "100%",
+          }}
+          behavior="padding"
+          enabled
+          keyboardVerticalOffset={140}
+        >
+          <MessagesContainer>
+            <ScrollView
+              ref={scrollViewRef}
+              style={{ width: "100%" }}
+              contentContainerStyle={{
+                flexGrow: 1,
+                justifyContent: "flex-end",
+              }}
+              onContentSizeChange={() =>
+                scrollViewRef?.current?.scrollToEnd({ animated: true })
+              }
+            >
+              <EchoMessage />
+            </ScrollView>
+          </MessagesContainer>
+          <CreateMessageButton />
+        </KeyboardAvoidingView>
+      </ChatView>
     </Container>
   );
 };
