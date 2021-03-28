@@ -17,3 +17,8 @@ lint_backend:
 .PHONY: heroku_deploy
 heroku_deploy:
 	cd ideahunt; heroku container:push web --app drizzle-ideahunt; heroku container:release web --app drizzle-ideahunt
+
+### run_dev_server -- one step dev server w. dev config
+.PHONY: dev_server
+dev_server:
+	docker-compose -f docker-compose.yml -f docker-compose.dev.yml up webserver
