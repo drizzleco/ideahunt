@@ -35,7 +35,8 @@ class Query(graphene.ObjectType):
         return IdeaModel.get_query(info).all()
 
     def resolve_viewer(root, info: ResolveInfo, **args) -> User:
-        return get_viewer()
+        viewer = info.context.get("viewer")
+        return viewer
 
     def resolve_users(root, info: ResolveInfo, **args) -> List[User]:
         return UserModel.get_query(info).all()

@@ -17,7 +17,7 @@ class CreateComment(graphene.Mutation):
         idea_id = graphene.ID(required=True)
 
     def mutate(root, info, **kwargs):
-        viewer = get_viewer()
+        viewer = info.context.get("viewer")
         comment = Comment(
             description=kwargs.get("description"),
             idea_id=kwargs.get("idea_id"),

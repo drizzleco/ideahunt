@@ -8,6 +8,12 @@ from ideahunt.helpers import get_viewer
 from ideahunt.models import Like
 
 
+class ViewerDataLoader(DataLoader):
+    def __init__(self, *args, **kwargs):
+        self.viewer_id = kwargs.pop("viewer_id")
+        super(ViewerDataLoader, self).__init__(*args, **kwargs)
+
+
 class CommentLikeCountLoader(DataLoader):
     def batch_load_fn(self, ids: List[int]) -> Promise[List[int]]:
         likes = (
@@ -21,11 +27,12 @@ class CommentLikeCountLoader(DataLoader):
         return Promise.resolve([comment_like_counts.get(comment_id, 0) for comment_id in ids])
 
 
-class CommentViewerLikeLoader(DataLoader):
+class CommentViewerLikeLoader(ViewerDataLoader):
     def batch_load_fn(self, ids: List[int]) -> Promise[List[Like]]:
-        viewer = get_viewer()
         likes = (
-            Like.query.filter(Like.comment_id.in_(ids)).filter(Like.author_id == viewer.id).all()
+            Like.query.filter(Like.comment_id.in_(ids))
+            .filter(Like.author_id == self.viewer_id)
+            .all()
         )
         comment_viewer_like = {}
         for like in likes:
@@ -46,10 +53,11 @@ class IdeaLikeCountLoader(DataLoader):
         return Promise.resolve([idea_like_counts.get(idea_id, 0) for idea_id in ids])
 
 
-class IdeaViewerLikeLoader(DataLoader):
+class IdeaViewerLikeLoader(ViewerDataLoader):
     def batch_load_fn(self, ids: List[int]) -> Promise[List[Like]]:
-        viewer = get_viewer()
-        likes = Like.query.filter(Like.idea_id.in_(ids)).filter(Like.author_id == viewer.id).all()
+        likes = (
+            Like.query.filter(Like.idea_id.in_(ids)).filter(Like.author_id == self.viewer_id).all()
+        )
         idea_viewer_like = {}
         for like in likes:
             idea_viewer_like[like.idea_id] = like

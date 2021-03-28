@@ -14,7 +14,7 @@ class CreateLike(graphene.Mutation):
         comment_id = graphene.ID(required=False)
 
     def mutate(root, info, **kwargs):
-        viewer = get_viewer()
+        viewer = info.context.get("viewer")
 
         # Validation
         idea_id = kwargs.get("idea_id")

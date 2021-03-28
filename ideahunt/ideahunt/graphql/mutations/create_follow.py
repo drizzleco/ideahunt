@@ -12,7 +12,7 @@ class CreateFollow(graphene.Mutation):
         followee_id = graphene.ID(required=True)
 
     def mutate(root, info, **kwargs):
-        viewer = get_viewer()
+        viewer = info.context.get("viewer")
         follow = Follow(
             followee_id=kwargs.get("followee_id"),
             user_id=viewer.id,

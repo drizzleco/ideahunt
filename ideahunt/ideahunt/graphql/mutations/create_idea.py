@@ -18,7 +18,7 @@ class CreateIdea(graphene.Mutation):
         version = graphene.Int(default_value=0)
 
     def mutate(root, info, **kwargs):
-        viewer = get_viewer()
+        viewer = info.context.get("viewer")
         idea = Idea(
             title=kwargs.get("title"),
             description=kwargs.get("description"),

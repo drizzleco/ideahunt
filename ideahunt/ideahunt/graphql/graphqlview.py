@@ -9,14 +9,16 @@ from ideahunt.graphql.dataloaders import (
     IdeaLikeCountLoader,
     IdeaViewerLikeLoader,
 )
+from ideahunt.helpers import get_viewer
 
 
 class IdeahuntGraphQLView(GraphQLView):
     def get_context(self) -> Dict[str, Dict[str, DataLoader]]:
+        viewer = get_viewer()
         dataloaders = {
             "comment_like_count_dataloader": CommentLikeCountLoader(),
-            "comment_viewer_like_dataloader": CommentViewerLikeLoader(),
+            "comment_viewer_like_dataloader": CommentViewerLikeLoader(viewer_id=viewer.id),
             "idea_like_count_dataloader": IdeaLikeCountLoader(),
-            "idea_viewer_like_dataloader": IdeaViewerLikeLoader(),
+            "idea_viewer_like_dataloader": IdeaViewerLikeLoader(viewer_id=viewer.id),
         }
-        return {"dataloaders": dataloaders}
+        return {"dataloaders": dataloaders, "viewer": viewer}

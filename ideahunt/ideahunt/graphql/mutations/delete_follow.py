@@ -14,7 +14,7 @@ class DeleteFollow(graphene.Mutation):
         followee_id = graphene.ID(required=True)
 
     def mutate(root, info, followee_id, **kwargs):
-        viewer = get_viewer()
+        viewer = info.context.get("viewer")
         follow = Follow.query.filter_by(user_id=viewer.id, followee_id=followee_id).first()
         db.session.delete(follow)
         db.session.commit()
