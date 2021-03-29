@@ -17,16 +17,19 @@ import styled from "styled-components/native";
 import Button from "../components/Button";
 import CommentLikeItem from "../components/CommentLikeItem";
 import IconButton from "../components/IconButton";
+import IdeaLikeItem from "../components/IdeaLikeItem";
+import Line from "../components/Line";
 import Loading from "../components/Loading";
 import Row from "../components/Row";
+import ScreenContainer from "../components/ScreenContainer";
 import Space from "../components/Space";
 import TextInput from "../components/TextInput";
 import { Comment, HomeScreenParamList } from "../types";
 
 const Container = styled.View`
   flex: 1;
-  justify-content: center;
   align-items: center;
+  background-color: #fffff7;
 `;
 
 const Title = styled.Text`
@@ -34,8 +37,7 @@ const Title = styled.Text`
 `;
 
 const Description = styled.Text`
-  color: #309430;
-  font-size: 30px;
+  font-size: 20px;
 `;
 
 const EditIdeaButton = ({ id }: { id: string }) => {
@@ -43,7 +45,7 @@ const EditIdeaButton = ({ id }: { id: string }) => {
 
   return (
     <IconButton
-      size={30}
+      size={40}
       color={"salmon"}
       onPress={() => {
         navigation.navigate("EditIdeaScreen", { id });
@@ -61,10 +63,10 @@ const DeleteIdeaButton = ({ id }: { id: string }) => {
     <IconButton
       onPress={() => {
         deleteIdea({ variables: { ideaId: id } });
-        navigation.navigate("HomeScreen");
+        navigation.goBack();
       }}
       color={"red"}
-      size={30}
+      size={40}
       icon={faToiletPaperSlash}
     />
   );
@@ -102,22 +104,25 @@ const NewComment = ({ ideaId, refetch }: { ideaId: string; refetch: any }) => {
             onChangeText={(text) => setDescription(text)}
           />
           <Space height={10} />
-          <Button
-            onPress={() => {
-              createComment({ variables: { ideaId, description } });
-            }}
-            style={{ backgroundColor: "rgba(0,180,190,0.9)" }}
-            title="Save"
-          />
-          <Space height={10} />
-          <Button
-            onPress={() => {
-              setShowCommentBox(false);
-              setDescription("");
-            }}
-            style={{ backgroundColor: "rgba(255,0,0,0.9)" }}
-            title="Cancel"
-          />
+          <ButtonWrapper>
+            <Button
+              onPress={() => {
+                setShowCommentBox(false);
+                setDescription("");
+              }}
+              style={{ backgroundColor: "rgba(255,0,0,0.9)", flex: 1 }}
+              title="Cancel"
+            />
+            <Button
+              onPress={() => {
+                createComment({ variables: { ideaId, description } });
+                setShowCommentBox(false);
+              }}
+              style={{ backgroundColor: "rgba(0,180,190,0.9)", flex: 1 }}
+              title="Save"
+            />
+            <Space height={10} />
+          </ButtonWrapper>
         </>
       )}
       {!showCommentBox && (
@@ -217,7 +222,14 @@ DeleteCommentButton.mutation = gql`
   }
 `;
 
-const EditContainer = styled.View``;
+const EditContainer = styled.View`
+  width: 100%;
+`;
+
+const EditWrapper = styled.View`
+  justify-content: center;
+  align-items: center;
+`;
 
 const ButtonWrapper = styled.View`
   flex-direction: row;
@@ -234,14 +246,18 @@ const EditCommentInput = ({ comment, refetch, setIsEditing }) => {
   });
   return (
     <EditContainer>
-      <TextInput
-        multiline={true}
-        numberOfLines={6}
-        value={description}
-        onChangeText={(text) => setDescription(text)}
-      />
+      <EditWrapper>
+        <TextInput
+          multiline={true}
+          numberOfLines={6}
+          value={description}
+          onChangeText={(text) => setDescription(text)}
+        />
+      </EditWrapper>
+      <Space height={4} />
       <ButtonWrapper>
         <Button
+          style={{ flex: 1 }}
           color={"gray"}
           title={"Cancel"}
           onPress={() => {
@@ -250,6 +266,7 @@ const EditCommentInput = ({ comment, refetch, setIsEditing }) => {
         />
         <Space width={10} />
         <Button
+          style={{ flex: 1 }}
           title={"Save"}
           onPress={() => {
             editComment({ variables: { commentId: comment.id, description } });
@@ -339,16 +356,21 @@ const IdeaScreen = ({ route }: IdeaScreenProps) => {
   }
 
   return (
-    <Container>
+    <ScreenContainer>
       <Title>{data.idea.title}</Title>
+      <AuthorName>{data.idea.author.name}</AuthorName>
       <Description>{data.idea.description}</Description>
-
-      {data.viewer.id === data.idea.author.id && (
-        <Row>
-          <EditIdeaButton id={data.idea.id} />
-          <DeleteIdeaButton id={data.idea.id} />
-        </Row>
-      )}
+      <Line />
+      <Row>
+        <IdeaLikeItem idea={data.idea} refetch={refetch} />
+        {data.viewer.id === data.idea.author.id && (
+          <>
+            <EditIdeaButton id={data.idea.id} />
+            <DeleteIdeaButton id={data.idea.id} />
+          </>
+        )}
+      </Row>
+      <Line />
       <NewComment ideaId={data.idea.id} refetch={refetch} />
       <FlatList
         data={_.sortBy(data.idea.comments, "createdAt").reverse()}
@@ -361,7 +383,7 @@ const IdeaScreen = ({ route }: IdeaScreenProps) => {
         )}
         keyExtractor={(item: Comment) => item.id}
       ></FlatList>
-    </Container>
+    </ScreenContainer>
   );
 };
 
@@ -376,6 +398,10 @@ IdeaScreen.query = gql`
       title
       createdAt
       updatedAt
+      likeCount
+      viewerLike {
+        id
+      }
       author {
         id
         name

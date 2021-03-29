@@ -7,17 +7,12 @@ import styled from "styled-components/native";
 
 import Button from "../components/Button";
 import Loading from "../components/Loading";
+import ScreenContainer from "../components/ScreenContainer";
 import Space from "../components/Space";
 import TextInput from "../components/TextInput";
 import { HomeScreenParamList } from "../types";
 
 import IdeaScreen from "./IdeaScreen";
-
-const Container = styled.View`
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-`;
 
 const Title = styled.Text`
   font-size: 40px;
@@ -49,7 +44,7 @@ const EditIdeaScreen = ({ route }: EditIdeaScreenProps) => {
   }
 
   return (
-    <Container>
+    <ScreenContainer>
       <Title>Edit your idea!</Title>
       <Formik
         initialValues={{
@@ -57,13 +52,14 @@ const EditIdeaScreen = ({ route }: EditIdeaScreenProps) => {
           title: queryData.idea.title,
           description: queryData.idea.description,
         }}
-        onSubmit={(values) => {
+        onSubmit={(values, { resetForm }) => {
           editIdea({ variables: values });
-          navigation.push("HomeScreen");
+          resetForm();
+          navigation.goBack();
         }}
       >
         {({ handleChange, handleBlur, handleSubmit, values }) => (
-          <Container>
+          <ScreenContainer>
             <Label>Title</Label>
             <Space height={8} />
             <TextInput
@@ -89,10 +85,10 @@ const EditIdeaScreen = ({ route }: EditIdeaScreenProps) => {
               }}
               title="Save!"
             />
-          </Container>
+          </ScreenContainer>
         )}
       </Formik>
-    </Container>
+    </ScreenContainer>
   );
 };
 

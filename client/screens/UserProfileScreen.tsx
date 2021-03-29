@@ -7,14 +7,9 @@ import Button from "../components/Button";
 import IdeasList from "../components/IdeasList";
 import Loading from "../components/Loading";
 import Profile from "../components/Profile";
+import ScreenContainer from "../components/ScreenContainer";
 import Space from "../components/Space";
 import AuthContext from "../navigation/AuthContext";
-
-const Container = styled.View`
-  flex: 1;
-  align-items: center;
-  justify-content: center;
-`;
 
 const FollowButton = ({ followeeId, refetch }: { followeeId: string }) => {
   const [followUser, { data, loading }] = useMutation(FollowButton.mutation);
@@ -76,7 +71,7 @@ const UserProfileScreen = ({ route }) => {
   }
 
   return (
-    <Container>
+    <ScreenContainer>
       <Profile user={data.user} />
       {data.user.id !== data.viewer.id &&
         (data.viewer.followsUser ? (
@@ -86,7 +81,7 @@ const UserProfileScreen = ({ route }) => {
         ))}
       <Space height={10} />
       <IdeasList ideas={data.user.ideas} refetch={refetch} />
-    </Container>
+    </ScreenContainer>
   );
 };
 

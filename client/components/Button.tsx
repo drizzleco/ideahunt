@@ -18,9 +18,10 @@ const ButtonText = styled.Text`
 
 interface ButtonProps {
   color: string;
+  title: string;
 }
 
-const Button = (props: any) => {
+const Button = (props: ButtonProps) => {
   return (
     <DefaultButton {...props}>
       <ButtonText>{props.title}</ButtonText>

@@ -6,17 +6,11 @@ import { useMutation } from "react-query";
 import styled from "styled-components/native";
 
 import Button from "../components/Button";
+import ScreenContainer from "../components/ScreenContainer";
 import Space from "../components/Space";
 import TextInput from "../components/TextInput";
 import { BACKEND_URL, HTTP_PROTOCOL } from "../graphql/Client";
 import AuthContext from "../navigation/AuthContext";
-
-const Container = styled.View`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-`;
 
 const FormContainer = styled.View`
   display: flex;
@@ -62,7 +56,7 @@ const LoginScreen = () => {
   );
 
   return (
-    <Container>
+    <ScreenContainer>
       <Title>Login</Title>
       <Space height={10} width={10} />
       <FormContainer>
@@ -76,7 +70,7 @@ const LoginScreen = () => {
           }}
         >
           {({ handleChange, handleBlur, handleSubmit, values }) => (
-            <Container>
+            <ScreenContainer>
               <Label>Username</Label>
               <TextInput
                 autoCapitalize={"none"}
@@ -103,18 +97,22 @@ const LoginScreen = () => {
               {mutation.isLoading ? <Label>Signing you in...</Label> : null}
               {mutation.isError ? (
                 <>
-                <ErrorLabel>{HTTP_PROTOCOL + BACKEND_URL + "/login"}</ErrorLabel>
-                <ErrorLabel>{HTTP_PROTOCOL + BACKEND_URL + "/login"}</ErrorLabel>
+                  <ErrorLabel>
+                    {HTTP_PROTOCOL + BACKEND_URL + "/login"}
+                  </ErrorLabel>
+                  <ErrorLabel>
+                    {HTTP_PROTOCOL + BACKEND_URL + "/login"}
+                  </ErrorLabel>
                 </>
               ) : null}
               {mutation.isSuccess ? (
                 <Label>Logged in! To the homepage!!</Label>
               ) : null}
-            </Container>
+            </ScreenContainer>
           )}
         </Formik>
       </FormContainer>
-    </Container>
+    </ScreenContainer>
   );
 };
 

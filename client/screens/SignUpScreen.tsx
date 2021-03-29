@@ -6,17 +6,11 @@ import { useMutation } from "react-query";
 import styled from "styled-components/native";
 
 import Button from "../components/Button";
+import ScreenContainer from "../components/ScreenContainer";
 import Space from "../components/Space";
 import TextInput from "../components/TextInput";
 import { BACKEND_URL, HTTP_PROTOCOL } from "../graphql/Client";
 import AuthContext from "../navigation/AuthContext";
-
-const Container = styled.View`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-`;
 
 const FormContainer = styled.View`
   display: flex;
@@ -34,13 +28,6 @@ const ErrorLabel = styled.Text`
 
 const Label = styled.Text`
   font-size: 20px;
-`;
-
-const Input = styled.TextInput`
-  border: 1px solid;
-  border-radius: 4px;
-  height: 30px;
-  width: 200px;
 `;
 
 interface RegisterParams {
@@ -69,7 +56,7 @@ const RegisterScreen = () => {
   );
 
   return (
-    <Container>
+    <ScreenContainer>
       <Title>Register</Title>
       <Space height={10} width={10} />
       <FormContainer>
@@ -86,7 +73,7 @@ const RegisterScreen = () => {
           }}
         >
           {({ handleChange, handleBlur, handleSubmit }) => (
-            <Container>
+            <ScreenContainer>
               <Label>Name</Label>
               <TextInput
                 autoCapitalize={"none"}
@@ -130,16 +117,18 @@ const RegisterScreen = () => {
               />
               {mutation.isLoading ? <Label>Registering you...</Label> : null}
               {mutation.isError ? (
-                <ErrorLabel>{mutation.error.response.data.message}</ErrorLabel>
+                <ErrorLabel>
+                  {mutation?.error?.response?.data?.message}
+                </ErrorLabel>
               ) : null}
               {mutation.isSuccess ? (
                 <Label>Registered! To the homepage!!</Label>
               ) : null}
-            </Container>
+            </ScreenContainer>
           )}
         </Formik>
       </FormContainer>
-    </Container>
+    </ScreenContainer>
   );
 };
 

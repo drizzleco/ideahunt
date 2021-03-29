@@ -7,13 +7,7 @@ import styled from "styled-components/native";
 
 import Button from "../components/Button";
 import Row from "../components/Row";
-
-const Container = styled.View`
-  flex: 1;
-  align-items: center;
-  justify-content: center;
-  background-color: #fffff7;
-`;
+import ScreenContainer from "../components/ScreenContainer";
 
 const Title = styled.Text`
   font-size: 40px;
@@ -32,11 +26,6 @@ const ErrorText = styled.Text`
 `;
 
 const Field = styled.View`
-  flex: 1;
-`;
-
-const EmptySpace = styled.View`
-  display: flex;
   flex: 1;
 `;
 
@@ -152,7 +141,7 @@ const ChatScreen = () => {
   const scrollViewRef = React.useRef<ScrollView>(null);
 
   return (
-    <Container>
+    <ScreenContainer>
       <Title>Chat</Title>
       <ChatView>
         <KeyboardAvoidingView
@@ -184,7 +173,7 @@ const ChatScreen = () => {
           <CreateMessageButton />
         </KeyboardAvoidingView>
       </ChatView>
-    </Container>
+    </ScreenContainer>
   );
 };
 

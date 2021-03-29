@@ -1,4 +1,4 @@
-import { gql, useQuery, useSubscription } from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import * as React from "react";
 import styled from "styled-components/native";
@@ -6,14 +6,8 @@ import styled from "styled-components/native";
 import Button from "../components/Button";
 import IdeasList from "../components/IdeasList";
 import Loading from "../components/Loading";
+import ScreenContainer from "../components/ScreenContainer";
 import Space from "../components/Space";
-
-const Container = styled.View`
-  flex: 1;
-  align-items: center;
-  justify-content: center;
-  background-color: #fffff7;
-`;
 
 const Title = styled.Text`
   font-size: 40px;
@@ -52,13 +46,13 @@ const HomeScreen = () => {
   }
 
   return (
-    <Container>
+    <ScreenContainer>
       <Title> Idea Palace</Title>
       <Space height={30} />
       <CreateIdeaButton />
       <Space height={10} />
       <IdeasList ideas={data.viewer.ideas} refetch={refetch} />
-    </Container>
+    </ScreenContainer>
   );
 };
 

@@ -1,19 +1,13 @@
 import { gql, useQuery } from "@apollo/client";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as React from "react";
-import styled from "styled-components/native";
 
 import Button from "../components/Button";
 import Loading from "../components/Loading";
 import Profile from "../components/Profile";
+import ScreenContainer from "../components/ScreenContainer";
 import Space from "../components/Space";
 import AuthContext from "../navigation/AuthContext";
-
-const Container = styled.View`
-  flex: 1;
-  align-items: center;
-  justify-content: center;
-`;
 
 const ProfileScreen = () => {
   const { signOut } = React.useContext(AuthContext);
@@ -24,7 +18,7 @@ const ProfileScreen = () => {
   }
 
   return (
-    <Container>
+    <ScreenContainer>
       <Profile user={data.viewer} />
       <Space height={40} />
       <Button
@@ -38,7 +32,7 @@ const ProfileScreen = () => {
           }
         }}
       />
-    </Container>
+    </ScreenContainer>
   );
 };
 

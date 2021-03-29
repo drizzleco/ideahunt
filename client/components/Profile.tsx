@@ -5,11 +5,7 @@ import styled from "styled-components/native";
 import Space from "../components/Space";
 import { User } from "../types";
 
-const Container = styled.View`
-  flex: 1;
-  align-items: center;
-  justify-content: center;
-`;
+import ScreenContainer from "./ScreenContainer";
 
 const ProfilePhoto = styled.View`
   height: 150px;
@@ -42,7 +38,7 @@ const RowContainer = styled.View`
 
 const Profile = ({ user }: { user: User }) => {
   return (
-    <Container>
+    <ScreenContainer>
       <ProfilePhoto />
       <Space height={10} />
       <Name>{user.name}</Name>
@@ -53,7 +49,7 @@ const Profile = ({ user }: { user: User }) => {
         <Space width={8} />
         <FollowInfo>{`${user.followingCount} Following`}</FollowInfo>
       </RowContainer>
-    </Container>
+    </ScreenContainer>
   );
 };
 

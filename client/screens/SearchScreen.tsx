@@ -5,15 +5,9 @@ import { FlatList } from "react-native";
 import styled from "styled-components/native";
 
 import Loading from "../components/Loading";
+import ScreenContainer from "../components/ScreenContainer";
 import Space from "../components/Space";
 import { User } from "../types";
-
-const Container = styled.View`
-  flex: 1;
-  align-items: center;
-  justify-content: center;
-  background-color: #fffff7;
-`;
 
 const Title = styled.Text`
   font-size: 20px;
@@ -83,7 +77,7 @@ const SearchScreen = () => {
   }
 
   return (
-    <Container>
+    <ScreenContainer>
       <Title>Search</Title>
       <Input onChangeText={setSearchQuery} />
       <FlatList
@@ -91,7 +85,7 @@ const SearchScreen = () => {
         renderItem={({ item }) => <UserPreview user={item} />}
         keyExtractor={(item: User) => item.id}
       ></FlatList>
-    </Container>
+    </ScreenContainer>
   );
 };
 

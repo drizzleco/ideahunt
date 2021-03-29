@@ -3,14 +3,8 @@ import * as React from "react";
 import styled from "styled-components/native";
 
 import Button from "../components/Button";
+import ScreenContainer from "../components/ScreenContainer";
 import Space from "../components/Space";
-
-const Container = styled.View`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-`;
 
 const Title = styled.Text`
   font-size: 40px;
@@ -20,7 +14,7 @@ const NewUserScreen = () => {
   const navigation = useNavigation();
 
   return (
-    <Container>
+    <ScreenContainer>
       <Title>Welcome to the land of ideas~</Title>
       <Space height={40} width={0} />
       <Button
@@ -36,7 +30,7 @@ const NewUserScreen = () => {
           navigation.navigate("LoginScreen");
         }}
       />
-    </Container>
+    </ScreenContainer>
   );
 };
 
