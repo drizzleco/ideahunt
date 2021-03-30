@@ -1,5 +1,5 @@
 import { gql, useQuery } from "@apollo/client";
-import { useIsFocused, useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import * as React from "react";
 import styled from "styled-components/native";
 
@@ -29,12 +29,13 @@ const CreateIdeaButton = () => {
 
 const HomeScreen = () => {
   const { loading, error, data, refetch } = useQuery(HomeScreen.query);
-  const isFocused = useIsFocused();
   const navigation = useNavigation();
 
-  React.useEffect(() => {
-    refetch();
-  }, [isFocused]);
+  useFocusEffect(
+    React.useCallback(() => {
+      refetch();
+    }, [])
+  );
 
   if (loading) {
     return <Loading color={"blue"} size={"large"} />;

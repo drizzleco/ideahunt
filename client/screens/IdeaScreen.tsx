@@ -63,7 +63,7 @@ const DeleteIdeaButton = ({ id }: { id: string }) => {
     <IconButton
       onPress={() => {
         deleteIdea({ variables: { ideaId: id } });
-        navigation.goBack();
+        navigation.navigate("HomeScreen");
       }}
       color={"red"}
       size={40}
