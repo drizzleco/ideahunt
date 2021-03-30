@@ -46,8 +46,7 @@ const HomeScreen = () => {
   }
 
   return (
-    <ScreenContainer>
-      <Title> Idea Palace</Title>
+    <ScreenContainer style={{ width: "100%" }}>
       <Space height={30} />
       <CreateIdeaButton />
       <Space height={10} />

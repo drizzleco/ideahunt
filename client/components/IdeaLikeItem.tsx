@@ -6,12 +6,15 @@ import styled from "styled-components/native";
 
 import IconButton from "../components/IconButton";
 import { Idea, Comment } from "../types";
+import Row from "./Row";
+import Space from "./Space";
 
 const LikeContainer = styled.View`
   background-color: #add8e6;
-  border-radius: 20px;
-  height: 40px;
+  border-radius: 10px;
+  padding: 2px 10px;
   width: 40px;
+  height: 18px;
   justify-content: center;
   align-items: center;
 `;
@@ -19,7 +22,7 @@ const LikeContainer = styled.View`
 const LikeCount = styled.Text`
   font-weight: bold;
   color: black;
-  font-size: 15px;
+  font-size: 10px;
 `;
 
 const IdeaLikeItem = ({
@@ -38,16 +41,20 @@ const IdeaLikeItem = ({
 
   return (
     <LikeContainer>
-      <LikeCount>{idea.likeCount}</LikeCount>
-      <IconButton
-        icon={idea.viewerLike ? faHeart : hollowHeart}
-        color={idea.viewerLike ? "red" : "gray"}
-        onPress={() => {
-          idea.viewerLike
-            ? deleteLike({ variables: { likeId: idea.viewerLike.id } })
-            : createLike({ variables: { ideaId: idea.id } });
-        }}
-      />
+      <Row>
+        <LikeCount>{idea.likeCount}</LikeCount>
+        <Space width={4} />
+        <IconButton
+          icon={idea.viewerLike ? faHeart : hollowHeart}
+          size={14}
+          color={idea.viewerLike ? "red" : "gray"}
+          onPress={() => {
+            idea.viewerLike
+              ? deleteLike({ variables: { likeId: idea.viewerLike.id } })
+              : createLike({ variables: { ideaId: idea.id } });
+          }}
+        />
+      </Row>
     </LikeContainer>
   );
 };

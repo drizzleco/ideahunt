@@ -2,6 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { Formik } from "formik";
 import * as React from "react";
+import { View } from "react-native";
 import { useMutation } from "react-query";
 import styled from "styled-components/native";
 
@@ -70,7 +71,7 @@ const LoginScreen = () => {
           }}
         >
           {({ handleChange, handleBlur, handleSubmit, values }) => (
-            <ScreenContainer>
+            <View>
               <Label>Username</Label>
               <TextInput
                 autoCapitalize={"none"}
@@ -108,7 +109,7 @@ const LoginScreen = () => {
               {mutation.isSuccess ? (
                 <Label>Logged in! To the homepage!!</Label>
               ) : null}
-            </ScreenContainer>
+            </View>
           )}
         </Formik>
       </FormContainer>
