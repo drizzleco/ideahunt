@@ -1,6 +1,7 @@
 import { gql, useQuery, useMutation } from "@apollo/client";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as React from "react";
+import { ScrollView } from "react-native";
 import styled from "styled-components/native";
 
 import Button from "../components/Button";
@@ -59,6 +60,12 @@ UnfollowButton.mutation = gql`
   }
 `;
 
+const Container = styled.View`
+  flex-grow: 1;
+  align-items: center;
+  background-color: #fffff7;
+`;
+
 const UserProfileScreen = ({ route }) => {
   const { userId } = route.params;
   const { signOut } = React.useContext(AuthContext);
@@ -71,17 +78,43 @@ const UserProfileScreen = ({ route }) => {
   }
 
   return (
-    <ScreenContainer>
-      <Profile user={data.user} />
-      {data.user.id !== data.viewer.id &&
-        (data.viewer.followsUser ? (
-          <UnfollowButton followeeId={data.user.id} refetch={refetch} />
-        ) : (
-          <FollowButton followeeId={data.user.id} refetch={refetch} />
-        ))}
-      <Space height={10} />
-      <IdeasList ideas={data.user.ideas} refetch={refetch} />
-    </ScreenContainer>
+    <ScrollView
+      contentContainerStyle={{
+        flexGrow: 1,
+        backgroundColor: "#fffff7",
+        justifyContent: "center",
+      }}
+    >
+      <Container>
+        <Profile user={data.user} />
+        {data.user.id !== data.viewer.id &&
+          (data.viewer.followsUser ? (
+            <UnfollowButton followeeId={data.user.id} refetch={refetch} />
+          ) : (
+            <FollowButton followeeId={data.user.id} refetch={refetch} />
+          ))}
+        {data.user.id === data.viewer.id && (
+          <>
+            <Space height={10} />
+            <Button
+              title="Log Out"
+              onPress={async () => {
+                try {
+                  await AsyncStorage.removeItem("ideaHuntToken");
+                  signOut();
+                } catch (e) {
+                  console.log(e);
+                }
+              }}
+            />
+          </>
+        )}
+
+        <Space height={10} />
+
+        <IdeasList ideas={data.user.ideas} refetch={refetch} />
+      </Container>
+    </ScrollView>
   );
 };
 

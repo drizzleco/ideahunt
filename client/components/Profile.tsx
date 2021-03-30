@@ -7,6 +7,11 @@ import { User } from "../types";
 
 import ScreenContainer from "./ScreenContainer";
 
+const Container = styled.View`
+  align-items: center;
+  background-color: #fffff7;
+`;
+
 const ProfilePhoto = styled.View`
   height: 150px;
   width: 150px;
@@ -38,7 +43,7 @@ const RowContainer = styled.View`
 
 const Profile = ({ user }: { user: User }) => {
   return (
-    <ScreenContainer>
+    <Container>
       <ProfilePhoto />
       <Space height={10} />
       <Name>{user.name}</Name>
@@ -49,7 +54,7 @@ const Profile = ({ user }: { user: User }) => {
         <Space width={8} />
         <FollowInfo>{`${user.followingCount} Following`}</FollowInfo>
       </RowContainer>
-    </ScreenContainer>
+    </Container>
   );
 };
 

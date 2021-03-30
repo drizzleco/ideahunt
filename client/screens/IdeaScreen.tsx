@@ -11,7 +11,9 @@ import { StackScreenProps } from "@react-navigation/stack";
 import { formatDistance } from "date-fns";
 import _ from "lodash";
 import * as React from "react";
+import { View } from "react-native";
 import { FlatList, Text } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import styled from "styled-components/native";
 
 import Button from "../components/Button";
@@ -24,10 +26,11 @@ import Row from "../components/Row";
 import ScreenContainer from "../components/ScreenContainer";
 import Space from "../components/Space";
 import TextInput from "../components/TextInput";
+import useIsMobile from "../hooks/useIsMobile";
 import { Comment, HomeScreenParamList } from "../types";
 
 const Container = styled.View`
-  flex: 1;
+  flex-grow: 1;
   align-items: center;
   background-color: #fffff7;
 `;
@@ -37,21 +40,34 @@ const Title = styled.Text`
 `;
 
 const Description = styled.Text`
+  padding: 12px;
   font-size: 20px;
+`;
+
+const IdeaButtonContainer = styled.View`
+  background-color: #add8e6;
+  border-radius: 10px;
+  padding: 2px 10px;
+  width: 40px;
+  height: 18px;
+  justify-content: center;
+  align-items: center;
 `;
 
 const EditIdeaButton = ({ id }: { id: string }) => {
   const navigation = useNavigation();
 
   return (
-    <IconButton
-      size={40}
-      color={"salmon"}
-      onPress={() => {
-        navigation.navigate("EditIdeaScreen", { id });
-      }}
-      icon={faPenSquare}
-    />
+    <IdeaButtonContainer>
+      <IconButton
+        size={14}
+        color={"salmon"}
+        onPress={() => {
+          navigation.navigate("EditIdeaScreen", { id });
+        }}
+        icon={faPenSquare}
+      />
+    </IdeaButtonContainer>
   );
 };
 
@@ -60,15 +76,17 @@ const DeleteIdeaButton = ({ id }: { id: string }) => {
   const [deleteIdea] = useMutation(DeleteIdeaButton.mutation);
 
   return (
-    <IconButton
-      onPress={() => {
-        deleteIdea({ variables: { ideaId: id } });
-        navigation.navigate("HomeScreen");
-      }}
-      color={"red"}
-      size={40}
-      icon={faToiletPaperSlash}
-    />
+    <IdeaButtonContainer>
+      <IconButton
+        onPress={() => {
+          deleteIdea({ variables: { ideaId: id } });
+          navigation.navigate("HomeScreen");
+        }}
+        color={"red"}
+        size={14}
+        icon={faToiletPaperSlash}
+      />
+    </IdeaButtonContainer>
   );
 };
 
@@ -150,13 +168,10 @@ NewComment.mutation = gql`
 `;
 
 const CommentContainer = styled.View`
-  display: flex;
   flex-direction: column;
-  width: 320px;
   padding: 20px;
-  border-radius: 30px;
-  border: 1px solid black;
-  min-height: 100px;
+  border-bottom-color: black;
+  border-bottom-width: 1px;
   margin-bottom: 10px;
 `;
 const CommentInfoContainer = styled.View`
@@ -168,7 +183,7 @@ const CommentInfoContainer = styled.View`
 
 const CommentRow = styled.View`
   display: flex;
-  flex: 1;
+  flex-grow: 1;
   flex-direction: row;
 `;
 
@@ -342,6 +357,7 @@ const CommentItem = ({
 type IdeaScreenProps = StackScreenProps<HomeScreenParamList, "IdeaScreen">;
 
 const IdeaScreen = ({ route }: IdeaScreenProps) => {
+  const isMobile = useIsMobile();
   const { id } = route.params;
   const { loading, error, data, refetch } = useQuery(IdeaScreen.query, {
     variables: { id },
@@ -356,34 +372,52 @@ const IdeaScreen = ({ route }: IdeaScreenProps) => {
   }
 
   return (
-    <ScreenContainer>
-      <Title>{data.idea.title}</Title>
-      <AuthorName>{data.idea.author.name}</AuthorName>
-      <Description>{data.idea.description}</Description>
-      <Line />
-      <Row>
-        <IdeaLikeItem idea={data.idea} refetch={refetch} />
-        {data.viewer.id === data.idea.author.id && (
-          <>
-            <EditIdeaButton id={data.idea.id} />
-            <DeleteIdeaButton id={data.idea.id} />
-          </>
-        )}
-      </Row>
-      <Line />
-      <NewComment ideaId={data.idea.id} refetch={refetch} />
-      <FlatList
-        data={_.sortBy(data.idea.comments, "createdAt").reverse()}
-        renderItem={({ item }) => (
-          <CommentItem
-            comment={item}
-            refetch={refetch}
-            viewerId={data.viewer.id}
-          />
-        )}
-        keyExtractor={(item: Comment) => item.id}
-      ></FlatList>
-    </ScreenContainer>
+    <ScrollView
+      contentContainerStyle={{
+        backgroundColor: "#fffff7",
+        alignItems: "center",
+      }}
+    >
+      <Container style={{ width: isMobile ? "100%" : "60%" }}>
+        <Title>{data.idea.title}</Title>
+        <AuthorName>{data.idea.author.name}</AuthorName>
+        <View style={{ width: "100%" }}>
+          <Description>{data.idea.description}</Description>
+        </View>
+        <Line />
+        <Row
+          style={{
+            width: "100%",
+            justifyContent: "space-around",
+            marginVertical: 6,
+          }}
+        >
+          <IdeaLikeItem idea={data.idea} refetch={refetch} />
+          {data.viewer.id === data.idea.author.id && (
+            <>
+              <EditIdeaButton id={data.idea.id} />
+              <DeleteIdeaButton id={data.idea.id} />
+            </>
+          )}
+        </Row>
+        <Line />
+        <NewComment ideaId={data.idea.id} refetch={refetch} />
+        <Container style={{ width: "100%" }}>
+          <FlatList
+            style={{ flexGrow: 1, width: "100%" }}
+            data={_.sortBy(data.idea.comments, "createdAt").reverse()}
+            renderItem={({ item }) => (
+              <CommentItem
+                comment={item}
+                refetch={refetch}
+                viewerId={data.viewer.id}
+              />
+            )}
+            keyExtractor={(item: Comment) => item.id}
+          ></FlatList>
+        </Container>
+      </Container>
+    </ScrollView>
   );
 };
 

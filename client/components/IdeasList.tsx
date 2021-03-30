@@ -88,7 +88,7 @@ const IdeaItem = ({ idea, refetch }: { idea: Idea; refetch: any }) => {
 };
 
 const IdeasListContainer = styled.View`
-  flex: 1;
+  flex-grow: 1;
   width: ${(props) => (props.isMobile ? "100%" : "40%")};
   padding: 0 10px;
 `;
