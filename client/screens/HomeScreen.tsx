@@ -1,6 +1,7 @@
 import { gql, useQuery } from "@apollo/client";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import * as React from "react";
+import { ScrollView } from "react-native";
 import styled from "styled-components/native";
 
 import Button from "../components/Button";
@@ -8,6 +9,12 @@ import IdeasList from "../components/IdeasList";
 import Loading from "../components/Loading";
 import ScreenContainer from "../components/ScreenContainer";
 import Space from "../components/Space";
+
+const Container = styled.View`
+  flex-grow: 1;
+  align-items: center;
+  background-color: #fffff7;
+`;
 
 const Title = styled.Text`
   font-size: 40px;
@@ -47,12 +54,19 @@ const HomeScreen = () => {
   }
 
   return (
-    <ScreenContainer style={{ width: "100%" }}>
+    <ScrollView
+      style={{ flex: 1 }}
+      contentContainerStyle={{
+        flexGrow: 1,
+        backgroundColor: "#fffff7",
+        alignItems: "center",
+      }}
+    >
       <Space height={30} />
       <CreateIdeaButton />
       <Space height={10} />
-      <IdeasList ideas={data.viewer.ideas} refetch={refetch} />
-    </ScreenContainer>
+      <IdeasList ideas={data.ideas} refetch={refetch} />
+    </ScrollView>
   );
 };
 
@@ -60,7 +74,7 @@ HomeScreen.query = gql`
   ${IdeasList.fragment}
 
   query HomeScreen {
-    viewer {
+    ideas {
       id
       ...IdeasList
     }

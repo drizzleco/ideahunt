@@ -109,9 +109,7 @@ const UserProfileScreen = ({ route }) => {
             />
           </>
         )}
-
         <Space height={10} />
-
         <IdeasList ideas={data.user.ideas} refetch={refetch} />
       </Container>
     </ScrollView>
@@ -128,7 +126,10 @@ UserProfileScreen.query = gql`
     }
     user(userId: $userId) {
       id
-      ...IdeasList
+      ideas {
+        id
+        ...IdeasList
+      }
       ...Profile
     }
   }

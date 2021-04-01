@@ -3,6 +3,7 @@ from typing import List, Optional, Union
 import graphene
 from graphene import ResolveInfo
 from rx import Observable
+from sqlalchemy import desc
 
 from ideahunt.graphql.mutations.create_comment import CreateComment
 from ideahunt.graphql.mutations.create_follow import CreateFollow
@@ -32,7 +33,7 @@ class Query(graphene.ObjectType):
         return IdeaModel.get_query(info).filter_by(id=id).first()
 
     def resolve_ideas(root, info: ResolveInfo, **args) -> List[Idea]:
-        return IdeaModel.get_query(info).all()
+        return IdeaModel.get_query(info).order_by(desc(Idea.created_at)).all()
 
     def resolve_viewer(root, info: ResolveInfo, **args) -> User:
         viewer = info.context.get("viewer")

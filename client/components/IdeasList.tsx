@@ -107,21 +107,19 @@ const IdeasList = ({ ideas, refetch }: { ideas: Idea[]; refetch: any }) => {
 };
 
 IdeasList.fragment = gql`
-  fragment IdeasList on UserModel {
-    ideas {
+  fragment IdeasList on IdeaModel {
+    id
+    description
+    title
+    likeCount
+    createdAt
+    author {
       id
-      description
-      title
-      likeCount
-      createdAt
-      author {
-        id
-        name
-        username
-      }
-      viewerLike {
-        id
-      }
+      name
+      username
+    }
+    viewerLike {
+      id
     }
   }
 `;
