@@ -44,7 +44,7 @@ const Description = styled.Text`
   font-size: 20px;
 `;
 
-const IdeaButtonContainer = styled.View`
+const IdeaButtonContainer = styled.TouchableOpacity`
   background-color: #add8e6;
   border-radius: 10px;
   padding: 2px 10px;
@@ -58,13 +58,15 @@ const EditIdeaButton = ({ id }: { id: string }) => {
   const navigation = useNavigation();
 
   return (
-    <IdeaButtonContainer>
+    <IdeaButtonContainer
+      onPress={() => {
+        navigation.navigate("EditIdeaScreen", { id });
+      }}
+    >
       <IconButton
+        disabled={true}
         size={14}
         color={"salmon"}
-        onPress={() => {
-          navigation.navigate("EditIdeaScreen", { id });
-        }}
         icon={faPenSquare}
       />
     </IdeaButtonContainer>
@@ -76,12 +78,14 @@ const DeleteIdeaButton = ({ id }: { id: string }) => {
   const [deleteIdea] = useMutation(DeleteIdeaButton.mutation);
 
   return (
-    <IdeaButtonContainer>
+    <IdeaButtonContainer
+      onPress={() => {
+        deleteIdea({ variables: { ideaId: id } });
+        navigation.navigate("HomeScreen");
+      }}
+    >
       <IconButton
-        onPress={() => {
-          deleteIdea({ variables: { ideaId: id } });
-          navigation.navigate("HomeScreen");
-        }}
+        disabled={true}
         color={"red"}
         size={14}
         icon={faToiletPaperSlash}
@@ -172,7 +176,6 @@ const CommentContainer = styled.View`
   padding: 20px;
   border-bottom-color: black;
   border-bottom-width: 1px;
-  margin-bottom: 10px;
 `;
 const CommentInfoContainer = styled.View`
   display: flex;
@@ -333,10 +336,16 @@ const CommentItem = ({
         <CommentInfoContainer>
           <CommentLikeItem comment={comment} refetch={refetch} />
           {viewerId === comment.author.id && (
-            <Icon icon={faEdit} onPress={() => setIsEditing(!isEditing)} />
+            <>
+              <Space width={4} />
+              <Icon icon={faEdit} onPress={() => setIsEditing(!isEditing)} />
+            </>
           )}
           {viewerId === comment.author.id && (
-            <DeleteCommentButton commentId={comment.id} refetch={refetch} />
+            <>
+              <Space width={2} />
+              <DeleteCommentButton commentId={comment.id} refetch={refetch} />
+            </>
           )}
         </CommentInfoContainer>
       </CommentRow>
@@ -373,35 +382,46 @@ const IdeaScreen = ({ route }: IdeaScreenProps) => {
 
   return (
     <ScrollView
+      style={{ flex: 1 }}
       contentContainerStyle={{
+        flexGrow: 1,
         backgroundColor: "#fffff7",
         alignItems: "center",
       }}
     >
       <Container style={{ width: isMobile ? "100%" : "60%" }}>
-        <Title>{data.idea.title}</Title>
-        <AuthorName>{data.idea.author.name}</AuthorName>
-        <View style={{ width: "100%" }}>
-          <Description>{data.idea.description}</Description>
-        </View>
-        <Line />
-        <Row
+        <View
           style={{
+            alignItems: "center",
+            backgroundColor: "#faf0e6",
             width: "100%",
-            justifyContent: "space-around",
-            marginVertical: 6,
           }}
         >
-          <IdeaLikeItem idea={data.idea} refetch={refetch} />
-          {data.viewer.id === data.idea.author.id && (
-            <>
-              <EditIdeaButton id={data.idea.id} />
-              <DeleteIdeaButton id={data.idea.id} />
-            </>
-          )}
-        </Row>
+          <Title>{data.idea.title}</Title>
+          <AuthorName>{data.idea.author.name}</AuthorName>
+          <View style={{ width: "100%" }}>
+            <Description>{data.idea.description}</Description>
+          </View>
+          <Line />
+          <Row
+            style={{
+              width: "100%",
+              justifyContent: "space-around",
+              marginVertical: 6,
+            }}
+          >
+            <IdeaLikeItem idea={data.idea} refetch={refetch} />
+            {data.viewer.id === data.idea.author.id && (
+              <>
+                <EditIdeaButton id={data.idea.id} />
+                <DeleteIdeaButton id={data.idea.id} />
+              </>
+            )}
+          </Row>
+        </View>
         <Line />
         <NewComment ideaId={data.idea.id} refetch={refetch} />
+        <Line />
         <Container style={{ width: "100%" }}>
           <FlatList
             style={{ flexGrow: 1, width: "100%" }}

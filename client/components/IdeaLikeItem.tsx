@@ -9,7 +9,7 @@ import { Idea, Comment } from "../types";
 import Row from "./Row";
 import Space from "./Space";
 
-const LikeContainer = styled.View`
+const LikeContainer = styled.TouchableOpacity`
   background-color: #add8e6;
   border-radius: 10px;
   padding: 2px 10px;
@@ -40,19 +40,21 @@ const IdeaLikeItem = ({
   });
 
   return (
-    <LikeContainer>
+    <LikeContainer
+      onPress={() => {
+        idea.viewerLike
+          ? deleteLike({ variables: { likeId: idea.viewerLike.id } })
+          : createLike({ variables: { ideaId: idea.id } });
+      }}
+    >
       <Row>
         <LikeCount>{idea.likeCount}</LikeCount>
         <Space width={4} />
         <IconButton
+          disabled={true}
           icon={idea.viewerLike ? faHeart : hollowHeart}
           size={14}
           color={idea.viewerLike ? "red" : "gray"}
-          onPress={() => {
-            idea.viewerLike
-              ? deleteLike({ variables: { likeId: idea.viewerLike.id } })
-              : createLike({ variables: { ideaId: idea.id } });
-          }}
         />
       </Row>
     </LikeContainer>

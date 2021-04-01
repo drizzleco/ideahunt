@@ -41,7 +41,7 @@ const CreateIdeaScreen = () => {
         onSubmit={(values, { resetForm }) => {
           createIdea({ variables: values });
           resetForm();
-          navigation.goBack();
+          navigation.navigate("HomeScreen");
         }}
       >
         {({ handleChange, handleBlur, handleSubmit, values }) => (
