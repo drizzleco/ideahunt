@@ -93,7 +93,17 @@ const IdeasListContainer = styled.View`
   padding: 0 10px;
 `;
 
-const IdeasList = ({ ideas, refetch }: { ideas: Idea[]; refetch: any }) => {
+const IdeasList = ({
+  ideas,
+  refetch,
+  onEndReachedThreshold,
+  onEndReached,
+}: {
+  ideas: Idea[];
+  refetch: any;
+  onEndReachedThreshold?: number;
+  onEndReached?: () => any;
+}) => {
   const isMobile = useIsMobile();
   return (
     <IdeasListContainer isMobile={isMobile}>
@@ -101,6 +111,8 @@ const IdeasList = ({ ideas, refetch }: { ideas: Idea[]; refetch: any }) => {
         data={ideas}
         renderItem={({ item }) => <IdeaItem idea={item} refetch={refetch} />}
         keyExtractor={(item: Idea) => item.id}
+        onEndReachedThreshold={onEndReachedThreshold}
+        onEndReached={onEndReached}
       ></FlatList>
     </IdeasListContainer>
   );

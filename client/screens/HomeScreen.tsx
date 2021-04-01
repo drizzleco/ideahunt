@@ -1,20 +1,16 @@
-import { gql, useQuery } from "@apollo/client";
+import { gql, useQuery, NetworkStatus } from "@apollo/client";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import * as React from "react";
+import { RefreshControl } from "react-native";
 import { ScrollView } from "react-native";
 import styled from "styled-components/native";
 
 import Button from "../components/Button";
 import IdeasList from "../components/IdeasList";
 import Loading from "../components/Loading";
-import ScreenContainer from "../components/ScreenContainer";
 import Space from "../components/Space";
 
-const Container = styled.View`
-  flex-grow: 1;
-  align-items: center;
-  background-color: #fffff7;
-`;
+const PAGE_SIZE = 10;
 
 const Title = styled.Text`
   font-size: 40px;
@@ -34,8 +30,20 @@ const CreateIdeaButton = () => {
   );
 };
 
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
+
 const HomeScreen = () => {
-  const { loading, error, data, refetch } = useQuery(HomeScreen.query);
+  const [refreshing, setRefreshing] = React.useState(false);
+  const { loading, error, data, refetch, fetchMore } = useQuery(
+    HomeScreen.query,
+    {
+      variables: {
+        limit: PAGE_SIZE,
+      },
+    }
+  );
   const navigation = useNavigation();
 
   useFocusEffect(
@@ -44,9 +52,16 @@ const HomeScreen = () => {
     }, [])
   );
 
+  const onRefresh = () => {
+    setRefreshing(true);
+    fetchMore({ variables: { limit: PAGE_SIZE, cursor: null } });
+    wait(1000).then(() => setRefreshing(false));
+  };
+
   if (loading) {
     return <Loading color={"blue"} size={"large"} />;
   }
+
   if (error) {
     console.log(error);
     navigation.navigate("LoginScreen");
@@ -61,11 +76,23 @@ const HomeScreen = () => {
         backgroundColor: "#fffff7",
         alignItems: "center",
       }}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
     >
       <Space height={30} />
       <CreateIdeaButton />
       <Space height={10} />
-      <IdeasList ideas={data.ideas} refetch={refetch} />
+      <IdeasList
+        ideas={data.moreIdeas.ideas}
+        refetch={refetch}
+        onEndReachedThreshold={0.4}
+        onEndReached={() =>
+          fetchMore({
+            variables: { limit: PAGE_SIZE, cursor: data.moreIdeas.cursor },
+          })
+        }
+      />
     </ScrollView>
   );
 };
@@ -73,10 +100,13 @@ const HomeScreen = () => {
 HomeScreen.query = gql`
   ${IdeasList.fragment}
 
-  query HomeScreen {
-    ideas {
-      id
-      ...IdeasList
+  query HomeScreen($cursor: ID, $limit: Int) {
+    moreIdeas(cursor: $cursor, limit: $limit) {
+      cursor
+      ideas {
+        id
+        ...IdeasList
+      }
     }
   }
 `;

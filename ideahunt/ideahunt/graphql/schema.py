@@ -21,9 +21,18 @@ from ideahunt.helpers import get_viewer
 from ideahunt.models import Idea, User
 
 
+class IdeasWithCursor(graphene.ObjectType):
+    cursor = graphene.Field(graphene.Int)
+    ideas = graphene.Field(graphene.List(IdeaModel))
+
+
 class Query(graphene.ObjectType):
     idea = graphene.Field(IdeaModel, id=graphene.ID(required=True))
-    ideas = graphene.Field(graphene.List(IdeaModel))
+    more_ideas = graphene.Field(
+        IdeasWithCursor,
+        cursor=graphene.ID(required=False),
+        limit=graphene.Int(required=False),
+    )
     viewer = graphene.Field(UserModel)
     users = graphene.Field(graphene.List(UserModel))
     user = graphene.Field(UserModel, user_id=graphene.ID(required=True))
@@ -32,8 +41,17 @@ class Query(graphene.ObjectType):
     def resolve_idea(root, info: ResolveInfo, id: Union[str, int]) -> Optional[Idea]:
         return IdeaModel.get_query(info).filter_by(id=id).first()
 
-    def resolve_ideas(root, info: ResolveInfo, **args) -> List[Idea]:
-        return IdeaModel.get_query(info).order_by(desc(Idea.created_at)).all()
+    def resolve_more_ideas(
+        root, info: ResolveInfo, cursor: Optional[int] = None, limit: Optional[int] = None, **args
+    ) -> List[Idea]:
+        query = IdeaModel.get_query(info).order_by(desc(Idea.id))
+        if cursor:
+            cursor_query = Idea.query.with_entities(Idea.id).filter(Idea.id == cursor)
+            query = query.filter(Idea.id < cursor_query)
+        if limit:
+            query = query.limit(limit)
+        ideas = query.all()
+        return IdeasWithCursor(cursor=ideas[-1].id if ideas else cursor, ideas=ideas)
 
     def resolve_viewer(root, info: ResolveInfo, **args) -> User:
         viewer = info.context.get("viewer")

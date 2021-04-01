@@ -21,7 +21,35 @@ export const HTTP_PROTOCOL =
 export const WS_PROTOCOL =
   process.env.NODE_ENV === "production" ? "wss://" : "ws://";
 
-const cache = new InMemoryCache();
+const cache = new InMemoryCache({
+  typePolicies: {
+    Query: {
+      fields: {
+        moreIdeas: {
+          // Don't cache separate results based on
+          // any of this field's arguments.
+          keyArgs: false,
+          // Concatenate the incoming list items with
+          // the existing list items.
+          merge(existing = [], incoming, { args: { cursor = null } }) {
+            if (!cursor) return incoming;
+            let ideas: Record<string, any>[] = [];
+            if (existing && existing.ideas) {
+              ideas = ideas.concat(existing.ideas);
+            }
+            if (incoming && incoming.ideas) {
+              ideas = ideas.concat(incoming.ideas);
+            }
+            return {
+              ...incoming,
+              ideas,
+            };
+          },
+        },
+      },
+    },
+  },
+});
 const httpLink = createHttpLink({
   uri: HTTP_PROTOCOL + BACKEND_URL + "/graphql",
   credentials: "include",
