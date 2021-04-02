@@ -1,10 +1,11 @@
 import graphene
 
+from ideahunt.graphql.objects import LikeModel
 from ideahunt.models import Like, db
 
 
 class DeleteLike(graphene.Mutation):
-    id = graphene.Field(graphene.ID)
+    id = graphene.ID()
 
     class Arguments:
         like_id = graphene.ID(required=False)
@@ -13,4 +14,4 @@ class DeleteLike(graphene.Mutation):
         like = Like.query.get(like_id)
         db.session.delete(like)
         db.session.commit()
-        return DeleteLike(id=like_id)
+        return DeleteLike(id=like.id)

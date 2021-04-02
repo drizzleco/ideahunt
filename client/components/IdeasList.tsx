@@ -35,7 +35,7 @@ const InfoText = styled.Text`
   font-size: 12px;
 `;
 
-const IdeaItem = ({ idea, refetch }: { idea: Idea; refetch: any }) => {
+const IdeaItem = ({ idea }: { idea: Idea }) => {
   const navigation = useNavigation();
 
   return (
@@ -78,7 +78,7 @@ const IdeaItem = ({ idea, refetch }: { idea: Idea; refetch: any }) => {
           </Row>
           <Space height={2} />
           <Row style={{ justifyContent: "center" }}>
-            <IdeaLikeItem idea={idea} refetch={refetch} />
+            <IdeaLikeItem idea={idea} />
           </Row>
         </IdeaContainer>
       </IdeaContent>
@@ -95,12 +95,10 @@ const IdeasListContainer = styled.View`
 
 const IdeasList = ({
   ideas,
-  refetch,
   onEndReachedThreshold,
   onEndReached,
 }: {
   ideas: Idea[];
-  refetch: any;
   onEndReachedThreshold?: number;
   onEndReached?: () => any;
 }) => {
@@ -109,7 +107,7 @@ const IdeasList = ({
     <IdeasListContainer isMobile={isMobile}>
       <FlatList
         data={ideas}
-        renderItem={({ item }) => <IdeaItem idea={item} refetch={refetch} />}
+        renderItem={({ item }) => <IdeaItem idea={item} />}
         keyExtractor={(item: Idea) => item.id}
         onEndReachedThreshold={onEndReachedThreshold}
         onEndReached={onEndReached}

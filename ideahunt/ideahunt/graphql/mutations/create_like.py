@@ -7,7 +7,9 @@ from ideahunt.models import Comment, Like, db
 
 
 class CreateLike(graphene.Mutation):
-    like = graphene.Field(lambda: LikeModel)
+    id = graphene.ID()
+    comment_id = graphene.ID()
+    idea_id = graphene.ID()
 
     class Arguments:
         idea_id = graphene.ID(required=False)
@@ -45,4 +47,4 @@ class CreateLike(graphene.Mutation):
         )
         db.session.add(like)
         db.session.commit()
-        return CreateLike(like=like)
+        return CreateLike(id=like.id, idea_id=like.idea_id, comment_id=like.comment_id)

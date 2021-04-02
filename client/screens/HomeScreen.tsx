@@ -39,6 +39,8 @@ const HomeScreen = () => {
   const { loading, error, data, refetch, fetchMore } = useQuery(
     HomeScreen.query,
     {
+      fetchPolicy: "cache-and-network",
+      nextFetchPolicy: "cache-first",
       variables: {
         limit: PAGE_SIZE,
       },
@@ -85,7 +87,6 @@ const HomeScreen = () => {
       <Space height={10} />
       <IdeasList
         ideas={data.moreIdeas.ideas}
-        refetch={refetch}
         onEndReachedThreshold={0.4}
         onEndReached={() =>
           fetchMore({

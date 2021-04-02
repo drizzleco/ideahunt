@@ -119,6 +119,7 @@ const UserProfileScreen = ({ route }) => {
 UserProfileScreen.query = gql`
   ${Profile.fragment}
   ${IdeasList.fragment}
+
   query UserProfileScreen($userId: ID!) {
     viewer {
       ...Profile

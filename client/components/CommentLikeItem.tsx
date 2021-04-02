@@ -52,9 +52,8 @@ const CommentLikeItem = ({
 CommentLikeItem.createMutation = gql`
   mutation LikeItem_CreateLike($commentId: ID!) {
     createLike(commentId: $commentId) {
-      like {
-        id
-      }
+      id
+      commentId
     }
   }
 `;

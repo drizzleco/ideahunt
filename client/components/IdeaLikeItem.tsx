@@ -25,18 +25,45 @@ const LikeCount = styled.Text`
   font-size: 10px;
 `;
 
-const IdeaLikeItem = ({
-  idea,
-  refetch,
-}: {
-  idea: Idea | Comment;
-  refetch: any;
-}) => {
+const IdeaLikeItem = ({ idea }: { idea: Idea | Comment }) => {
   const [createLike] = useMutation(IdeaLikeItem.createMutation, {
-    onCompleted: refetch,
+    update(cache, { data: { createLike } }) {
+      cache.modify({
+        id: cache.identify(idea),
+        fields: {
+          viewerLike(existingViewerLike = null) {
+            const newLikeRef = cache.writeFragment({
+              data: createLike,
+              fragment: gql`
+                fragment NewLike on Like {
+                  id
+                  ideaId
+                }
+              `,
+            });
+            return newLikeRef;
+          },
+          likeCount(originalCount = 0) {
+            return originalCount + 1;
+          },
+        },
+      });
+    },
   });
   const [deleteLike] = useMutation(IdeaLikeItem.deleteMutation, {
-    onCompleted: refetch,
+    update(cache, { data: { deleteLike } }) {
+      cache.modify({
+        id: cache.identify(idea),
+        fields: {
+          viewerLike(existingViewerLike = null) {
+            return null;
+          },
+          likeCount(originalCount = 0) {
+            return originalCount - 1;
+          },
+        },
+      });
+    },
   });
 
   return (
@@ -64,9 +91,8 @@ const IdeaLikeItem = ({
 IdeaLikeItem.createMutation = gql`
   mutation LikeItem_CreateLike($ideaId: ID!) {
     createLike(ideaId: $ideaId) {
-      like {
-        id
-      }
+      id
+      ideaId
     }
   }
 `;
