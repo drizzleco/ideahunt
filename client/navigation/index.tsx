@@ -12,7 +12,7 @@ import Loading from "../components/Loading";
 import LoginScreen from "../screens/LoginScreen";
 import NewUserScreen from "../screens/NewUserScreen";
 import NotFoundScreen from "../screens/NotFoundScreen";
-import RegisterScreen from "../screens/SignUpScreen";
+import RegisterScreen from "../screens/RegisterScreen";
 import { RootStackParamList, AppState, AppActionTypes } from "../types";
 
 import AuthContext from "./AuthContext";

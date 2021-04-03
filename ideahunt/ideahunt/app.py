@@ -5,7 +5,6 @@ from flask_jwt_extended.view_decorators import jwt_optional
 from flask_migrate import Migrate
 from flask_sockets import Sockets
 
-from ideahunt.auth import *
 from ideahunt.config import Config
 from ideahunt.graphql.graphqlview import IdeahuntGraphQLView
 from ideahunt.graphql.schema import schema
@@ -47,7 +46,5 @@ def create_app(config=Config):
 
     app.add_url_rule("/graphql", methods=["GET", "POST", "PUT", "DELETE"], view_func=graphql_view())
     app.route("/graphiql")(graphiql_view)
-    app.add_url_rule("/register", methods=["POST"], view_func=register)
-    app.add_url_rule("/login", methods=["POST"], view_func=login)
 
     return app

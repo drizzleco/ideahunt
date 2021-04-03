@@ -3,15 +3,12 @@ import { StatusBar } from "expo-status-bar";
 import React from "react";
 import "@expo/match-media";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { QueryClient, QueryClientProvider } from "react-query";
 
 import Loading from "./components/Loading";
 import { client } from "./graphql/Client";
 import useCachedResources from "./hooks/useCachedResources";
 import useColorScheme from "./hooks/useColorScheme";
 import Navigation from "./navigation";
-
-const queryClient = new QueryClient();
 
 export default function App() {
   const colorScheme = useColorScheme();
@@ -22,13 +19,11 @@ export default function App() {
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <ApolloProvider client={client}>
-        <SafeAreaProvider>
-          <Navigation colorScheme={colorScheme} />
-          <StatusBar />
-        </SafeAreaProvider>
-      </ApolloProvider>
-    </QueryClientProvider>
+    <ApolloProvider client={client}>
+      <SafeAreaProvider>
+        <Navigation colorScheme={colorScheme} />
+        <StatusBar />
+      </SafeAreaProvider>
+    </ApolloProvider>
   );
 }

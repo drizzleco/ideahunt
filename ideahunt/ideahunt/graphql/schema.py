@@ -5,6 +5,7 @@ from graphene import ResolveInfo
 from rx import Observable
 from sqlalchemy import desc
 
+from ideahunt.graphql.mutations.auth import LogIn, Register
 from ideahunt.graphql.mutations.create_comment import CreateComment
 from ideahunt.graphql.mutations.create_follow import CreateFollow
 from ideahunt.graphql.mutations.create_idea import CreateIdea
@@ -17,7 +18,6 @@ from ideahunt.graphql.mutations.delete_like import DeleteLike
 from ideahunt.graphql.mutations.edit_comment import EditComment
 from ideahunt.graphql.mutations.edit_idea import EditIdea
 from ideahunt.graphql.objects import IdeaModel, UserModel
-from ideahunt.helpers import get_viewer
 from ideahunt.models import Idea, User
 
 
@@ -68,6 +68,10 @@ class Query(graphene.ObjectType):
 
 
 class Mutation(graphene.ObjectType):
+    # Auth
+    log_in = LogIn.Field()
+    register = Register.Field()
+
     # Idea Mutations
     create_idea = CreateIdea.Field()
     delete_idea = DeleteIdea.Field()

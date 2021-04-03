@@ -1,19 +1,17 @@
+import { gql, useMutation } from "@apollo/client";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
 import { Formik } from "formik";
 import * as React from "react";
-import { useMutation } from "react-query";
 import styled from "styled-components/native";
 
 import Button from "../components/Button";
 import ScreenContainer from "../components/ScreenContainer";
 import Space from "../components/Space";
 import TextInput from "../components/TextInput";
-import { BACKEND_URL, HTTP_PROTOCOL } from "../graphql/Client";
 import AuthContext from "../navigation/AuthContext";
 
 const FormContainer = styled.View`
-  display: flex;
+  flex-grow: 1;
   max-height: 400px;
 `;
 
@@ -30,30 +28,22 @@ const Label = styled.Text`
   font-size: 20px;
 `;
 
-interface RegisterParams {
-  username: string;
-  password: string;
-}
-
 const RegisterScreen = () => {
   const { signIn } = React.useContext(AuthContext);
 
-  const mutation = useMutation(
-    (login: RegisterParams) =>
-      axios.post(HTTP_PROTOCOL + BACKEND_URL + "/register", login),
-    {
-      onSuccess: async ({ data: { accessToken } }) => {
-        if (accessToken) {
-          try {
-            await AsyncStorage.setItem("ideaHuntToken", accessToken);
-          } catch (e) {
-            console.log(e);
-          }
-          signIn({ userToken: accessToken });
+  const [register, { loading, error }] = useMutation(RegisterScreen.mutation, {
+    onCompleted: async (data) => {
+      const accessToken = data.register.accessToken;
+      if (accessToken) {
+        try {
+          await AsyncStorage.setItem("ideaHuntToken", accessToken);
+        } catch (e) {
+          console.log(e);
         }
-      },
-    }
-  );
+        signIn({ userToken: accessToken });
+      }
+    },
+  });
 
   return (
     <ScreenContainer>
@@ -69,7 +59,8 @@ const RegisterScreen = () => {
             confirm: "",
           }}
           onSubmit={(values) => {
-            mutation.mutate(values);
+            console.log(values);
+            register({ variables: values });
           }}
         >
           {({ handleChange, handleBlur, handleSubmit }) => (
@@ -115,15 +106,8 @@ const RegisterScreen = () => {
                 }}
                 title="Sign up!"
               />
-              {mutation.isLoading ? <Label>Registering you...</Label> : null}
-              {mutation.isError ? (
-                <ErrorLabel>
-                  {mutation?.error?.response?.data?.message}
-                </ErrorLabel>
-              ) : null}
-              {mutation.isSuccess ? (
-                <Label>Registered! To the homepage!!</Label>
-              ) : null}
+              {loading && <Label>Registering you...</Label>}
+              {error && <ErrorLabel>{error}</ErrorLabel>}
             </ScreenContainer>
           )}
         </Formik>
@@ -131,5 +115,25 @@ const RegisterScreen = () => {
     </ScreenContainer>
   );
 };
+
+RegisterScreen.mutation = gql`
+  mutation RegisterScreen(
+    $username: String!
+    $name: String!
+    $email: String!
+    $password: String!
+    $confirm: String!
+  ) {
+    register(
+      username: $username
+      name: $name
+      email: $email
+      password: $password
+      confirm: $confirm
+    ) {
+      accessToken
+    }
+  }
+`;
 
 export default RegisterScreen;

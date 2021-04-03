@@ -1,20 +1,18 @@
+import { gql, useMutation } from "@apollo/client";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
 import { Formik } from "formik";
 import * as React from "react";
 import { View } from "react-native";
-import { useMutation } from "react-query";
 import styled from "styled-components/native";
 
 import Button from "../components/Button";
 import ScreenContainer from "../components/ScreenContainer";
 import Space from "../components/Space";
 import TextInput from "../components/TextInput";
-import { BACKEND_URL, HTTP_PROTOCOL } from "../graphql/Client";
 import AuthContext from "../navigation/AuthContext";
 
 const FormContainer = styled.View`
-  display: flex;
+  flex-grow: 1;
   max-height: 400px;
 `;
 
@@ -31,30 +29,22 @@ const Label = styled.Text`
   font-size: 20px;
 `;
 
-interface LoginParams {
-  username: string;
-  password: string;
-}
-
 const LoginScreen = () => {
   const { signIn } = React.useContext(AuthContext);
 
-  const mutation = useMutation(
-    (login: LoginParams) =>
-      axios.post(HTTP_PROTOCOL + BACKEND_URL + "/login", login),
-    {
-      onSuccess: async ({ data: { accessToken } }) => {
-        if (accessToken) {
-          try {
-            await AsyncStorage.setItem("ideaHuntToken", accessToken);
-          } catch (e) {
-            console.log(e);
-          }
-          signIn({ userToken: accessToken });
+  const [login, { loading, error }] = useMutation(LoginScreen.mutation, {
+    onCompleted: async (data) => {
+      const accessToken = data.logIn.accessToken;
+      if (accessToken) {
+        try {
+          await AsyncStorage.setItem("ideaHuntToken", accessToken);
+        } catch (e) {
+          console.log(e);
         }
-      },
-    }
-  );
+        signIn({ userToken: accessToken });
+      }
+    },
+  });
 
   return (
     <ScreenContainer>
@@ -67,7 +57,7 @@ const LoginScreen = () => {
             password: "",
           }}
           onSubmit={(values) => {
-            mutation.mutate(values);
+            login({ variables: values });
           }}
         >
           {({ handleChange, handleBlur, handleSubmit, values }) => (
@@ -95,20 +85,8 @@ const LoginScreen = () => {
                 title="Login"
                 width={200}
               />
-              {mutation.isLoading ? <Label>Signing you in...</Label> : null}
-              {mutation.isError ? (
-                <>
-                  <ErrorLabel>
-                    {HTTP_PROTOCOL + BACKEND_URL + "/login"}
-                  </ErrorLabel>
-                  <ErrorLabel>
-                    {HTTP_PROTOCOL + BACKEND_URL + "/login"}
-                  </ErrorLabel>
-                </>
-              ) : null}
-              {mutation.isSuccess ? (
-                <Label>Logged in! To the homepage!!</Label>
-              ) : null}
+              {loading && <Label>Signing you in...</Label>}
+              {error && <ErrorLabel> {error} </ErrorLabel>}
             </View>
           )}
         </Formik>
@@ -116,5 +94,13 @@ const LoginScreen = () => {
     </ScreenContainer>
   );
 };
+
+LoginScreen.mutation = gql`
+  mutation LoginScreen($username: String!, $password: String!) {
+    logIn(username: $username, password: $password) {
+      accessToken
+    }
+  }
+`;
 
 export default LoginScreen;
