@@ -79,6 +79,7 @@ const IdeaLikeItem = ({ idea }: { idea: Idea | Comment }) => {
         <Space width={4} />
         <IconButton
           disabled={true}
+          pointerEvents={"none"}
           icon={idea.viewerLike ? faHeart : hollowHeart}
           size={14}
           color={idea.viewerLike ? "red" : "gray"}

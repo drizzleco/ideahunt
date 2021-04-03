@@ -15,15 +15,8 @@ const NewUserScreen = () => {
 
   return (
     <ScreenContainer>
-      <Title>Welcome to the land of ideas~</Title>
+      <Title>IdeaHunt</Title>
       <Space height={40} width={0} />
-      <Button
-        title="Register"
-        onPress={() => {
-          navigation.navigate("RegisterScreen");
-        }}
-      />
-      <Space height={10} width={0} />
       <Button
         title="Login"
         onPress={() => {
