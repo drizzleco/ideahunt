@@ -1,6 +1,6 @@
 import graphene
 
-from ideahunt.helpers import get_viewer
+from ideahunt.helpers import assert_authenticated_user
 from ideahunt.models import Follow, db
 
 
@@ -14,7 +14,8 @@ class DeleteFollow(graphene.Mutation):
         followee_id = graphene.ID(required=True)
 
     def mutate(root, info, followee_id, **kwargs):
-        viewer = info.context.get("viewer")
+        assert_authenticated_user(info.context)
+        viewer = info.context.viewer
         follow = Follow.query.filter_by(user_id=viewer.id, followee_id=followee_id).first()
         db.session.delete(follow)
         db.session.commit()

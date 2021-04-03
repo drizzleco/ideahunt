@@ -18,6 +18,7 @@ from ideahunt.graphql.mutations.delete_like import DeleteLike
 from ideahunt.graphql.mutations.edit_comment import EditComment
 from ideahunt.graphql.mutations.edit_idea import EditIdea
 from ideahunt.graphql.objects import IdeaModel, UserModel
+from ideahunt.helpers import assert_authenticated_user
 from ideahunt.models import Idea, User
 
 
@@ -39,11 +40,13 @@ class Query(graphene.ObjectType):
     messages = graphene.Field(graphene.List(graphene.String))
 
     def resolve_idea(root, info: ResolveInfo, id: Union[str, int]) -> Optional[Idea]:
+        assert_authenticated_user(info.context)
         return IdeaModel.get_query(info).filter_by(id=id).first()
 
     def resolve_more_ideas(
         root, info: ResolveInfo, cursor: Optional[int] = None, limit: Optional[int] = None, **args
     ) -> List[Idea]:
+        assert_authenticated_user(info.context)
         query = IdeaModel.get_query(info).order_by(desc(Idea.id))
         if cursor:
             cursor_query = Idea.query.with_entities(Idea.id).filter(Idea.id == cursor)
@@ -54,16 +57,20 @@ class Query(graphene.ObjectType):
         return IdeasWithCursor(cursor=ideas[-1].id if ideas else cursor, ideas=ideas)
 
     def resolve_viewer(root, info: ResolveInfo, **args) -> User:
-        viewer = info.context.get("viewer")
+        assert_authenticated_user(info.context)
+        viewer = info.context.viewer
         return viewer
 
     def resolve_users(root, info: ResolveInfo, **args) -> List[User]:
+        assert_authenticated_user(info.context)
         return UserModel.get_query(info).all()
 
     def resolve_user(root, info: ResolveInfo, user_id: Union[str, int]) -> Optional[User]:
+        assert_authenticated_user(info.context)
         return UserModel.get_query(info).filter_by(id=user_id).first()
 
     def resolve_messages(roo, info: ResolveInfo) -> List[str]:
+        assert_authenticated_user(info.context)
         return []
 
 

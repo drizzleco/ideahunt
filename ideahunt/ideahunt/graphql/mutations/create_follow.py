@@ -1,7 +1,7 @@
 import graphene
 
 from ideahunt.graphql.objects import FollowModel
-from ideahunt.helpers import get_viewer
+from ideahunt.helpers import assert_authenticated_user
 from ideahunt.models import Follow, db
 
 
@@ -12,7 +12,8 @@ class CreateFollow(graphene.Mutation):
         followee_id = graphene.ID(required=True)
 
     def mutate(root, info, **kwargs):
-        viewer = info.context.get("viewer")
+        assert_authenticated_user(info.context)
+        viewer = info.context.viewer
         follow = Follow(
             followee_id=kwargs.get("followee_id"),
             user_id=viewer.id,

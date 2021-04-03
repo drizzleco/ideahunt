@@ -1,7 +1,7 @@
 import graphene
 
 from ideahunt.graphql.objects import CommentModel
-from ideahunt.helpers import get_viewer
+from ideahunt.helpers import assert_authenticated_user
 from ideahunt.models import Comment, db
 
 
@@ -17,7 +17,8 @@ class CreateComment(graphene.Mutation):
         idea_id = graphene.ID(required=True)
 
     def mutate(root, info, **kwargs):
-        viewer = info.context.get("viewer")
+        assert_authenticated_user(info.context)
+        viewer = info.context.viewer
         comment = Comment(
             description=kwargs.get("description"),
             idea_id=kwargs.get("idea_id"),

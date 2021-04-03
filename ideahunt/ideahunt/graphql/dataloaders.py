@@ -4,10 +4,10 @@ from promise import Promise
 from promise.dataloader import DataLoader
 from sqlalchemy import func
 
-from ideahunt.helpers import get_viewer
 from ideahunt.models import Like
 
 
+# TODO: Figure out if this is a good paradigm. It might not be a good idea
 class ViewerDataLoader(DataLoader):
     def __init__(self, *args, **kwargs):
         self.viewer_id = kwargs.pop("viewer_id")

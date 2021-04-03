@@ -1,8 +1,8 @@
 import graphene
+from ideahunt.helpers import assert_authenticated_user
 from sqlalchemy import and_, or_
 
 from ideahunt.graphql.objects import LikeModel
-from ideahunt.helpers import get_viewer
 from ideahunt.models import Comment, Like, db
 
 
@@ -16,7 +16,8 @@ class CreateLike(graphene.Mutation):
         comment_id = graphene.ID(required=False)
 
     def mutate(root, info, **kwargs):
-        viewer = info.context.get("viewer")
+        assert_authenticated_user(info.context)
+        viewer = info.context.viewer
 
         # Validation
         idea_id = kwargs.get("idea_id")
