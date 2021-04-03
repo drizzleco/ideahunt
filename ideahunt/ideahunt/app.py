@@ -9,7 +9,7 @@ from ideahunt.config import Config
 from ideahunt.graphql.graphqlview import IdeahuntGraphQLView
 from ideahunt.graphql.schema import schema
 from ideahunt.graphql.subscription_server import IdeahuntSubscriptionServer
-from ideahunt.graphql.template import render_graphiql
+from ideahunt.graphql.template import GRAPHQL_PLAYGROUND
 from ideahunt.models import db
 from ideahunt.redis import IdeaHuntRedis
 
@@ -36,15 +36,14 @@ def create_app(config=Config):
         return []
 
     sockets.route("/subscriptions")(echo_socket)
+
     # GraphQl route config
     def graphql_view():
-        view = IdeahuntGraphQLView.as_view("graphql", schema=schema, graphiql=True)
+        view = IdeahuntGraphQLView.as_view(
+            "graphql", schema=schema, graphiql=True, graphiql_template=GRAPHQL_PLAYGROUND
+        )
         return jwt_optional(view)
 
-    def graphiql_view():
-        return make_response(render_graphiql())
-
     app.add_url_rule("/graphql", methods=["GET", "POST", "PUT", "DELETE"], view_func=graphql_view())
-    app.route("/graphiql")(graphiql_view)
 
     return app

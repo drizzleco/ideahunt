@@ -2,6 +2,7 @@ from typing import List, Optional, Union
 
 import graphene
 from graphene import ResolveInfo
+from graphql.error.base import GraphQLError
 from rx import Observable
 from sqlalchemy import desc
 
@@ -57,7 +58,6 @@ class Query(graphene.ObjectType):
         return IdeasWithCursor(cursor=ideas[-1].id if ideas else cursor, ideas=ideas)
 
     def resolve_viewer(root, info: ResolveInfo, **args) -> User:
-        assert_authenticated_user(info.context)
         viewer = info.context.viewer
         return viewer
 

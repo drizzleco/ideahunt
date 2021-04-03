@@ -68,7 +68,7 @@ const authLink = setContext(async (_, { headers }) => {
 const wsLink = new WebSocketLink({
   uri: WS_PROTOCOL + BACKEND_URL + "/subscriptions",
   options: {
-    reconnect: true,
+    reconnect: false,
     connectionParams: async () => {
       const token = await AsyncStorage.getItem("ideaHuntToken");
       return { token };
@@ -88,15 +88,18 @@ const splitLink = split(
   httpLink
 );
 
-const errorLink = onError(({ graphQLErrors, networkError }) => {
+const errorLink = onError((response) => {
+  const { graphQLErrors, operation, networkError } = response;
+  const { operationName } = operation;
   if (graphQLErrors) {
-    graphQLErrors.map(
-      ({ message, locations, path }) =>
-        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+    graphQLErrors.map(({ message, locations, path }) =>
+      console.log(
+        `[GraphQL error]: Operation Name: ${operationName} Message: ${message}, Location: ${locations}, Path: ${path}`
+      )
     );
   }
   if (networkError) {
-    console.log(`[Network error]: ${networkError}`);
+    console.log(`${operationName} [Network error]: ${networkError}`);
     // Remove token and reload page. Need a better fix later
     // AsyncStorage.removeItem("ideaHuntToken");
     // location.reload();

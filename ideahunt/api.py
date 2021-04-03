@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 from gevent import monkey
-
-monkey.patch_all()
 from psycogreen.gevent import patch_psycopg
 
+monkey.patch_all()
 patch_psycopg()
 from ideahunt.app import create_app
 
