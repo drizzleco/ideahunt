@@ -69,7 +69,7 @@ class Query(graphene.ObjectType):
         assert_authenticated_user(info.context)
         return UserModel.get_query(info).filter_by(id=user_id).first()
 
-    def resolve_messages(roo, info: ResolveInfo) -> List[str]:
+    def resolve_messages(root, info: ResolveInfo) -> List[str]:
         assert_authenticated_user(info.context)
         return []
 

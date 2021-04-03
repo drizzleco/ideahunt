@@ -8,4 +8,4 @@ class Config:
     )
     REDIS_URL = os.environ.get("REDIS_URL", "redis://redis:6379/0")
     SECRET_KEY = os.environ.get("SECRET_KEY", "dummy")
-    JWT_SECRET_KEY = os.environ.geT("JWT_SECRET_KEY", "dummyo")
+    JWT_SECRET_KEY = os.environ.get("JWT_SECRET_KEY", "dummyo")
