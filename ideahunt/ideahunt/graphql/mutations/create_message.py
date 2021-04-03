@@ -1,4 +1,5 @@
 import graphene
+
 from ideahunt.helpers import assert_authenticated_user
 
 

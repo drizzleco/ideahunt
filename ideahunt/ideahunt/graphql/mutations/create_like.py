@@ -1,8 +1,8 @@
 import graphene
-from ideahunt.helpers import assert_authenticated_user
 from sqlalchemy import and_, or_
 
 from ideahunt.graphql.objects import LikeModel
+from ideahunt.helpers import assert_authenticated_user
 from ideahunt.models import Comment, Like, db
 
 

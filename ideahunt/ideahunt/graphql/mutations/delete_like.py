@@ -1,6 +1,5 @@
 import graphene
 
-from ideahunt.graphql.objects import LikeModel
 from ideahunt.helpers import assert_authenticated_user
 from ideahunt.models import Like, db
 

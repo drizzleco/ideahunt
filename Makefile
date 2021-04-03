@@ -11,7 +11,11 @@ lint_frontend:
 ### lint_backend -- black, isort
 .PHONY: lint_backend
 lint_backend:
-	cd ideahunt; poetry shell; poetry run isort ideahunt; poetry run black ideahunt; poetry run mypy ideahunt
+	cd ideahunt; poetry run isort ideahunt; poetry run black ideahunt;
+
+### mypy -- mypy ideahunt
+mypy:
+	cd ideahunt; poetry run mypy ideahunt
 
 ### heroku_deploy -- one step heroku deploy
 .PHONY: heroku_deploy

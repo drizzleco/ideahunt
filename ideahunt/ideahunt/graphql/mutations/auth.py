@@ -1,10 +1,7 @@
-from os import access
-
 import graphene
 from flask_jwt_extended.utils import create_access_token
 
-from ideahunt.graphql.objects import CommentModel
-from ideahunt.models import Comment, User, db
+from ideahunt.models import User, db
 
 
 class LogIn(graphene.Mutation):

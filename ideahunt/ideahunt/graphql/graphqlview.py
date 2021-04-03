@@ -21,7 +21,7 @@ class GraphQLContext:
 
 
 class IdeahuntGraphQLView(GraphQLView):
-    def get_context(self) -> Dict[str, Any]:
+    def get_context(self) -> GraphQLContext:
         viewer = get_viewer()
 
         if not viewer:

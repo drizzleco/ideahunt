@@ -45,7 +45,7 @@ class Query(graphene.ObjectType):
 
     def resolve_more_ideas(
         root, info: ResolveInfo, cursor: Optional[int] = None, limit: Optional[int] = None, **args
-    ) -> List[Idea]:
+    ) -> IdeasWithCursor:
         assert_authenticated_user(info.context)
         query = IdeaModel.get_query(info).order_by(desc(Idea.id))
         if cursor:
