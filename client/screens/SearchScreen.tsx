@@ -89,20 +89,19 @@ const SearchScreen = () => {
     []
   );
 
-  const handleChange = (event) => {
-    const { value } = event.target;
-    setSearchQuery(value);
-    refetchSearchPosts(value);
+  const handleChange = (text) => {
+    setSearchQuery(text);
+    refetchSearchPosts(text);
   };
 
-  if (loading) {
+  if (loading || !data) {
     return <Loading color={"blue"} size={"large"} />;
   }
 
   return (
     <ScreenContainer>
       <Title>Search</Title>
-      <Input onChange={handleChange} />
+      <Input value={searchQuery} onChangeText={handleChange} />
       <FlatList
         data={data.moreUsers.users}
         renderItem={({ item }) => <UserPreview user={item} />}
