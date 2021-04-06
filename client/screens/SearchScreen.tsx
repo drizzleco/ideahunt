@@ -1,5 +1,6 @@
 import { gql, useQuery } from "@apollo/client";
 import { useNavigation } from "@react-navigation/native";
+import _ from "lodash";
 import * as React from "react";
 import { FlatList } from "react-native";
 import styled from "styled-components/native";
@@ -68,9 +69,31 @@ const UserPreview = ({ user }: { user: User }) => {
   );
 };
 
+const PAGE_SIZE = 20;
+
 const SearchScreen = () => {
-  const { loading, data } = useQuery(SearchScreen.query);
   const [searchQuery, setSearchQuery] = React.useState("");
+  const { loading, data, refetch } = useQuery(SearchScreen.query, {
+    variables: { query: "", limit: PAGE_SIZE },
+  });
+
+  const refetchSearchPosts = React.useCallback(
+    _.debounce(
+      (text) =>
+        refetch({
+          query: text,
+          limit: PAGE_SIZE,
+        }),
+      200
+    ),
+    []
+  );
+
+  const handleChange = (event) => {
+    const { value } = event.target;
+    setSearchQuery(value);
+    refetchSearchPosts(value);
+  };
 
   if (loading) {
     return <Loading color={"blue"} size={"large"} />;
@@ -79,9 +102,9 @@ const SearchScreen = () => {
   return (
     <ScreenContainer>
       <Title>Search</Title>
-      <Input onChangeText={setSearchQuery} />
+      <Input onChange={handleChange} />
       <FlatList
-        data={data.users}
+        data={data.moreUsers.users}
         renderItem={({ item }) => <UserPreview user={item} />}
         keyExtractor={(item: User) => item.id}
       ></FlatList>
@@ -90,11 +113,14 @@ const SearchScreen = () => {
 };
 
 SearchScreen.query = gql`
-  query SearchScreen {
-    users {
-      id
-      name
-      username
+  query SearchScreen($query: String!, $cursor: ID, $limit: Int) {
+    moreUsers(query: $query, cursor: $cursor, limit: $limit) {
+      cursor
+      users {
+        id
+        name
+        username
+      }
     }
   }
 `;

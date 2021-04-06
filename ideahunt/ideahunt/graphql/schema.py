@@ -4,7 +4,7 @@ import graphene
 from graphene import ResolveInfo
 from graphql.error.base import GraphQLError
 from rx import Observable
-from sqlalchemy import desc
+from sqlalchemy import desc, asc, or_
 
 from ideahunt.graphql.mutations.auth import LogIn, Register
 from ideahunt.graphql.mutations.create_comment import CreateComment
@@ -28,6 +28,11 @@ class IdeasWithCursor(graphene.ObjectType):
     ideas = graphene.Field(graphene.List(IdeaModel))
 
 
+class UsersWithCursor(graphene.ObjectType):
+    cursor = graphene.Field(graphene.Int)
+    users = graphene.Field(graphene.List(UserModel))
+
+
 class Query(graphene.ObjectType):
     idea = graphene.Field(IdeaModel, id=graphene.ID(required=True))
     more_ideas = graphene.Field(
@@ -37,6 +42,12 @@ class Query(graphene.ObjectType):
     )
     viewer = graphene.Field(UserModel)
     users = graphene.Field(graphene.List(UserModel))
+    more_users = graphene.Field(
+        UsersWithCursor,
+        query=graphene.NonNull(graphene.String),
+        cursor=graphene.ID(required=False),
+        limit=graphene.Int(required=False),
+    )
     user = graphene.Field(UserModel, user_id=graphene.ID(required=True))
     messages = graphene.Field(graphene.List(graphene.String))
 
@@ -64,6 +75,30 @@ class Query(graphene.ObjectType):
     def resolve_users(root, info: ResolveInfo, **args) -> List[User]:
         assert_authenticated_user(info.context)
         return UserModel.get_query(info).all()
+
+    def resolve_more_users(
+        root,
+        info: ResolveInfo,
+        query: str,
+        cursor: Optional[int] = None,
+        limit: Optional[int] = None,
+        **args,
+    ) -> UsersWithCursor:
+        assert_authenticated_user(info.context)
+        query = (
+            UserModel.get_query(info)
+            .order_by(asc(User.id))
+            .filter(
+                or_(User.username.ilike(f"%{query}%"), User.name.ilike(f"%{query}%")),
+            )
+        )
+        if cursor:
+            cursor_query = User.query.with_entities(User.id).filter(User.id == cursor)
+            query = query.filter(User.id > cursor_query)
+        if limit:
+            query = query.limit(limit)
+        users = query.all()
+        return UsersWithCursor(cursor=users[-1].id if users else cursor, users=users)
 
     def resolve_user(root, info: ResolveInfo, user_id: Union[str, int]) -> Optional[User]:
         assert_authenticated_user(info.context)
