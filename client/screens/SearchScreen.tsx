@@ -1,14 +1,23 @@
 import { gql, useQuery } from "@apollo/client";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { useNavigation } from "@react-navigation/native";
 import _ from "lodash";
 import * as React from "react";
-import { FlatList } from "react-native";
+import { FlatList, ScrollView } from "react-native";
 import styled from "styled-components/native";
 
+import IdeasList from "../components/IdeasList";
 import Loading from "../components/Loading";
 import ScreenContainer from "../components/ScreenContainer";
 import Space from "../components/Space";
 import { User } from "../types";
+
+const Container = styled.View`
+  align-items: center;
+  background-color: #fffff7;
+  flex-direction: row;
+  padding: 12px;
+`;
 
 const Title = styled.Text`
   font-size: 20px;
@@ -17,8 +26,13 @@ const Title = styled.Text`
 
 const Input = styled.TextInput`
   border: 1px solid;
-  height: 30px;
-  width: 100px;
+  border-radius: 16px;
+  background-color: #f7cfcf;
+  height: 40px;
+  font-size: 16px;
+  padding: 4px;
+  padding-left: 8px;
+  flex-grow: 1;
 `;
 
 const ProfileCircle = styled.View`
@@ -71,37 +85,33 @@ const UserPreview = ({ user }: { user: User }) => {
 
 const PAGE_SIZE = 20;
 
-const SearchScreen = () => {
-  const [searchQuery, setSearchQuery] = React.useState("");
-  const { loading, data, refetch } = useQuery(SearchScreen.query, {
-    variables: { query: "", limit: PAGE_SIZE },
+const SearchUsersScreen = ({ queryString }: { queryString: string }) => {
+  const { loading, data, refetch } = useQuery(SearchUsersScreen.query, {
+    fetchPolicy: "no-cache",
+    variables: { queryString, limit: PAGE_SIZE },
   });
 
-  const refetchSearchPosts = React.useCallback(
-    _.debounce(
-      (text) =>
-        refetch({
-          query: text,
-          limit: PAGE_SIZE,
-        }),
-      200
-    ),
-    []
-  );
+  React.useEffect(() => {
+    refetch({ queryString, limit: PAGE_SIZE });
+  }, [queryString]);
 
-  const handleChange = (text) => {
-    setSearchQuery(text);
-    refetchSearchPosts(text);
-  };
-
-  if (loading || !data) {
+  if (loading) {
     return <Loading color={"blue"} size={"large"} />;
+  }
+
+  if (!data) {
+    return (
+      <Container
+        style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+      >
+        <Title>No users 😢</Title>
+      </Container>
+    );
   }
 
   return (
     <ScreenContainer>
-      <Title>Search</Title>
-      <Input value={searchQuery} onChangeText={handleChange} />
+      <Space height={10} />
       <FlatList
         data={data.moreUsers.users}
         renderItem={({ item }) => <UserPreview user={item} />}
@@ -111,9 +121,9 @@ const SearchScreen = () => {
   );
 };
 
-SearchScreen.query = gql`
-  query SearchScreen($query: String!, $cursor: ID, $limit: Int) {
-    moreUsers(query: $query, cursor: $cursor, limit: $limit) {
+SearchUsersScreen.query = gql`
+  query SearchUsersScreen($queryString: String!, $cursor: ID, $limit: Int) {
+    moreUsers(queryString: $queryString, cursor: $cursor, limit: $limit) {
       cursor
       users {
         id
@@ -123,5 +133,76 @@ SearchScreen.query = gql`
     }
   }
 `;
+
+const SearchIdeasScreen = ({ queryString }: { queryString: string }) => {
+  const { loading, data, refetch } = useQuery(SearchIdeasScreen.query, {
+    fetchPolicy: "no-cache",
+    variables: { queryString, limit: PAGE_SIZE },
+  });
+
+  if (loading) {
+    return <Loading color={"blue"} size={"large"} />;
+  }
+
+  if (!data) {
+    return (
+      <Container
+        style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+      >
+        <Title>No ideas 😢</Title>
+      </Container>
+    );
+  }
+
+  return (
+    <ScrollView contentContainerStyle={{ alignItems: "center" }}>
+      <Space height={10} />
+      <IdeasList ideas={data.moreIdeas.ideas} hideLike />
+    </ScrollView>
+  );
+};
+
+SearchIdeasScreen.query = gql`
+  query SearchIdeasScreen($queryString: String!, $cursor: ID, $limit: Int) {
+    moreIdeas(queryString: $queryString, cursor: $cursor, limit: $limit) {
+      cursor
+      ideas {
+        id
+        ...IdeasList
+      }
+    }
+  }
+  ${IdeasList.fragment}
+`;
+
+const Tab = createMaterialTopTabNavigator();
+
+const SearchScreen = () => {
+  const [searchQuery, setSearchQuery] = React.useState("");
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = React.useState("");
+
+  React.useEffect(
+    _.debounce(() => {
+      setDebouncedSearchQuery(searchQuery);
+    }, 200),
+    [searchQuery]
+  );
+
+  return (
+    <>
+      <Container>
+        <Input value={searchQuery} onChangeText={setSearchQuery} />
+      </Container>
+      <Tab.Navigator>
+        <Tab.Screen name="Ideas">
+          {() => <SearchIdeasScreen queryString={debouncedSearchQuery} />}
+        </Tab.Screen>
+        <Tab.Screen name="Users">
+          {() => <SearchUsersScreen queryString={debouncedSearchQuery} />}
+        </Tab.Screen>
+      </Tab.Navigator>
+    </>
+  );
+};
 
 export default SearchScreen;

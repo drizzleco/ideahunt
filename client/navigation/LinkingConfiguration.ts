@@ -16,7 +16,12 @@ export default {
           },
           Search: {
             screens: {
-              SearchScreen: "search",
+              SearchScreen: {
+                screens: {
+                  Users: "search/users",
+                  Ideas: "search/ideas",
+                },
+              },
               UserProfileScreen: "user/:userId?",
             },
           },

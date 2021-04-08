@@ -93,22 +93,6 @@ const UserProfileScreen = ({ route }) => {
           ) : (
             <FollowButton followeeId={data.user.id} refetch={refetch} />
           ))}
-        {data.user.id === data.viewer.id && (
-          <>
-            <Space height={10} />
-            <Button
-              title="Log Out"
-              onPress={async () => {
-                try {
-                  await AsyncStorage.removeItem("ideaHuntToken");
-                  signOut();
-                } catch (e) {
-                  console.log(e);
-                }
-              }}
-            />
-          </>
-        )}
         <Space height={10} />
         <IdeasList ideas={data.user.ideas} refetch={refetch} />
       </Container>

@@ -35,7 +35,7 @@ const InfoText = styled.Text`
   font-size: 12px;
 `;
 
-const IdeaItem = ({ idea }: { idea: Idea }) => {
+const IdeaItem = ({ idea, hideLike }: { idea: Idea; hideLike?: boolean }) => {
   const navigation = useNavigation();
 
   return (
@@ -77,9 +77,11 @@ const IdeaItem = ({ idea }: { idea: Idea }) => {
             </InfoText>
           </Row>
           <Space height={2} />
-          <Row style={{ justifyContent: "center" }}>
-            <IdeaLikeItem idea={idea} />
-          </Row>
+          {!hideLike && (
+            <Row style={{ justifyContent: "center" }}>
+              <IdeaLikeItem idea={idea} />
+            </Row>
+          )}
         </IdeaContainer>
       </IdeaContent>
       <Space height={4} />
@@ -95,10 +97,12 @@ const IdeasListContainer = styled.View`
 
 const IdeasList = ({
   ideas,
+  hideLike,
   onEndReachedThreshold,
   onEndReached,
 }: {
   ideas: Idea[];
+  hideLike?: boolean;
   onEndReachedThreshold?: number;
   onEndReached?: () => any;
 }) => {
@@ -107,7 +111,7 @@ const IdeasList = ({
     <IdeasListContainer isMobile={isMobile}>
       <FlatList
         data={ideas}
-        renderItem={({ item }) => <IdeaItem idea={item} />}
+        renderItem={({ item }) => <IdeaItem idea={item} hideLike={hideLike} />}
         keyExtractor={(item: Idea) => item.id}
         onEndReachedThreshold={onEndReachedThreshold}
         onEndReached={onEndReached}

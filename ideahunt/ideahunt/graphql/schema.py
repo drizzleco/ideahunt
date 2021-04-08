@@ -37,16 +37,17 @@ class Query(graphene.ObjectType):
     idea = graphene.Field(IdeaModel, id=graphene.ID(required=True))
     more_ideas = graphene.Field(
         IdeasWithCursor,
-        cursor=graphene.ID(required=False),
-        limit=graphene.Int(required=False),
+        query_string=graphene.String(),
+        cursor=graphene.ID(),
+        limit=graphene.Int(),
     )
     viewer = graphene.Field(UserModel)
     users = graphene.Field(graphene.List(UserModel))
     more_users = graphene.Field(
         UsersWithCursor,
-        query=graphene.NonNull(graphene.String),
-        cursor=graphene.ID(required=False),
-        limit=graphene.Int(required=False),
+        query_string=graphene.NonNull(graphene.String),
+        cursor=graphene.ID(),
+        limit=graphene.Int(),
     )
     user = graphene.Field(UserModel, user_id=graphene.ID(required=True))
     messages = graphene.Field(graphene.List(graphene.String))
@@ -56,10 +57,22 @@ class Query(graphene.ObjectType):
         return IdeaModel.get_query(info).filter_by(id=id).first()
 
     def resolve_more_ideas(
-        root, info: ResolveInfo, cursor: Optional[int] = None, limit: Optional[int] = None, **args
+        root,
+        info: ResolveInfo,
+        query_string: Optional[str] = None,
+        cursor: Optional[int] = None,
+        limit: Optional[int] = None,
+        **args,
     ) -> IdeasWithCursor:
         assert_authenticated_user(info.context)
         query = IdeaModel.get_query(info).order_by(desc(Idea.id))
+        if query_string:
+            query = query.filter(
+                or_(
+                    Idea.title.ilike(f"%{query_string}%"),
+                    Idea.description.ilike(f"%{query_string}%"),
+                ),
+            )
         if cursor:
             cursor_query = Idea.query.with_entities(Idea.id).filter(Idea.id == cursor)
             query = query.filter(Idea.id < cursor_query)
@@ -79,7 +92,7 @@ class Query(graphene.ObjectType):
     def resolve_more_users(
         root,
         info: ResolveInfo,
-        query: str,
+        query_string: str,
         cursor: Optional[int] = None,
         limit: Optional[int] = None,
         **args,
@@ -89,7 +102,7 @@ class Query(graphene.ObjectType):
             UserModel.get_query(info)
             .order_by(asc(User.id))
             .filter(
-                or_(User.username.ilike(f"%{query}%"), User.name.ilike(f"%{query}%")),
+                or_(User.username.ilike(f"%{query_string}%"), User.name.ilike(f"%{query_string}%")),
             )
         )
         if cursor:
@@ -146,7 +159,6 @@ class Subscription(graphene.ObjectType):
             pubsub = redis_base.pubsub
             pubsub.subscribe("chat")
             for message in pubsub.listen():
-                print(message)
                 if message["type"] != "message":
                     continue
                 data = message["data"].decode()
