@@ -13,7 +13,7 @@ class LogIn(graphene.Mutation):
 
     def mutate(root, info, **kwargs):
         user = User.query.filter_by(username=kwargs["username"]).first()
-        if not user.check_password(kwargs["password"]):
+        if not user and user.check_password(kwargs["password"]):
             raise Exception("Invalid Password")
         access_token = create_access_token(identity=kwargs["username"], expires_delta=False)
         return LogIn(access_token=access_token)

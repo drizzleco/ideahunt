@@ -2,7 +2,7 @@ import { gql, useMutation } from "@apollo/client";
 import { useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
 import * as React from "react";
-import { KeyboardAvoidingView } from "react-native";
+import { KeyboardAvoidingView, ScrollView } from "react-native";
 import styled from "styled-components/native";
 
 import Button from "../components/Button";
@@ -45,46 +45,46 @@ const CreateIdeaScreen = () => {
         }}
       >
         {({ handleChange, handleBlur, handleSubmit, values }) => (
-          <ScreenContainer>
-            <KeyboardAvoidingView
-              style={{
-                flex: 1,
-                flexDirection: "column",
-                justifyContent: "center",
-                width: "100%",
+          <KeyboardAvoidingView
+            style={{
+              flex: 1,
+              flexDirection: "column",
+              alignItems: "center",
+              width: "100%",
+            }}
+            behavior="padding"
+            enabled
+            keyboardVerticalOffset={140}
+          >
+            <Label>Title</Label>
+            <Space height={8} />
+            <TextInput
+              style={{ width: "90%" }}
+              autoCapitalize={"none"}
+              onChangeText={handleChange("title")}
+              onBlur={handleBlur("title")}
+              value={values.title}
+            />
+            <Space height={20} />
+            <Label>Description</Label>
+            <Space height={8} />
+            <TextInput
+              style={{ width: "90%", maxHeight: 240 }}
+              onChangeText={handleChange("description")}
+              onBlur={handleBlur("description")}
+              value={values.description}
+              multiline={true}
+              numberOfLines={20}
+            />
+            <Space height={20} />
+            <Button
+              onPress={() => {
+                handleSubmit();
               }}
-              behavior="padding"
-              enabled
-              keyboardVerticalOffset={140}
-            >
-              <Label>Title</Label>
-              <Space height={8} />
-              <TextInput
-                autoCapitalize={"none"}
-                onChangeText={handleChange("title")}
-                onBlur={handleBlur("title")}
-                value={values.title}
-              />
-              <Space height={20} />
-              <Label>Description</Label>
-              <Space height={8} />
-              <TextInput
-                onChangeText={handleChange("description")}
-                onBlur={handleBlur("description")}
-                value={values.description}
-                multiline={true}
-                numberOfLines={4}
-              />
-              <Space height={20} />
-              <Button
-                onPress={() => {
-                  handleSubmit();
-                }}
-                title="Create Idea"
-              />
-              {error ? <ErrorLabel> {error.message} </ErrorLabel> : null}
-            </KeyboardAvoidingView>
-          </ScreenContainer>
+              title="Create Idea"
+            />
+            {error ? <ErrorLabel> {error.message} </ErrorLabel> : null}
+          </KeyboardAvoidingView>
         )}
       </Formik>
     </ScreenContainer>

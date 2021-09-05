@@ -17,8 +17,9 @@ const ButtonText = styled.Text`
 `;
 
 interface ButtonProps {
-  color: string;
+  color?: string;
   title: string;
+  onPress: any;
 }
 
 const Button = (props: ButtonProps) => {
