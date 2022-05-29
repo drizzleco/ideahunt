@@ -135,7 +135,7 @@ SearchUsersScreen.query = gql`
 `;
 
 const SearchIdeasScreen = ({ queryString }: { queryString: string }) => {
-  const { loading, data, refetch } = useQuery(SearchIdeasScreen.query, {
+  const { loading, data } = useQuery(SearchIdeasScreen.query, {
     fetchPolicy: "no-cache",
     variables: { queryString, limit: PAGE_SIZE },
   });

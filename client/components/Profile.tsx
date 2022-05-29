@@ -5,8 +5,6 @@ import styled from "styled-components/native";
 import Space from "../components/Space";
 import { User } from "../types";
 
-import ScreenContainer from "./ScreenContainer";
-
 const Container = styled.View`
   align-items: center;
   background-color: #fffff7;

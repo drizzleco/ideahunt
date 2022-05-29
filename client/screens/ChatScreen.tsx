@@ -1,7 +1,7 @@
 import { gql, useMutation, useQuery, useSubscription } from "@apollo/client";
+import { Formik } from "formik";
 import _ from "lodash";
 import * as React from "react";
-import { useForm, Controller } from "react-hook-form";
 import { KeyboardAvoidingView, ScrollView } from "react-native";
 import styled from "styled-components/native";
 
@@ -81,32 +81,44 @@ EchoMessage.subscription = gql`
 
 const CreateMessageButton = () => {
   const [createMessage] = useMutation(CreateMessageButton.mutation);
-  const { control, handleSubmit, errors } = useForm();
-  const onSubmit = (data) => {
-    createMessage({ variables: data });
-  };
-  const onError = (errors) => console.log(errors);
 
   return (
     <Row style={{ width: "100%" }}>
-      <Field>
-        <Controller
-          control={control}
-          render={({ onChange, onBlur, value }) => (
-            <Input
-              onBlur={onBlur}
-              onChangeText={(value) => onChange(value)}
-              value={value}
-            />
-          )}
-          name="word"
-          rules={{ required: true }}
-          defaultValue=""
-        />
-        {errors.word && <ErrorText>This is required.</ErrorText>}
-      </Field>
-
-      <Button title="Submit" onPress={handleSubmit(onSubmit, onError)} />
+      <Formik
+        initialValues={{
+          word: "",
+        }}
+        validate={(values) => {
+          const errors: Record<string, string> = {};
+          if (!values.word) {
+            errors.word = "Required";
+          }
+          return errors;
+        }}
+        onSubmit={(values, { resetForm }) => {
+          createMessage({
+            variables: values,
+            onCompleted: () => {
+              resetForm();
+            },
+          });
+        }}
+      >
+        {({ handleBlur, handleChange, errors, handleSubmit, values }) => (
+          <>
+            <Field>
+              <Input
+                autoCapitalize="none"
+                value={values.word}
+                onBlur={handleBlur("word")}
+                onChangeText={handleChange("word")}
+              />
+              {errors.word && <ErrorText>{errors.word}</ErrorText>}
+            </Field>
+            <Button title="Submit" onPress={handleSubmit} />
+          </>
+        )}
+      </Formik>
     </Row>
   );
 };

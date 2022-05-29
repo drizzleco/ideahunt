@@ -1,16 +1,16 @@
 import { gql } from "@apollo/client";
 import { useNavigation } from "@react-navigation/native";
-import * as React from "react";
 import { formatDistance } from "date-fns";
+import * as React from "react";
 import { FlatList } from "react-native";
 import styled from "styled-components/native";
 
 import IdeaLikeItem from "../components/IdeaLikeItem";
 import Space from "../components/Space";
+import useIsMobile from "../hooks/useIsMobile";
 import { Idea } from "../types";
 
 import Row from "./Row";
-import useIsMobile from "../hooks/useIsMobile";
 
 const IdeaContainer = styled.TouchableOpacity`
   background-color: #faf0e6;
@@ -89,7 +89,7 @@ const IdeaItem = ({ idea, hideLike }: { idea: Idea; hideLike?: boolean }) => {
   );
 };
 
-const IdeasListContainer = styled.View`
+const IdeasListContainer = styled.View<{ isMobile?: boolean }>`
   flex-grow: 1;
   width: ${(props) => (props.isMobile ? "100%" : "40%")};
   padding: 0 10px;

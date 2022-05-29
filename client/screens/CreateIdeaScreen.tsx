@@ -2,7 +2,7 @@ import { gql, useMutation } from "@apollo/client";
 import { useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
 import * as React from "react";
-import { KeyboardAvoidingView, ScrollView } from "react-native";
+import { KeyboardAvoidingView } from "react-native";
 import styled from "styled-components/native";
 
 import Button from "../components/Button";

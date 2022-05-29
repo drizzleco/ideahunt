@@ -59,6 +59,8 @@ export interface Like {
 export interface Idea {
   id: string;
   description: string;
+  createdAt: Date;
+  author: User;
   title: string;
   likeCount: number;
   viewerLike?: Like;

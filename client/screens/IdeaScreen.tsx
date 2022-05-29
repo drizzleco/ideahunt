@@ -11,8 +11,7 @@ import { StackScreenProps } from "@react-navigation/stack";
 import { formatDistance } from "date-fns";
 import _ from "lodash";
 import * as React from "react";
-import { View } from "react-native";
-import { FlatList, Text } from "react-native";
+import { View , FlatList, Text } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import styled from "styled-components/native";
 

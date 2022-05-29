@@ -1,5 +1,4 @@
 import { gql, useQuery, useMutation } from "@apollo/client";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as React from "react";
 import { ScrollView } from "react-native";
 import styled from "styled-components/native";
@@ -8,12 +7,10 @@ import Button from "../components/Button";
 import IdeasList from "../components/IdeasList";
 import Loading from "../components/Loading";
 import Profile from "../components/Profile";
-import ScreenContainer from "../components/ScreenContainer";
 import Space from "../components/Space";
-import AuthContext from "../navigation/AuthContext";
 
 const FollowButton = ({ followeeId, refetch }: { followeeId: string }) => {
-  const [followUser, { data, loading }] = useMutation(FollowButton.mutation);
+  const [followUser] = useMutation(FollowButton.mutation);
   return (
     <Button
       title={"Follow"}
@@ -37,9 +34,7 @@ FollowButton.mutation = gql`
 `;
 
 const UnfollowButton = ({ followeeId, refetch }: { followeeId: string }) => {
-  const [unfollowUser, { data, loading }] = useMutation(
-    UnfollowButton.mutation
-  );
+  const [unfollowUser] = useMutation(UnfollowButton.mutation);
   return (
     <Button
       title={"Unfollow"}
@@ -68,7 +63,6 @@ const Container = styled.View`
 
 const UserProfileScreen = ({ route }) => {
   const { userId } = route.params;
-  const { signOut } = React.useContext(AuthContext);
   const { loading, data, refetch } = useQuery(UserProfileScreen.query, {
     variables: { userId },
   });

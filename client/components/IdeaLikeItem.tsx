@@ -6,6 +6,7 @@ import styled from "styled-components/native";
 
 import IconButton from "../components/IconButton";
 import { Idea, Comment } from "../types";
+
 import Row from "./Row";
 import Space from "./Space";
 

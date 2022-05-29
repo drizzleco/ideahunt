@@ -1,8 +1,7 @@
-import { gql, useQuery, NetworkStatus } from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import * as React from "react";
-import { RefreshControl } from "react-native";
-import { ScrollView } from "react-native";
+import { RefreshControl, ScrollView } from "react-native";
 import styled from "styled-components/native";
 
 import Button from "../components/Button";
