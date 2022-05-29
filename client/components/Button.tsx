@@ -1,7 +1,7 @@
 import * as React from "react";
 import styled from "styled-components/native";
 
-const DefaultButton = styled.TouchableOpacity`
+const DefaultButton = styled.TouchableOpacity<{ color?: string }>`
   background-color: ${(props) => (props.color ? props.color : "salmon")};
   width: 200px;
   height: 40px;
@@ -19,7 +19,8 @@ const ButtonText = styled.Text`
 interface ButtonProps {
   color?: string;
   title: string;
-  onPress: any;
+  width?: number;
+  onPress: () => void;
 }
 
 const Button = (props: ButtonProps) => {

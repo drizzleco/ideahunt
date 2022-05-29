@@ -1,6 +1,5 @@
 import { gql, useMutation } from "@apollo/client";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Formik } from "formik";
 import * as React from "react";
 import { View } from "react-native";
 import styled from "styled-components/native";
@@ -31,9 +30,16 @@ const Label = styled.Text`
 
 const LoginScreen = () => {
   const { signIn } = React.useContext(AuthContext);
+  const [username, setUsername] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [error, setError] = React.useState(null);
 
-  const [login, { loading, error }] = useMutation(LoginScreen.mutation, {
+  const [login, { loading }] = useMutation(LoginScreen.mutation, {
     onCompleted: async (data) => {
+      if (data.logIn.error) {
+        setError(data.logIn.error);
+        return;
+      }
       const accessToken = data.logIn.accessToken;
       if (accessToken) {
         try {
@@ -51,45 +57,32 @@ const LoginScreen = () => {
       <Title>Login</Title>
       <Space height={10} width={10} />
       <FormContainer>
-        <Formik
-          initialValues={{
-            username: "",
-            password: "",
-          }}
-          onSubmit={(values) => {
-            login({ variables: values });
-          }}
-        >
-          {({ handleChange, handleBlur, handleSubmit, values }) => (
-            <View>
-              <Label>Username</Label>
-              <TextInput
-                autoCapitalize={"none"}
-                onChangeText={handleChange("username")}
-                onBlur={handleBlur("username")}
-              />
-              <Space height={10} width={0} />
-              <Label>Password</Label>
-              <TextInput
-                autoCapitalize={"none"}
-                onChangeText={handleChange("password")}
-                onBlur={handleBlur("password")}
-                secureTextEntry={true}
-                value={values.password}
-              />
-              <Space height={10} width={0} />
-              <Button
-                onPress={() => {
-                  handleSubmit();
-                }}
-                title="Login"
-                width={200}
-              />
-              {loading && <Label>Signing you in...</Label>}
-              {error && <ErrorLabel> {error} </ErrorLabel>}
-            </View>
-          )}
-        </Formik>
+        <View>
+          <Label>Username</Label>
+          <TextInput
+            autoCapitalize={"none"}
+            onChangeText={setUsername}
+            value={username}
+          />
+          <Space height={10} width={0} />
+          <Label>Password</Label>
+          <TextInput
+            autoCapitalize={"none"}
+            onChangeText={setPassword}
+            secureTextEntry={true}
+            value={password}
+          />
+          <Space height={10} width={0} />
+          <Button
+            onPress={() => {
+              login({ variables: { username, password } });
+            }}
+            title="Login"
+            width={200}
+          />
+          {loading && <Label>Signing you in...</Label>}
+          {error && <ErrorLabel> {error} </ErrorLabel>}
+        </View>
       </FormContainer>
     </ScreenContainer>
   );
@@ -99,6 +92,7 @@ LoginScreen.mutation = gql`
   mutation LoginScreen($username: String!, $password: String!) {
     logIn(username: $username, password: $password) {
       accessToken
+      error
     }
   }
 `;

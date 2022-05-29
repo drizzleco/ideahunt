@@ -6,6 +6,7 @@ from ideahunt.models import User, db
 
 class LogIn(graphene.Mutation):
     access_token = graphene.String()
+    error = graphene.String()
 
     class Arguments:
         username = graphene.String(required=True)
@@ -13,8 +14,8 @@ class LogIn(graphene.Mutation):
 
     def mutate(root, info, **kwargs):
         user = User.query.filter_by(username=kwargs["username"]).first()
-        if not user and user.check_password(kwargs["password"]):
-            raise Exception("Invalid Password")
+        if not user or not user.check_password(kwargs["password"]):
+            return LogIn(error="Invalid Password")
         access_token = create_access_token(identity=kwargs["username"], expires_delta=False)
         return LogIn(access_token=access_token)
 

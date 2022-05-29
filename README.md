@@ -22,3 +22,7 @@ docker-compose up
 Expo App
 
 `NODE_ENV=production BACKEND_URL=drizzle-ideahunt.herokuapp.com expo publish`
+
+Heroku App
+
+`make heroku_deploy`
