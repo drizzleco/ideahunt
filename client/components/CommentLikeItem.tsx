@@ -50,7 +50,7 @@ const CommentLikeItem = ({
 };
 
 CommentLikeItem.createMutation = gql`
-  mutation LikeItem_CreateLike($commentId: ID!) {
+  mutation CommentLikeItem_CreateLike($commentId: ID!) {
     createLike(commentId: $commentId) {
       id
       commentId
@@ -59,7 +59,7 @@ CommentLikeItem.createMutation = gql`
 `;
 
 CommentLikeItem.deleteMutation = gql`
-  mutation LikeItem_DeleteLike($likeId: ID!) {
+  mutation CommentLikeItem_DeleteLike($likeId: ID!) {
     deleteLike(likeId: $likeId) {
       id
     }

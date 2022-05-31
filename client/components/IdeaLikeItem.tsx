@@ -36,7 +36,7 @@ const IdeaLikeItem = ({ idea }: { idea: Idea | Comment }) => {
             const newLikeRef = cache.writeFragment({
               data: createLike,
               fragment: gql`
-                fragment NewLike on Like {
+                fragment NewLike on LikeModel {
                   id
                   ideaId
                 }
