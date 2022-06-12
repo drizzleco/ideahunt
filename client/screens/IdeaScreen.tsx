@@ -1,4 +1,5 @@
 import { gql, useQuery, useMutation } from "@apollo/client";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import {
   faEdit,
   faPenSquare,
@@ -11,7 +12,7 @@ import { StackScreenProps } from "@react-navigation/stack";
 import { formatDistance } from "date-fns";
 import _ from "lodash";
 import * as React from "react";
-import { View , FlatList, Text } from "react-native";
+import { View, FlatList, Text } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import styled from "styled-components/native";
 
@@ -22,10 +23,10 @@ import IdeaLikeItem from "../components/IdeaLikeItem";
 import Line from "../components/Line";
 import Loading from "../components/Loading";
 import Row from "../components/Row";
-import ScreenContainer from "../components/ScreenContainer";
 import Space from "../components/Space";
 import TextInput from "../components/TextInput";
 import useIsMobile from "../hooks/useIsMobile";
+import { CommentModel } from "../src/generated/graphql";
 import { Comment, HomeScreenParamList } from "../types";
 
 const Container = styled.View`
@@ -101,7 +102,13 @@ DeleteIdeaButton.mutation = gql`
   }
 `;
 
-const NewComment = ({ ideaId, refetch }: { ideaId: string; refetch: any }) => {
+const NewComment = ({
+  ideaId,
+  refetch,
+}: {
+  ideaId: string;
+  refetch: () => void;
+}) => {
   const [description, setDescription] = React.useState("");
   const [showCommentBox, setShowCommentBox] = React.useState(false);
   const [createComment] = useMutation(NewComment.mutation, {
@@ -209,7 +216,7 @@ const IconContainer = styled.TouchableOpacity`
   height: 20px;
 `;
 
-const Icon = ({ icon, onPress }) => {
+const Icon = ({ icon, onPress }: { icon: IconProp; onPress: () => void }) => {
   return (
     <IconContainer onPress={onPress}>
       <FontAwesomeIcon icon={icon} />
@@ -217,7 +224,13 @@ const Icon = ({ icon, onPress }) => {
   );
 };
 
-const DeleteCommentButton = ({ commentId, refetch }) => {
+const DeleteCommentButton = ({
+  commentId,
+  refetch,
+}: {
+  commentId: string;
+  refetch: () => void;
+}) => {
   const [deleteComment] = useMutation(DeleteCommentButton.mutation, {
     onCompleted: refetch,
   });
@@ -253,8 +266,18 @@ const ButtonWrapper = styled.View`
   justify-content: flex-end;
 `;
 
-const EditCommentInput = ({ comment, refetch, setIsEditing }) => {
-  const [description, setDescription] = React.useState(comment.description);
+const EditCommentInput = ({
+  comment,
+  refetch,
+  setIsEditing,
+}: {
+  comment: CommentModel;
+  refetch: () => void;
+  setIsEditing: (value: boolean) => void;
+}) => {
+  const [description, setDescription] = React.useState<string>(
+    comment.description || ""
+  );
   const [editComment] = useMutation(EditCommentInput.mutation, {
     onCompleted: () => {
       refetch();
@@ -310,7 +333,7 @@ const CommentItem = ({
   viewerId,
 }: {
   comment: Comment;
-  refetch: any;
+  refetch: () => void;
   viewerId: string;
 }) => {
   const [isEditing, setIsEditing] = React.useState(false);
@@ -409,7 +432,7 @@ const IdeaScreen = ({ route }: IdeaScreenProps) => {
               marginVertical: 6,
             }}
           >
-            <IdeaLikeItem idea={data.idea} refetch={refetch} />
+            <IdeaLikeItem idea={data.idea} />
             {data.viewer.id === data.idea.author.id && (
               <>
                 <EditIdeaButton id={data.idea.id} />

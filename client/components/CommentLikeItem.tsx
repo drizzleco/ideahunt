@@ -5,6 +5,12 @@ import * as React from "react";
 import styled from "styled-components/native";
 
 import IconButton from "../components/IconButton";
+import {
+  CommentLikeItem_CreateLikeMutation,
+  CommentLikeItem_CreateLikeMutationVariables,
+  CommentLikeItem_DeleteLikeMutation,
+  CommentLikeItem_DeleteLikeMutationVariables,
+} from "../src/generated/graphql";
 import { Comment } from "../types";
 
 const LikeContainer = styled.View`
@@ -24,12 +30,18 @@ const CommentLikeItem = ({
   refetch,
 }: {
   comment: Comment;
-  refetch: any;
+  refetch: () => void;
 }) => {
-  const [createLike] = useMutation(CommentLikeItem.createMutation, {
+  const [createLike] = useMutation<
+    CommentLikeItem_CreateLikeMutation,
+    CommentLikeItem_CreateLikeMutationVariables
+  >(CommentLikeItem.createMutation, {
     onCompleted: refetch,
   });
-  const [deleteLike] = useMutation(CommentLikeItem.deleteMutation, {
+  const [deleteLike] = useMutation<
+    CommentLikeItem_DeleteLikeMutation,
+    CommentLikeItem_DeleteLikeMutationVariables
+  >(CommentLikeItem.deleteMutation, {
     onCompleted: refetch,
   });
 

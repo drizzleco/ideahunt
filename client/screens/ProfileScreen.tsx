@@ -8,7 +8,6 @@ import Button from "../components/Button";
 import IdeasList from "../components/IdeasList";
 import Loading from "../components/Loading";
 import Profile from "../components/Profile";
-import ScreenContainer from "../components/ScreenContainer";
 import Space from "../components/Space";
 import AuthContext from "../navigation/AuthContext";
 
@@ -20,7 +19,7 @@ const Container = styled.View`
 
 const ProfileScreen = () => {
   const { signOut } = React.useContext(AuthContext);
-  const { loading, data, refetch } = useQuery(ProfileScreen.query);
+  const { loading, data } = useQuery(ProfileScreen.query);
 
   if (loading || !data) {
     return <Loading color={"blue"} size={"large"} />;
@@ -50,7 +49,7 @@ const ProfileScreen = () => {
         />
         <Space height={10} />
 
-        <IdeasList ideas={data.viewer.ideas} refetch={refetch} />
+        <IdeasList ideas={data.viewer.ideas} />
       </Container>
     </ScrollView>
   );

@@ -1,7 +1,10 @@
 import * as React from "react";
+import { ViewStyle } from "react-native";
 import styled from "styled-components/native";
 
-const DefaultButton = styled.TouchableOpacity<{ color?: string }>`
+const DefaultButton = styled.TouchableOpacity<{
+  color?: string;
+}>`
   background-color: ${(props) => (props.color ? props.color : "salmon")};
   width: 200px;
   height: 40px;
@@ -17,6 +20,7 @@ const ButtonText = styled.Text`
 `;
 
 interface ButtonProps {
+  style?: ViewStyle;
   color?: string;
   title: string;
   width?: number;

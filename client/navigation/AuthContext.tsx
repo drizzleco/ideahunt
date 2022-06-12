@@ -7,9 +7,12 @@ interface AuthFunctions {
 }
 
 const AuthContext = React.createContext<AuthFunctions>({
-  signIn: (data) => {},
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  signIn: () => {},
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   signOut: () => {},
-  signUp: (data) => {},
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  signUp: () => {},
 });
 
 export default AuthContext;

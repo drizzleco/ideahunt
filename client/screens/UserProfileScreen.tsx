@@ -1,4 +1,5 @@
 import { gql, useQuery, useMutation } from "@apollo/client";
+import { RouteProp } from "@react-navigation/native";
 import * as React from "react";
 import { ScrollView } from "react-native";
 import styled from "styled-components/native";
@@ -8,8 +9,15 @@ import IdeasList from "../components/IdeasList";
 import Loading from "../components/Loading";
 import Profile from "../components/Profile";
 import Space from "../components/Space";
+import { SearchParamList } from "../types";
 
-const FollowButton = ({ followeeId, refetch }: { followeeId: string }) => {
+const FollowButton = ({
+  followeeId,
+  refetch,
+}: {
+  followeeId: string;
+  refetch: () => void;
+}) => {
   const [followUser] = useMutation(FollowButton.mutation);
   return (
     <Button
@@ -33,7 +41,13 @@ FollowButton.mutation = gql`
   }
 `;
 
-const UnfollowButton = ({ followeeId, refetch }: { followeeId: string }) => {
+const UnfollowButton = ({
+  followeeId,
+  refetch,
+}: {
+  followeeId: string;
+  refetch: () => void;
+}) => {
   const [unfollowUser] = useMutation(UnfollowButton.mutation);
   return (
     <Button
@@ -61,7 +75,11 @@ const Container = styled.View`
   background-color: #fffff7;
 `;
 
-const UserProfileScreen = ({ route }) => {
+type UserProfileScreenProps = RouteProp<SearchParamList, "UserProfileScreen">;
+type Props = {
+  route: UserProfileScreenProps;
+};
+const UserProfileScreen = ({ route }: Props) => {
   const { userId } = route.params;
   const { loading, data, refetch } = useQuery(UserProfileScreen.query, {
     variables: { userId },
@@ -88,7 +106,7 @@ const UserProfileScreen = ({ route }) => {
             <FollowButton followeeId={data.user.id} refetch={refetch} />
           ))}
         <Space height={10} />
-        <IdeasList ideas={data.user.ideas} refetch={refetch} />
+        <IdeasList ideas={data.user.ideas} />
       </Container>
     </ScrollView>
   );

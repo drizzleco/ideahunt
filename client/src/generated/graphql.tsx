@@ -13,6 +13,11 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /**
+   * The `DateTime` scalar type represents a DateTime
+   * value as specified by
+   * [iso8601](https://en.wikipedia.org/wiki/ISO_8601).
+   */
   DateTime: any;
 };
 
@@ -31,6 +36,7 @@ export type CommentModel = {
   viewerLike?: Maybe<LikeModel>;
 };
 
+/** Create Comment mutation */
 export type CreateComment = {
   __typename?: 'CreateComment';
   comment?: Maybe<CommentModel>;
@@ -41,6 +47,7 @@ export type CreateFollow = {
   follow?: Maybe<FollowModel>;
 };
 
+/** Create Idea mutation */
 export type CreateIdea = {
   __typename?: 'CreateIdea';
   idea?: Maybe<IdeaModel>;
@@ -58,6 +65,7 @@ export type CreateMessage = {
   message?: Maybe<Scalars['String']>;
 };
 
+/** Delete Comment mutation */
 export type DeleteComment = {
   __typename?: 'DeleteComment';
   id?: Maybe<Scalars['ID']>;
@@ -69,6 +77,7 @@ export type DeleteFollow = {
   userId?: Maybe<Scalars['ID']>;
 };
 
+/** Delete Idea mutation */
 export type DeleteIdea = {
   __typename?: 'DeleteIdea';
   id?: Maybe<Scalars['ID']>;
@@ -79,11 +88,13 @@ export type DeleteLike = {
   id?: Maybe<Scalars['ID']>;
 };
 
+/** Edit Comment mutation */
 export type EditComment = {
   __typename?: 'EditComment';
   comment?: Maybe<CommentModel>;
 };
 
+/** Edit Idea mutation */
 export type EditIdea = {
   __typename?: 'EditIdea';
   idea?: Maybe<IdeaModel>;
@@ -141,16 +152,22 @@ export type LogIn = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  /** Create Comment mutation */
   createComment?: Maybe<CreateComment>;
   createFollow?: Maybe<CreateFollow>;
+  /** Create Idea mutation */
   createIdea?: Maybe<CreateIdea>;
   createLike?: Maybe<CreateLike>;
   createMessage?: Maybe<CreateMessage>;
+  /** Delete Comment mutation */
   deleteComment?: Maybe<DeleteComment>;
   deleteFollow?: Maybe<DeleteFollow>;
+  /** Delete Idea mutation */
   deleteIdea?: Maybe<DeleteIdea>;
   deleteLike?: Maybe<DeleteLike>;
+  /** Edit Comment mutation */
   editComment?: Maybe<EditComment>;
+  /** Edit Idea mutation */
   editIdea?: Maybe<EditIdea>;
   logIn?: Maybe<LogIn>;
   register?: Maybe<Register>;
@@ -319,14 +336,14 @@ export type CommentLikeItem_CreateLikeMutationVariables = Exact<{
 }>;
 
 
-export type CommentLikeItem_CreateLikeMutationModel = { __typename?: 'Mutation', createLike?: { __typename?: 'CreateLike', id?: string | null, commentId?: string | null } | null };
+export type CommentLikeItem_CreateLikeMutation = { __typename?: 'Mutation', createLike?: { __typename?: 'CreateLike', id?: string | null, commentId?: string | null } | null };
 
 export type CommentLikeItem_DeleteLikeMutationVariables = Exact<{
   likeId: Scalars['ID'];
 }>;
 
 
-export type CommentLikeItem_DeleteLikeMutationModel = { __typename?: 'Mutation', deleteLike?: { __typename?: 'DeleteLike', id?: string | null } | null };
+export type CommentLikeItem_DeleteLikeMutation = { __typename?: 'Mutation', deleteLike?: { __typename?: 'DeleteLike', id?: string | null } | null };
 
 export type NewLikeFragment = { __typename?: 'LikeModel', id: string, ideaId?: number | null };
 
@@ -335,14 +352,14 @@ export type LikeItem_CreateLikeMutationVariables = Exact<{
 }>;
 
 
-export type LikeItem_CreateLikeMutationModel = { __typename?: 'Mutation', createLike?: { __typename?: 'CreateLike', id?: string | null, ideaId?: string | null } | null };
+export type LikeItem_CreateLikeMutation = { __typename?: 'Mutation', createLike?: { __typename?: 'CreateLike', id?: string | null, ideaId?: string | null } | null };
 
 export type LikeItem_DeleteLikeMutationVariables = Exact<{
   likeId: Scalars['ID'];
 }>;
 
 
-export type LikeItem_DeleteLikeMutationModel = { __typename?: 'Mutation', deleteLike?: { __typename?: 'DeleteLike', id?: string | null } | null };
+export type LikeItem_DeleteLikeMutation = { __typename?: 'Mutation', deleteLike?: { __typename?: 'DeleteLike', id?: string | null } | null };
 
 export type IdeasListFragment = { __typename?: 'IdeaModel', id: string, description?: string | null, title?: string | null, likeCount?: number | null, createdAt?: any | null, author?: { __typename?: 'UserModel', id: string, name?: string | null, username?: string | null } | null, viewerLike?: { __typename?: 'LikeModel', id: string } | null };
 
@@ -351,26 +368,26 @@ export type ProfileFragment = { __typename?: 'UserModel', id: string, name?: str
 export type EchoMessage_QueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type EchoMessage_QueryQueryModel = { __typename?: 'Query', messages?: Array<string | null> | null };
+export type EchoMessage_QueryQuery = { __typename?: 'Query', messages?: Array<string | null> | null };
 
 export type EchoMessage_SubscriptionSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type EchoMessage_SubscriptionSubscriptionModel = { __typename?: 'Subscription', echoMessage?: string | null };
+export type EchoMessage_SubscriptionSubscription = { __typename?: 'Subscription', echoMessage?: string | null };
 
 export type CreateMessageMutationVariables = Exact<{
   word: Scalars['String'];
 }>;
 
 
-export type CreateMessageMutationModel = { __typename?: 'Mutation', createMessage?: { __typename?: 'CreateMessage', message?: string | null } | null };
+export type CreateMessageMutation = { __typename?: 'Mutation', createMessage?: { __typename?: 'CreateMessage', message?: string | null } | null };
 
 export type SecondsCounterSubscriptionVariables = Exact<{
   upTo: Scalars['Int'];
 }>;
 
 
-export type SecondsCounterSubscriptionModel = { __typename?: 'Subscription', countSeconds?: number | null };
+export type SecondsCounterSubscription = { __typename?: 'Subscription', countSeconds?: number | null };
 
 export type CreateIdeaButtonMutationVariables = Exact<{
   description: Scalars['String'];
@@ -378,7 +395,7 @@ export type CreateIdeaButtonMutationVariables = Exact<{
 }>;
 
 
-export type CreateIdeaButtonMutationModel = { __typename?: 'Mutation', createIdea?: { __typename?: 'CreateIdea', idea?: { __typename?: 'IdeaModel', id: string, description?: string | null, title?: string | null } | null } | null };
+export type CreateIdeaButtonMutation = { __typename?: 'Mutation', createIdea?: { __typename?: 'CreateIdea', idea?: { __typename?: 'IdeaModel', id: string, description?: string | null, title?: string | null } | null } | null };
 
 export type EditIdeaButtonMutationVariables = Exact<{
   ideaId: Scalars['ID'];
@@ -387,7 +404,7 @@ export type EditIdeaButtonMutationVariables = Exact<{
 }>;
 
 
-export type EditIdeaButtonMutationModel = { __typename?: 'Mutation', editIdea?: { __typename?: 'EditIdea', idea?: { __typename?: 'IdeaModel', id: string, description?: string | null, title?: string | null } | null } | null };
+export type EditIdeaButtonMutation = { __typename?: 'Mutation', editIdea?: { __typename?: 'EditIdea', idea?: { __typename?: 'IdeaModel', id: string, description?: string | null, title?: string | null } | null } | null };
 
 export type HomeScreenQueryVariables = Exact<{
   cursor?: InputMaybe<Scalars['ID']>;
@@ -395,14 +412,14 @@ export type HomeScreenQueryVariables = Exact<{
 }>;
 
 
-export type HomeScreenQueryModel = { __typename?: 'Query', moreIdeas?: { __typename?: 'IdeasWithCursor', cursor?: number | null, ideas?: Array<{ __typename?: 'IdeaModel', id: string, description?: string | null, title?: string | null, likeCount?: number | null, createdAt?: any | null, author?: { __typename?: 'UserModel', id: string, name?: string | null, username?: string | null } | null, viewerLike?: { __typename?: 'LikeModel', id: string } | null } | null> | null } | null };
+export type HomeScreenQuery = { __typename?: 'Query', moreIdeas?: { __typename?: 'IdeasWithCursor', cursor?: number | null, ideas?: Array<{ __typename?: 'IdeaModel', id: string, description?: string | null, title?: string | null, likeCount?: number | null, createdAt?: any | null, author?: { __typename?: 'UserModel', id: string, name?: string | null, username?: string | null } | null, viewerLike?: { __typename?: 'LikeModel', id: string } | null } | null> | null } | null };
 
 export type DeleteIdeaMutationVariables = Exact<{
   ideaId: Scalars['ID'];
 }>;
 
 
-export type DeleteIdeaMutationModel = { __typename?: 'Mutation', deleteIdea?: { __typename?: 'DeleteIdea', id?: string | null } | null };
+export type DeleteIdeaMutation = { __typename?: 'Mutation', deleteIdea?: { __typename?: 'DeleteIdea', id?: string | null } | null };
 
 export type CreateCommentMutationVariables = Exact<{
   ideaId: Scalars['ID'];
@@ -410,14 +427,14 @@ export type CreateCommentMutationVariables = Exact<{
 }>;
 
 
-export type CreateCommentMutationModel = { __typename?: 'Mutation', createComment?: { __typename?: 'CreateComment', comment?: { __typename?: 'CommentModel', id: string } | null } | null };
+export type CreateCommentMutation = { __typename?: 'Mutation', createComment?: { __typename?: 'CreateComment', comment?: { __typename?: 'CommentModel', id: string } | null } | null };
 
 export type DeleteCommentMutationVariables = Exact<{
   commentId: Scalars['ID'];
 }>;
 
 
-export type DeleteCommentMutationModel = { __typename?: 'Mutation', deleteComment?: { __typename?: 'DeleteComment', id?: string | null } | null };
+export type DeleteCommentMutation = { __typename?: 'Mutation', deleteComment?: { __typename?: 'DeleteComment', id?: string | null } | null };
 
 export type EditCommentMutationVariables = Exact<{
   commentId: Scalars['ID'];
@@ -425,14 +442,14 @@ export type EditCommentMutationVariables = Exact<{
 }>;
 
 
-export type EditCommentMutationModel = { __typename?: 'Mutation', editComment?: { __typename?: 'EditComment', comment?: { __typename?: 'CommentModel', id: string } | null } | null };
+export type EditCommentMutation = { __typename?: 'Mutation', editComment?: { __typename?: 'EditComment', comment?: { __typename?: 'CommentModel', id: string } | null } | null };
 
 export type IdeasScreenQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type IdeasScreenQueryModel = { __typename?: 'Query', viewer?: { __typename?: 'UserModel', id: string } | null, idea?: { __typename?: 'IdeaModel', id: string, description?: string | null, title?: string | null, createdAt?: any | null, updatedAt?: any | null, likeCount?: number | null, viewerLike?: { __typename?: 'LikeModel', id: string } | null, author?: { __typename?: 'UserModel', id: string, name?: string | null } | null, comments?: Array<{ __typename?: 'CommentModel', id: string, description?: string | null, createdAt?: any | null, updatedAt?: any | null, likeCount?: number | null, viewerLike?: { __typename?: 'LikeModel', id: string } | null, author?: { __typename?: 'UserModel', id: string, name?: string | null } | null } | null> | null } | null };
+export type IdeasScreenQuery = { __typename?: 'Query', viewer?: { __typename?: 'UserModel', id: string } | null, idea?: { __typename?: 'IdeaModel', id: string, description?: string | null, title?: string | null, createdAt?: any | null, updatedAt?: any | null, likeCount?: number | null, viewerLike?: { __typename?: 'LikeModel', id: string } | null, author?: { __typename?: 'UserModel', id: string, name?: string | null } | null, comments?: Array<{ __typename?: 'CommentModel', id: string, description?: string | null, createdAt?: any | null, updatedAt?: any | null, likeCount?: number | null, viewerLike?: { __typename?: 'LikeModel', id: string } | null, author?: { __typename?: 'UserModel', id: string, name?: string | null } | null } | null> | null } | null };
 
 export type LoginScreenMutationVariables = Exact<{
   username: Scalars['String'];
@@ -440,12 +457,12 @@ export type LoginScreenMutationVariables = Exact<{
 }>;
 
 
-export type LoginScreenMutationModel = { __typename?: 'Mutation', logIn?: { __typename?: 'LogIn', accessToken?: string | null, error?: string | null } | null };
+export type LoginScreenMutation = { __typename?: 'Mutation', logIn?: { __typename?: 'LogIn', accessToken?: string | null, error?: string | null } | null };
 
 export type ProfileScreenQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ProfileScreenQueryModel = { __typename?: 'Query', viewer?: { __typename?: 'UserModel', id: string, name?: string | null, username?: string | null, followerCount?: number | null, followingCount?: number | null, ideas?: Array<{ __typename?: 'IdeaModel', id: string, description?: string | null, title?: string | null, likeCount?: number | null, createdAt?: any | null, author?: { __typename?: 'UserModel', id: string, name?: string | null, username?: string | null } | null, viewerLike?: { __typename?: 'LikeModel', id: string } | null } | null> | null } | null };
+export type ProfileScreenQuery = { __typename?: 'Query', viewer?: { __typename?: 'UserModel', id: string, name?: string | null, username?: string | null, followerCount?: number | null, followingCount?: number | null, ideas?: Array<{ __typename?: 'IdeaModel', id: string, description?: string | null, title?: string | null, likeCount?: number | null, createdAt?: any | null, author?: { __typename?: 'UserModel', id: string, name?: string | null, username?: string | null } | null, viewerLike?: { __typename?: 'LikeModel', id: string } | null } | null> | null } | null };
 
 export type RegisterScreenMutationVariables = Exact<{
   username: Scalars['String'];
@@ -456,7 +473,7 @@ export type RegisterScreenMutationVariables = Exact<{
 }>;
 
 
-export type RegisterScreenMutationModel = { __typename?: 'Mutation', register?: { __typename?: 'Register', accessToken?: string | null } | null };
+export type RegisterScreenMutation = { __typename?: 'Mutation', register?: { __typename?: 'Register', accessToken?: string | null } | null };
 
 export type SearchUsersScreenQueryVariables = Exact<{
   queryString: Scalars['String'];
@@ -465,7 +482,7 @@ export type SearchUsersScreenQueryVariables = Exact<{
 }>;
 
 
-export type SearchUsersScreenQueryModel = { __typename?: 'Query', moreUsers?: { __typename?: 'UsersWithCursor', cursor?: number | null, users?: Array<{ __typename?: 'UserModel', id: string, name?: string | null, username?: string | null } | null> | null } | null };
+export type SearchUsersScreenQuery = { __typename?: 'Query', moreUsers?: { __typename?: 'UsersWithCursor', cursor?: number | null, users?: Array<{ __typename?: 'UserModel', id: string, name?: string | null, username?: string | null } | null> | null } | null };
 
 export type SearchIdeasScreenQueryVariables = Exact<{
   queryString: Scalars['String'];
@@ -474,28 +491,28 @@ export type SearchIdeasScreenQueryVariables = Exact<{
 }>;
 
 
-export type SearchIdeasScreenQueryModel = { __typename?: 'Query', moreIdeas?: { __typename?: 'IdeasWithCursor', cursor?: number | null, ideas?: Array<{ __typename?: 'IdeaModel', id: string, description?: string | null, title?: string | null, likeCount?: number | null, createdAt?: any | null, author?: { __typename?: 'UserModel', id: string, name?: string | null, username?: string | null } | null, viewerLike?: { __typename?: 'LikeModel', id: string } | null } | null> | null } | null };
+export type SearchIdeasScreenQuery = { __typename?: 'Query', moreIdeas?: { __typename?: 'IdeasWithCursor', cursor?: number | null, ideas?: Array<{ __typename?: 'IdeaModel', id: string, description?: string | null, title?: string | null, likeCount?: number | null, createdAt?: any | null, author?: { __typename?: 'UserModel', id: string, name?: string | null, username?: string | null } | null, viewerLike?: { __typename?: 'LikeModel', id: string } | null } | null> | null } | null };
 
 export type FollowUserMutationVariables = Exact<{
   followeeId: Scalars['ID'];
 }>;
 
 
-export type FollowUserMutationModel = { __typename?: 'Mutation', createFollow?: { __typename?: 'CreateFollow', follow?: { __typename?: 'FollowModel', userId: string, followeeId: string } | null } | null };
+export type FollowUserMutation = { __typename?: 'Mutation', createFollow?: { __typename?: 'CreateFollow', follow?: { __typename?: 'FollowModel', userId: string, followeeId: string } | null } | null };
 
 export type UnfollowUserMutationVariables = Exact<{
   followeeId: Scalars['ID'];
 }>;
 
 
-export type UnfollowUserMutationModel = { __typename?: 'Mutation', deleteFollow?: { __typename?: 'DeleteFollow', userId?: string | null, followeeId?: string | null } | null };
+export type UnfollowUserMutation = { __typename?: 'Mutation', deleteFollow?: { __typename?: 'DeleteFollow', userId?: string | null, followeeId?: string | null } | null };
 
 export type UserProfileScreenQueryVariables = Exact<{
   userId: Scalars['ID'];
 }>;
 
 
-export type UserProfileScreenQueryModel = { __typename?: 'Query', viewer?: { __typename?: 'UserModel', followsUser?: boolean | null, id: string, name?: string | null, username?: string | null, followerCount?: number | null, followingCount?: number | null } | null, user?: { __typename?: 'UserModel', id: string, name?: string | null, username?: string | null, followerCount?: number | null, followingCount?: number | null, ideas?: Array<{ __typename?: 'IdeaModel', id: string, description?: string | null, title?: string | null, likeCount?: number | null, createdAt?: any | null, author?: { __typename?: 'UserModel', id: string, name?: string | null, username?: string | null } | null, viewerLike?: { __typename?: 'LikeModel', id: string } | null } | null> | null } | null };
+export type UserProfileScreenQuery = { __typename?: 'Query', viewer?: { __typename?: 'UserModel', followsUser?: boolean | null, id: string, name?: string | null, username?: string | null, followerCount?: number | null, followingCount?: number | null } | null, user?: { __typename?: 'UserModel', id: string, name?: string | null, username?: string | null, followerCount?: number | null, followingCount?: number | null, ideas?: Array<{ __typename?: 'IdeaModel', id: string, description?: string | null, title?: string | null, likeCount?: number | null, createdAt?: any | null, author?: { __typename?: 'UserModel', id: string, name?: string | null, username?: string | null } | null, viewerLike?: { __typename?: 'LikeModel', id: string } | null } | null> | null } | null };
 
 export const NewLikeFragmentDoc = gql`
     fragment NewLike on LikeModel {
@@ -537,7 +554,7 @@ export const CommentLikeItem_CreateLikeDocument = gql`
   }
 }
     `;
-export type CommentLikeItem_CreateLikeMutationFn = Apollo.MutationFunction<CommentLikeItem_CreateLikeMutationModel, CommentLikeItem_CreateLikeMutationVariables>;
+export type CommentLikeItem_CreateLikeMutationFn = Apollo.MutationFunction<CommentLikeItem_CreateLikeMutation, CommentLikeItem_CreateLikeMutationVariables>;
 
 /**
  * __useCommentLikeItem_CreateLikeMutation__
@@ -556,13 +573,13 @@ export type CommentLikeItem_CreateLikeMutationFn = Apollo.MutationFunction<Comme
  *   },
  * });
  */
-export function useCommentLikeItem_CreateLikeMutation(baseOptions?: Apollo.MutationHookOptions<CommentLikeItem_CreateLikeMutationModel, CommentLikeItem_CreateLikeMutationVariables>) {
+export function useCommentLikeItem_CreateLikeMutation(baseOptions?: Apollo.MutationHookOptions<CommentLikeItem_CreateLikeMutation, CommentLikeItem_CreateLikeMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CommentLikeItem_CreateLikeMutationModel, CommentLikeItem_CreateLikeMutationVariables>(CommentLikeItem_CreateLikeDocument, options);
+        return Apollo.useMutation<CommentLikeItem_CreateLikeMutation, CommentLikeItem_CreateLikeMutationVariables>(CommentLikeItem_CreateLikeDocument, options);
       }
 export type CommentLikeItem_CreateLikeMutationHookResult = ReturnType<typeof useCommentLikeItem_CreateLikeMutation>;
-export type CommentLikeItem_CreateLikeMutationResult = Apollo.MutationResult<CommentLikeItem_CreateLikeMutationModel>;
-export type CommentLikeItem_CreateLikeMutationOptions = Apollo.BaseMutationOptions<CommentLikeItem_CreateLikeMutationModel, CommentLikeItem_CreateLikeMutationVariables>;
+export type CommentLikeItem_CreateLikeMutationResult = Apollo.MutationResult<CommentLikeItem_CreateLikeMutation>;
+export type CommentLikeItem_CreateLikeMutationOptions = Apollo.BaseMutationOptions<CommentLikeItem_CreateLikeMutation, CommentLikeItem_CreateLikeMutationVariables>;
 export const CommentLikeItem_DeleteLikeDocument = gql`
     mutation CommentLikeItem_DeleteLike($likeId: ID!) {
   deleteLike(likeId: $likeId) {
@@ -570,7 +587,7 @@ export const CommentLikeItem_DeleteLikeDocument = gql`
   }
 }
     `;
-export type CommentLikeItem_DeleteLikeMutationFn = Apollo.MutationFunction<CommentLikeItem_DeleteLikeMutationModel, CommentLikeItem_DeleteLikeMutationVariables>;
+export type CommentLikeItem_DeleteLikeMutationFn = Apollo.MutationFunction<CommentLikeItem_DeleteLikeMutation, CommentLikeItem_DeleteLikeMutationVariables>;
 
 /**
  * __useCommentLikeItem_DeleteLikeMutation__
@@ -589,13 +606,13 @@ export type CommentLikeItem_DeleteLikeMutationFn = Apollo.MutationFunction<Comme
  *   },
  * });
  */
-export function useCommentLikeItem_DeleteLikeMutation(baseOptions?: Apollo.MutationHookOptions<CommentLikeItem_DeleteLikeMutationModel, CommentLikeItem_DeleteLikeMutationVariables>) {
+export function useCommentLikeItem_DeleteLikeMutation(baseOptions?: Apollo.MutationHookOptions<CommentLikeItem_DeleteLikeMutation, CommentLikeItem_DeleteLikeMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CommentLikeItem_DeleteLikeMutationModel, CommentLikeItem_DeleteLikeMutationVariables>(CommentLikeItem_DeleteLikeDocument, options);
+        return Apollo.useMutation<CommentLikeItem_DeleteLikeMutation, CommentLikeItem_DeleteLikeMutationVariables>(CommentLikeItem_DeleteLikeDocument, options);
       }
 export type CommentLikeItem_DeleteLikeMutationHookResult = ReturnType<typeof useCommentLikeItem_DeleteLikeMutation>;
-export type CommentLikeItem_DeleteLikeMutationResult = Apollo.MutationResult<CommentLikeItem_DeleteLikeMutationModel>;
-export type CommentLikeItem_DeleteLikeMutationOptions = Apollo.BaseMutationOptions<CommentLikeItem_DeleteLikeMutationModel, CommentLikeItem_DeleteLikeMutationVariables>;
+export type CommentLikeItem_DeleteLikeMutationResult = Apollo.MutationResult<CommentLikeItem_DeleteLikeMutation>;
+export type CommentLikeItem_DeleteLikeMutationOptions = Apollo.BaseMutationOptions<CommentLikeItem_DeleteLikeMutation, CommentLikeItem_DeleteLikeMutationVariables>;
 export const LikeItem_CreateLikeDocument = gql`
     mutation LikeItem_CreateLike($ideaId: ID!) {
   createLike(ideaId: $ideaId) {
@@ -604,7 +621,7 @@ export const LikeItem_CreateLikeDocument = gql`
   }
 }
     `;
-export type LikeItem_CreateLikeMutationFn = Apollo.MutationFunction<LikeItem_CreateLikeMutationModel, LikeItem_CreateLikeMutationVariables>;
+export type LikeItem_CreateLikeMutationFn = Apollo.MutationFunction<LikeItem_CreateLikeMutation, LikeItem_CreateLikeMutationVariables>;
 
 /**
  * __useLikeItem_CreateLikeMutation__
@@ -623,13 +640,13 @@ export type LikeItem_CreateLikeMutationFn = Apollo.MutationFunction<LikeItem_Cre
  *   },
  * });
  */
-export function useLikeItem_CreateLikeMutation(baseOptions?: Apollo.MutationHookOptions<LikeItem_CreateLikeMutationModel, LikeItem_CreateLikeMutationVariables>) {
+export function useLikeItem_CreateLikeMutation(baseOptions?: Apollo.MutationHookOptions<LikeItem_CreateLikeMutation, LikeItem_CreateLikeMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<LikeItem_CreateLikeMutationModel, LikeItem_CreateLikeMutationVariables>(LikeItem_CreateLikeDocument, options);
+        return Apollo.useMutation<LikeItem_CreateLikeMutation, LikeItem_CreateLikeMutationVariables>(LikeItem_CreateLikeDocument, options);
       }
 export type LikeItem_CreateLikeMutationHookResult = ReturnType<typeof useLikeItem_CreateLikeMutation>;
-export type LikeItem_CreateLikeMutationResult = Apollo.MutationResult<LikeItem_CreateLikeMutationModel>;
-export type LikeItem_CreateLikeMutationOptions = Apollo.BaseMutationOptions<LikeItem_CreateLikeMutationModel, LikeItem_CreateLikeMutationVariables>;
+export type LikeItem_CreateLikeMutationResult = Apollo.MutationResult<LikeItem_CreateLikeMutation>;
+export type LikeItem_CreateLikeMutationOptions = Apollo.BaseMutationOptions<LikeItem_CreateLikeMutation, LikeItem_CreateLikeMutationVariables>;
 export const LikeItem_DeleteLikeDocument = gql`
     mutation LikeItem_DeleteLike($likeId: ID!) {
   deleteLike(likeId: $likeId) {
@@ -637,7 +654,7 @@ export const LikeItem_DeleteLikeDocument = gql`
   }
 }
     `;
-export type LikeItem_DeleteLikeMutationFn = Apollo.MutationFunction<LikeItem_DeleteLikeMutationModel, LikeItem_DeleteLikeMutationVariables>;
+export type LikeItem_DeleteLikeMutationFn = Apollo.MutationFunction<LikeItem_DeleteLikeMutation, LikeItem_DeleteLikeMutationVariables>;
 
 /**
  * __useLikeItem_DeleteLikeMutation__
@@ -656,13 +673,13 @@ export type LikeItem_DeleteLikeMutationFn = Apollo.MutationFunction<LikeItem_Del
  *   },
  * });
  */
-export function useLikeItem_DeleteLikeMutation(baseOptions?: Apollo.MutationHookOptions<LikeItem_DeleteLikeMutationModel, LikeItem_DeleteLikeMutationVariables>) {
+export function useLikeItem_DeleteLikeMutation(baseOptions?: Apollo.MutationHookOptions<LikeItem_DeleteLikeMutation, LikeItem_DeleteLikeMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<LikeItem_DeleteLikeMutationModel, LikeItem_DeleteLikeMutationVariables>(LikeItem_DeleteLikeDocument, options);
+        return Apollo.useMutation<LikeItem_DeleteLikeMutation, LikeItem_DeleteLikeMutationVariables>(LikeItem_DeleteLikeDocument, options);
       }
 export type LikeItem_DeleteLikeMutationHookResult = ReturnType<typeof useLikeItem_DeleteLikeMutation>;
-export type LikeItem_DeleteLikeMutationResult = Apollo.MutationResult<LikeItem_DeleteLikeMutationModel>;
-export type LikeItem_DeleteLikeMutationOptions = Apollo.BaseMutationOptions<LikeItem_DeleteLikeMutationModel, LikeItem_DeleteLikeMutationVariables>;
+export type LikeItem_DeleteLikeMutationResult = Apollo.MutationResult<LikeItem_DeleteLikeMutation>;
+export type LikeItem_DeleteLikeMutationOptions = Apollo.BaseMutationOptions<LikeItem_DeleteLikeMutation, LikeItem_DeleteLikeMutationVariables>;
 export const EchoMessage_QueryDocument = gql`
     query EchoMessage_Query {
   messages
@@ -684,17 +701,17 @@ export const EchoMessage_QueryDocument = gql`
  *   },
  * });
  */
-export function useEchoMessage_QueryQuery(baseOptions?: Apollo.QueryHookOptions<EchoMessage_QueryQueryModel, EchoMessage_QueryQueryVariables>) {
+export function useEchoMessage_QueryQuery(baseOptions?: Apollo.QueryHookOptions<EchoMessage_QueryQuery, EchoMessage_QueryQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<EchoMessage_QueryQueryModel, EchoMessage_QueryQueryVariables>(EchoMessage_QueryDocument, options);
+        return Apollo.useQuery<EchoMessage_QueryQuery, EchoMessage_QueryQueryVariables>(EchoMessage_QueryDocument, options);
       }
-export function useEchoMessage_QueryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<EchoMessage_QueryQueryModel, EchoMessage_QueryQueryVariables>) {
+export function useEchoMessage_QueryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<EchoMessage_QueryQuery, EchoMessage_QueryQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<EchoMessage_QueryQueryModel, EchoMessage_QueryQueryVariables>(EchoMessage_QueryDocument, options);
+          return Apollo.useLazyQuery<EchoMessage_QueryQuery, EchoMessage_QueryQueryVariables>(EchoMessage_QueryDocument, options);
         }
 export type EchoMessage_QueryQueryHookResult = ReturnType<typeof useEchoMessage_QueryQuery>;
 export type EchoMessage_QueryLazyQueryHookResult = ReturnType<typeof useEchoMessage_QueryLazyQuery>;
-export type EchoMessage_QueryQueryResult = Apollo.QueryResult<EchoMessage_QueryQueryModel, EchoMessage_QueryQueryVariables>;
+export type EchoMessage_QueryQueryResult = Apollo.QueryResult<EchoMessage_QueryQuery, EchoMessage_QueryQueryVariables>;
 export const EchoMessage_SubscriptionDocument = gql`
     subscription EchoMessage_Subscription {
   echoMessage
@@ -716,12 +733,12 @@ export const EchoMessage_SubscriptionDocument = gql`
  *   },
  * });
  */
-export function useEchoMessage_SubscriptionSubscription(baseOptions?: Apollo.SubscriptionHookOptions<EchoMessage_SubscriptionSubscriptionModel, EchoMessage_SubscriptionSubscriptionVariables>) {
+export function useEchoMessage_SubscriptionSubscription(baseOptions?: Apollo.SubscriptionHookOptions<EchoMessage_SubscriptionSubscription, EchoMessage_SubscriptionSubscriptionVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useSubscription<EchoMessage_SubscriptionSubscriptionModel, EchoMessage_SubscriptionSubscriptionVariables>(EchoMessage_SubscriptionDocument, options);
+        return Apollo.useSubscription<EchoMessage_SubscriptionSubscription, EchoMessage_SubscriptionSubscriptionVariables>(EchoMessage_SubscriptionDocument, options);
       }
 export type EchoMessage_SubscriptionSubscriptionHookResult = ReturnType<typeof useEchoMessage_SubscriptionSubscription>;
-export type EchoMessage_SubscriptionSubscriptionResult = Apollo.SubscriptionResult<EchoMessage_SubscriptionSubscriptionModel>;
+export type EchoMessage_SubscriptionSubscriptionResult = Apollo.SubscriptionResult<EchoMessage_SubscriptionSubscription>;
 export const CreateMessageDocument = gql`
     mutation CreateMessage($word: String!) {
   createMessage(word: $word) {
@@ -729,7 +746,7 @@ export const CreateMessageDocument = gql`
   }
 }
     `;
-export type CreateMessageMutationFn = Apollo.MutationFunction<CreateMessageMutationModel, CreateMessageMutationVariables>;
+export type CreateMessageMutationFn = Apollo.MutationFunction<CreateMessageMutation, CreateMessageMutationVariables>;
 
 /**
  * __useCreateMessageMutation__
@@ -748,13 +765,13 @@ export type CreateMessageMutationFn = Apollo.MutationFunction<CreateMessageMutat
  *   },
  * });
  */
-export function useCreateMessageMutation(baseOptions?: Apollo.MutationHookOptions<CreateMessageMutationModel, CreateMessageMutationVariables>) {
+export function useCreateMessageMutation(baseOptions?: Apollo.MutationHookOptions<CreateMessageMutation, CreateMessageMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateMessageMutationModel, CreateMessageMutationVariables>(CreateMessageDocument, options);
+        return Apollo.useMutation<CreateMessageMutation, CreateMessageMutationVariables>(CreateMessageDocument, options);
       }
 export type CreateMessageMutationHookResult = ReturnType<typeof useCreateMessageMutation>;
-export type CreateMessageMutationResult = Apollo.MutationResult<CreateMessageMutationModel>;
-export type CreateMessageMutationOptions = Apollo.BaseMutationOptions<CreateMessageMutationModel, CreateMessageMutationVariables>;
+export type CreateMessageMutationResult = Apollo.MutationResult<CreateMessageMutation>;
+export type CreateMessageMutationOptions = Apollo.BaseMutationOptions<CreateMessageMutation, CreateMessageMutationVariables>;
 export const SecondsCounterDocument = gql`
     subscription SecondsCounter($upTo: Int!) {
   countSeconds(upTo: $upTo)
@@ -777,12 +794,12 @@ export const SecondsCounterDocument = gql`
  *   },
  * });
  */
-export function useSecondsCounterSubscription(baseOptions: Apollo.SubscriptionHookOptions<SecondsCounterSubscriptionModel, SecondsCounterSubscriptionVariables>) {
+export function useSecondsCounterSubscription(baseOptions: Apollo.SubscriptionHookOptions<SecondsCounterSubscription, SecondsCounterSubscriptionVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useSubscription<SecondsCounterSubscriptionModel, SecondsCounterSubscriptionVariables>(SecondsCounterDocument, options);
+        return Apollo.useSubscription<SecondsCounterSubscription, SecondsCounterSubscriptionVariables>(SecondsCounterDocument, options);
       }
 export type SecondsCounterSubscriptionHookResult = ReturnType<typeof useSecondsCounterSubscription>;
-export type SecondsCounterSubscriptionResult = Apollo.SubscriptionResult<SecondsCounterSubscriptionModel>;
+export type SecondsCounterSubscriptionResult = Apollo.SubscriptionResult<SecondsCounterSubscription>;
 export const CreateIdeaButtonDocument = gql`
     mutation CreateIdeaButton($description: String!, $title: String!) {
   createIdea(description: $description, title: $title) {
@@ -794,7 +811,7 @@ export const CreateIdeaButtonDocument = gql`
   }
 }
     `;
-export type CreateIdeaButtonMutationFn = Apollo.MutationFunction<CreateIdeaButtonMutationModel, CreateIdeaButtonMutationVariables>;
+export type CreateIdeaButtonMutationFn = Apollo.MutationFunction<CreateIdeaButtonMutation, CreateIdeaButtonMutationVariables>;
 
 /**
  * __useCreateIdeaButtonMutation__
@@ -814,13 +831,13 @@ export type CreateIdeaButtonMutationFn = Apollo.MutationFunction<CreateIdeaButto
  *   },
  * });
  */
-export function useCreateIdeaButtonMutation(baseOptions?: Apollo.MutationHookOptions<CreateIdeaButtonMutationModel, CreateIdeaButtonMutationVariables>) {
+export function useCreateIdeaButtonMutation(baseOptions?: Apollo.MutationHookOptions<CreateIdeaButtonMutation, CreateIdeaButtonMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateIdeaButtonMutationModel, CreateIdeaButtonMutationVariables>(CreateIdeaButtonDocument, options);
+        return Apollo.useMutation<CreateIdeaButtonMutation, CreateIdeaButtonMutationVariables>(CreateIdeaButtonDocument, options);
       }
 export type CreateIdeaButtonMutationHookResult = ReturnType<typeof useCreateIdeaButtonMutation>;
-export type CreateIdeaButtonMutationResult = Apollo.MutationResult<CreateIdeaButtonMutationModel>;
-export type CreateIdeaButtonMutationOptions = Apollo.BaseMutationOptions<CreateIdeaButtonMutationModel, CreateIdeaButtonMutationVariables>;
+export type CreateIdeaButtonMutationResult = Apollo.MutationResult<CreateIdeaButtonMutation>;
+export type CreateIdeaButtonMutationOptions = Apollo.BaseMutationOptions<CreateIdeaButtonMutation, CreateIdeaButtonMutationVariables>;
 export const EditIdeaButtonDocument = gql`
     mutation EditIdeaButton($ideaId: ID!, $description: String!, $title: String!) {
   editIdea(ideaId: $ideaId, description: $description, title: $title) {
@@ -832,7 +849,7 @@ export const EditIdeaButtonDocument = gql`
   }
 }
     `;
-export type EditIdeaButtonMutationFn = Apollo.MutationFunction<EditIdeaButtonMutationModel, EditIdeaButtonMutationVariables>;
+export type EditIdeaButtonMutationFn = Apollo.MutationFunction<EditIdeaButtonMutation, EditIdeaButtonMutationVariables>;
 
 /**
  * __useEditIdeaButtonMutation__
@@ -853,13 +870,13 @@ export type EditIdeaButtonMutationFn = Apollo.MutationFunction<EditIdeaButtonMut
  *   },
  * });
  */
-export function useEditIdeaButtonMutation(baseOptions?: Apollo.MutationHookOptions<EditIdeaButtonMutationModel, EditIdeaButtonMutationVariables>) {
+export function useEditIdeaButtonMutation(baseOptions?: Apollo.MutationHookOptions<EditIdeaButtonMutation, EditIdeaButtonMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<EditIdeaButtonMutationModel, EditIdeaButtonMutationVariables>(EditIdeaButtonDocument, options);
+        return Apollo.useMutation<EditIdeaButtonMutation, EditIdeaButtonMutationVariables>(EditIdeaButtonDocument, options);
       }
 export type EditIdeaButtonMutationHookResult = ReturnType<typeof useEditIdeaButtonMutation>;
-export type EditIdeaButtonMutationResult = Apollo.MutationResult<EditIdeaButtonMutationModel>;
-export type EditIdeaButtonMutationOptions = Apollo.BaseMutationOptions<EditIdeaButtonMutationModel, EditIdeaButtonMutationVariables>;
+export type EditIdeaButtonMutationResult = Apollo.MutationResult<EditIdeaButtonMutation>;
+export type EditIdeaButtonMutationOptions = Apollo.BaseMutationOptions<EditIdeaButtonMutation, EditIdeaButtonMutationVariables>;
 export const HomeScreenDocument = gql`
     query HomeScreen($cursor: ID, $limit: Int) {
   moreIdeas(cursor: $cursor, limit: $limit) {
@@ -889,17 +906,17 @@ export const HomeScreenDocument = gql`
  *   },
  * });
  */
-export function useHomeScreenQuery(baseOptions?: Apollo.QueryHookOptions<HomeScreenQueryModel, HomeScreenQueryVariables>) {
+export function useHomeScreenQuery(baseOptions?: Apollo.QueryHookOptions<HomeScreenQuery, HomeScreenQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<HomeScreenQueryModel, HomeScreenQueryVariables>(HomeScreenDocument, options);
+        return Apollo.useQuery<HomeScreenQuery, HomeScreenQueryVariables>(HomeScreenDocument, options);
       }
-export function useHomeScreenLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<HomeScreenQueryModel, HomeScreenQueryVariables>) {
+export function useHomeScreenLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<HomeScreenQuery, HomeScreenQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<HomeScreenQueryModel, HomeScreenQueryVariables>(HomeScreenDocument, options);
+          return Apollo.useLazyQuery<HomeScreenQuery, HomeScreenQueryVariables>(HomeScreenDocument, options);
         }
 export type HomeScreenQueryHookResult = ReturnType<typeof useHomeScreenQuery>;
 export type HomeScreenLazyQueryHookResult = ReturnType<typeof useHomeScreenLazyQuery>;
-export type HomeScreenQueryResult = Apollo.QueryResult<HomeScreenQueryModel, HomeScreenQueryVariables>;
+export type HomeScreenQueryResult = Apollo.QueryResult<HomeScreenQuery, HomeScreenQueryVariables>;
 export const DeleteIdeaDocument = gql`
     mutation DeleteIdea($ideaId: ID!) {
   deleteIdea(ideaId: $ideaId) {
@@ -907,7 +924,7 @@ export const DeleteIdeaDocument = gql`
   }
 }
     `;
-export type DeleteIdeaMutationFn = Apollo.MutationFunction<DeleteIdeaMutationModel, DeleteIdeaMutationVariables>;
+export type DeleteIdeaMutationFn = Apollo.MutationFunction<DeleteIdeaMutation, DeleteIdeaMutationVariables>;
 
 /**
  * __useDeleteIdeaMutation__
@@ -926,13 +943,13 @@ export type DeleteIdeaMutationFn = Apollo.MutationFunction<DeleteIdeaMutationMod
  *   },
  * });
  */
-export function useDeleteIdeaMutation(baseOptions?: Apollo.MutationHookOptions<DeleteIdeaMutationModel, DeleteIdeaMutationVariables>) {
+export function useDeleteIdeaMutation(baseOptions?: Apollo.MutationHookOptions<DeleteIdeaMutation, DeleteIdeaMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeleteIdeaMutationModel, DeleteIdeaMutationVariables>(DeleteIdeaDocument, options);
+        return Apollo.useMutation<DeleteIdeaMutation, DeleteIdeaMutationVariables>(DeleteIdeaDocument, options);
       }
 export type DeleteIdeaMutationHookResult = ReturnType<typeof useDeleteIdeaMutation>;
-export type DeleteIdeaMutationResult = Apollo.MutationResult<DeleteIdeaMutationModel>;
-export type DeleteIdeaMutationOptions = Apollo.BaseMutationOptions<DeleteIdeaMutationModel, DeleteIdeaMutationVariables>;
+export type DeleteIdeaMutationResult = Apollo.MutationResult<DeleteIdeaMutation>;
+export type DeleteIdeaMutationOptions = Apollo.BaseMutationOptions<DeleteIdeaMutation, DeleteIdeaMutationVariables>;
 export const CreateCommentDocument = gql`
     mutation createComment($ideaId: ID!, $description: String!) {
   createComment(ideaId: $ideaId, description: $description) {
@@ -942,7 +959,7 @@ export const CreateCommentDocument = gql`
   }
 }
     `;
-export type CreateCommentMutationFn = Apollo.MutationFunction<CreateCommentMutationModel, CreateCommentMutationVariables>;
+export type CreateCommentMutationFn = Apollo.MutationFunction<CreateCommentMutation, CreateCommentMutationVariables>;
 
 /**
  * __useCreateCommentMutation__
@@ -962,13 +979,13 @@ export type CreateCommentMutationFn = Apollo.MutationFunction<CreateCommentMutat
  *   },
  * });
  */
-export function useCreateCommentMutation(baseOptions?: Apollo.MutationHookOptions<CreateCommentMutationModel, CreateCommentMutationVariables>) {
+export function useCreateCommentMutation(baseOptions?: Apollo.MutationHookOptions<CreateCommentMutation, CreateCommentMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateCommentMutationModel, CreateCommentMutationVariables>(CreateCommentDocument, options);
+        return Apollo.useMutation<CreateCommentMutation, CreateCommentMutationVariables>(CreateCommentDocument, options);
       }
 export type CreateCommentMutationHookResult = ReturnType<typeof useCreateCommentMutation>;
-export type CreateCommentMutationResult = Apollo.MutationResult<CreateCommentMutationModel>;
-export type CreateCommentMutationOptions = Apollo.BaseMutationOptions<CreateCommentMutationModel, CreateCommentMutationVariables>;
+export type CreateCommentMutationResult = Apollo.MutationResult<CreateCommentMutation>;
+export type CreateCommentMutationOptions = Apollo.BaseMutationOptions<CreateCommentMutation, CreateCommentMutationVariables>;
 export const DeleteCommentDocument = gql`
     mutation DeleteComment($commentId: ID!) {
   deleteComment(commentId: $commentId) {
@@ -976,7 +993,7 @@ export const DeleteCommentDocument = gql`
   }
 }
     `;
-export type DeleteCommentMutationFn = Apollo.MutationFunction<DeleteCommentMutationModel, DeleteCommentMutationVariables>;
+export type DeleteCommentMutationFn = Apollo.MutationFunction<DeleteCommentMutation, DeleteCommentMutationVariables>;
 
 /**
  * __useDeleteCommentMutation__
@@ -995,13 +1012,13 @@ export type DeleteCommentMutationFn = Apollo.MutationFunction<DeleteCommentMutat
  *   },
  * });
  */
-export function useDeleteCommentMutation(baseOptions?: Apollo.MutationHookOptions<DeleteCommentMutationModel, DeleteCommentMutationVariables>) {
+export function useDeleteCommentMutation(baseOptions?: Apollo.MutationHookOptions<DeleteCommentMutation, DeleteCommentMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeleteCommentMutationModel, DeleteCommentMutationVariables>(DeleteCommentDocument, options);
+        return Apollo.useMutation<DeleteCommentMutation, DeleteCommentMutationVariables>(DeleteCommentDocument, options);
       }
 export type DeleteCommentMutationHookResult = ReturnType<typeof useDeleteCommentMutation>;
-export type DeleteCommentMutationResult = Apollo.MutationResult<DeleteCommentMutationModel>;
-export type DeleteCommentMutationOptions = Apollo.BaseMutationOptions<DeleteCommentMutationModel, DeleteCommentMutationVariables>;
+export type DeleteCommentMutationResult = Apollo.MutationResult<DeleteCommentMutation>;
+export type DeleteCommentMutationOptions = Apollo.BaseMutationOptions<DeleteCommentMutation, DeleteCommentMutationVariables>;
 export const EditCommentDocument = gql`
     mutation EditComment($commentId: ID!, $description: String!) {
   editComment(commentId: $commentId, description: $description) {
@@ -1011,7 +1028,7 @@ export const EditCommentDocument = gql`
   }
 }
     `;
-export type EditCommentMutationFn = Apollo.MutationFunction<EditCommentMutationModel, EditCommentMutationVariables>;
+export type EditCommentMutationFn = Apollo.MutationFunction<EditCommentMutation, EditCommentMutationVariables>;
 
 /**
  * __useEditCommentMutation__
@@ -1031,13 +1048,13 @@ export type EditCommentMutationFn = Apollo.MutationFunction<EditCommentMutationM
  *   },
  * });
  */
-export function useEditCommentMutation(baseOptions?: Apollo.MutationHookOptions<EditCommentMutationModel, EditCommentMutationVariables>) {
+export function useEditCommentMutation(baseOptions?: Apollo.MutationHookOptions<EditCommentMutation, EditCommentMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<EditCommentMutationModel, EditCommentMutationVariables>(EditCommentDocument, options);
+        return Apollo.useMutation<EditCommentMutation, EditCommentMutationVariables>(EditCommentDocument, options);
       }
 export type EditCommentMutationHookResult = ReturnType<typeof useEditCommentMutation>;
-export type EditCommentMutationResult = Apollo.MutationResult<EditCommentMutationModel>;
-export type EditCommentMutationOptions = Apollo.BaseMutationOptions<EditCommentMutationModel, EditCommentMutationVariables>;
+export type EditCommentMutationResult = Apollo.MutationResult<EditCommentMutation>;
+export type EditCommentMutationOptions = Apollo.BaseMutationOptions<EditCommentMutation, EditCommentMutationVariables>;
 export const IdeasScreenDocument = gql`
     query IdeasScreen($id: ID!) {
   viewer {
@@ -1091,17 +1108,17 @@ export const IdeasScreenDocument = gql`
  *   },
  * });
  */
-export function useIdeasScreenQuery(baseOptions: Apollo.QueryHookOptions<IdeasScreenQueryModel, IdeasScreenQueryVariables>) {
+export function useIdeasScreenQuery(baseOptions: Apollo.QueryHookOptions<IdeasScreenQuery, IdeasScreenQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<IdeasScreenQueryModel, IdeasScreenQueryVariables>(IdeasScreenDocument, options);
+        return Apollo.useQuery<IdeasScreenQuery, IdeasScreenQueryVariables>(IdeasScreenDocument, options);
       }
-export function useIdeasScreenLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<IdeasScreenQueryModel, IdeasScreenQueryVariables>) {
+export function useIdeasScreenLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<IdeasScreenQuery, IdeasScreenQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<IdeasScreenQueryModel, IdeasScreenQueryVariables>(IdeasScreenDocument, options);
+          return Apollo.useLazyQuery<IdeasScreenQuery, IdeasScreenQueryVariables>(IdeasScreenDocument, options);
         }
 export type IdeasScreenQueryHookResult = ReturnType<typeof useIdeasScreenQuery>;
 export type IdeasScreenLazyQueryHookResult = ReturnType<typeof useIdeasScreenLazyQuery>;
-export type IdeasScreenQueryResult = Apollo.QueryResult<IdeasScreenQueryModel, IdeasScreenQueryVariables>;
+export type IdeasScreenQueryResult = Apollo.QueryResult<IdeasScreenQuery, IdeasScreenQueryVariables>;
 export const LoginScreenDocument = gql`
     mutation LoginScreen($username: String!, $password: String!) {
   logIn(username: $username, password: $password) {
@@ -1110,7 +1127,7 @@ export const LoginScreenDocument = gql`
   }
 }
     `;
-export type LoginScreenMutationFn = Apollo.MutationFunction<LoginScreenMutationModel, LoginScreenMutationVariables>;
+export type LoginScreenMutationFn = Apollo.MutationFunction<LoginScreenMutation, LoginScreenMutationVariables>;
 
 /**
  * __useLoginScreenMutation__
@@ -1130,13 +1147,13 @@ export type LoginScreenMutationFn = Apollo.MutationFunction<LoginScreenMutationM
  *   },
  * });
  */
-export function useLoginScreenMutation(baseOptions?: Apollo.MutationHookOptions<LoginScreenMutationModel, LoginScreenMutationVariables>) {
+export function useLoginScreenMutation(baseOptions?: Apollo.MutationHookOptions<LoginScreenMutation, LoginScreenMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<LoginScreenMutationModel, LoginScreenMutationVariables>(LoginScreenDocument, options);
+        return Apollo.useMutation<LoginScreenMutation, LoginScreenMutationVariables>(LoginScreenDocument, options);
       }
 export type LoginScreenMutationHookResult = ReturnType<typeof useLoginScreenMutation>;
-export type LoginScreenMutationResult = Apollo.MutationResult<LoginScreenMutationModel>;
-export type LoginScreenMutationOptions = Apollo.BaseMutationOptions<LoginScreenMutationModel, LoginScreenMutationVariables>;
+export type LoginScreenMutationResult = Apollo.MutationResult<LoginScreenMutation>;
+export type LoginScreenMutationOptions = Apollo.BaseMutationOptions<LoginScreenMutation, LoginScreenMutationVariables>;
 export const ProfileScreenDocument = gql`
     query ProfileScreen {
   viewer {
@@ -1165,17 +1182,17 @@ ${IdeasListFragmentDoc}`;
  *   },
  * });
  */
-export function useProfileScreenQuery(baseOptions?: Apollo.QueryHookOptions<ProfileScreenQueryModel, ProfileScreenQueryVariables>) {
+export function useProfileScreenQuery(baseOptions?: Apollo.QueryHookOptions<ProfileScreenQuery, ProfileScreenQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ProfileScreenQueryModel, ProfileScreenQueryVariables>(ProfileScreenDocument, options);
+        return Apollo.useQuery<ProfileScreenQuery, ProfileScreenQueryVariables>(ProfileScreenDocument, options);
       }
-export function useProfileScreenLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProfileScreenQueryModel, ProfileScreenQueryVariables>) {
+export function useProfileScreenLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProfileScreenQuery, ProfileScreenQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ProfileScreenQueryModel, ProfileScreenQueryVariables>(ProfileScreenDocument, options);
+          return Apollo.useLazyQuery<ProfileScreenQuery, ProfileScreenQueryVariables>(ProfileScreenDocument, options);
         }
 export type ProfileScreenQueryHookResult = ReturnType<typeof useProfileScreenQuery>;
 export type ProfileScreenLazyQueryHookResult = ReturnType<typeof useProfileScreenLazyQuery>;
-export type ProfileScreenQueryResult = Apollo.QueryResult<ProfileScreenQueryModel, ProfileScreenQueryVariables>;
+export type ProfileScreenQueryResult = Apollo.QueryResult<ProfileScreenQuery, ProfileScreenQueryVariables>;
 export const RegisterScreenDocument = gql`
     mutation RegisterScreen($username: String!, $name: String!, $email: String!, $password: String!, $confirm: String!) {
   register(
@@ -1189,7 +1206,7 @@ export const RegisterScreenDocument = gql`
   }
 }
     `;
-export type RegisterScreenMutationFn = Apollo.MutationFunction<RegisterScreenMutationModel, RegisterScreenMutationVariables>;
+export type RegisterScreenMutationFn = Apollo.MutationFunction<RegisterScreenMutation, RegisterScreenMutationVariables>;
 
 /**
  * __useRegisterScreenMutation__
@@ -1212,13 +1229,13 @@ export type RegisterScreenMutationFn = Apollo.MutationFunction<RegisterScreenMut
  *   },
  * });
  */
-export function useRegisterScreenMutation(baseOptions?: Apollo.MutationHookOptions<RegisterScreenMutationModel, RegisterScreenMutationVariables>) {
+export function useRegisterScreenMutation(baseOptions?: Apollo.MutationHookOptions<RegisterScreenMutation, RegisterScreenMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<RegisterScreenMutationModel, RegisterScreenMutationVariables>(RegisterScreenDocument, options);
+        return Apollo.useMutation<RegisterScreenMutation, RegisterScreenMutationVariables>(RegisterScreenDocument, options);
       }
 export type RegisterScreenMutationHookResult = ReturnType<typeof useRegisterScreenMutation>;
-export type RegisterScreenMutationResult = Apollo.MutationResult<RegisterScreenMutationModel>;
-export type RegisterScreenMutationOptions = Apollo.BaseMutationOptions<RegisterScreenMutationModel, RegisterScreenMutationVariables>;
+export type RegisterScreenMutationResult = Apollo.MutationResult<RegisterScreenMutation>;
+export type RegisterScreenMutationOptions = Apollo.BaseMutationOptions<RegisterScreenMutation, RegisterScreenMutationVariables>;
 export const SearchUsersScreenDocument = gql`
     query SearchUsersScreen($queryString: String!, $cursor: ID, $limit: Int) {
   moreUsers(queryString: $queryString, cursor: $cursor, limit: $limit) {
@@ -1250,17 +1267,17 @@ export const SearchUsersScreenDocument = gql`
  *   },
  * });
  */
-export function useSearchUsersScreenQuery(baseOptions: Apollo.QueryHookOptions<SearchUsersScreenQueryModel, SearchUsersScreenQueryVariables>) {
+export function useSearchUsersScreenQuery(baseOptions: Apollo.QueryHookOptions<SearchUsersScreenQuery, SearchUsersScreenQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<SearchUsersScreenQueryModel, SearchUsersScreenQueryVariables>(SearchUsersScreenDocument, options);
+        return Apollo.useQuery<SearchUsersScreenQuery, SearchUsersScreenQueryVariables>(SearchUsersScreenDocument, options);
       }
-export function useSearchUsersScreenLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchUsersScreenQueryModel, SearchUsersScreenQueryVariables>) {
+export function useSearchUsersScreenLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchUsersScreenQuery, SearchUsersScreenQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<SearchUsersScreenQueryModel, SearchUsersScreenQueryVariables>(SearchUsersScreenDocument, options);
+          return Apollo.useLazyQuery<SearchUsersScreenQuery, SearchUsersScreenQueryVariables>(SearchUsersScreenDocument, options);
         }
 export type SearchUsersScreenQueryHookResult = ReturnType<typeof useSearchUsersScreenQuery>;
 export type SearchUsersScreenLazyQueryHookResult = ReturnType<typeof useSearchUsersScreenLazyQuery>;
-export type SearchUsersScreenQueryResult = Apollo.QueryResult<SearchUsersScreenQueryModel, SearchUsersScreenQueryVariables>;
+export type SearchUsersScreenQueryResult = Apollo.QueryResult<SearchUsersScreenQuery, SearchUsersScreenQueryVariables>;
 export const SearchIdeasScreenDocument = gql`
     query SearchIdeasScreen($queryString: String!, $cursor: ID, $limit: Int) {
   moreIdeas(queryString: $queryString, cursor: $cursor, limit: $limit) {
@@ -1291,17 +1308,17 @@ export const SearchIdeasScreenDocument = gql`
  *   },
  * });
  */
-export function useSearchIdeasScreenQuery(baseOptions: Apollo.QueryHookOptions<SearchIdeasScreenQueryModel, SearchIdeasScreenQueryVariables>) {
+export function useSearchIdeasScreenQuery(baseOptions: Apollo.QueryHookOptions<SearchIdeasScreenQuery, SearchIdeasScreenQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<SearchIdeasScreenQueryModel, SearchIdeasScreenQueryVariables>(SearchIdeasScreenDocument, options);
+        return Apollo.useQuery<SearchIdeasScreenQuery, SearchIdeasScreenQueryVariables>(SearchIdeasScreenDocument, options);
       }
-export function useSearchIdeasScreenLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchIdeasScreenQueryModel, SearchIdeasScreenQueryVariables>) {
+export function useSearchIdeasScreenLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchIdeasScreenQuery, SearchIdeasScreenQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<SearchIdeasScreenQueryModel, SearchIdeasScreenQueryVariables>(SearchIdeasScreenDocument, options);
+          return Apollo.useLazyQuery<SearchIdeasScreenQuery, SearchIdeasScreenQueryVariables>(SearchIdeasScreenDocument, options);
         }
 export type SearchIdeasScreenQueryHookResult = ReturnType<typeof useSearchIdeasScreenQuery>;
 export type SearchIdeasScreenLazyQueryHookResult = ReturnType<typeof useSearchIdeasScreenLazyQuery>;
-export type SearchIdeasScreenQueryResult = Apollo.QueryResult<SearchIdeasScreenQueryModel, SearchIdeasScreenQueryVariables>;
+export type SearchIdeasScreenQueryResult = Apollo.QueryResult<SearchIdeasScreenQuery, SearchIdeasScreenQueryVariables>;
 export const FollowUserDocument = gql`
     mutation FollowUser($followeeId: ID!) {
   createFollow(followeeId: $followeeId) {
@@ -1312,7 +1329,7 @@ export const FollowUserDocument = gql`
   }
 }
     `;
-export type FollowUserMutationFn = Apollo.MutationFunction<FollowUserMutationModel, FollowUserMutationVariables>;
+export type FollowUserMutationFn = Apollo.MutationFunction<FollowUserMutation, FollowUserMutationVariables>;
 
 /**
  * __useFollowUserMutation__
@@ -1331,13 +1348,13 @@ export type FollowUserMutationFn = Apollo.MutationFunction<FollowUserMutationMod
  *   },
  * });
  */
-export function useFollowUserMutation(baseOptions?: Apollo.MutationHookOptions<FollowUserMutationModel, FollowUserMutationVariables>) {
+export function useFollowUserMutation(baseOptions?: Apollo.MutationHookOptions<FollowUserMutation, FollowUserMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<FollowUserMutationModel, FollowUserMutationVariables>(FollowUserDocument, options);
+        return Apollo.useMutation<FollowUserMutation, FollowUserMutationVariables>(FollowUserDocument, options);
       }
 export type FollowUserMutationHookResult = ReturnType<typeof useFollowUserMutation>;
-export type FollowUserMutationResult = Apollo.MutationResult<FollowUserMutationModel>;
-export type FollowUserMutationOptions = Apollo.BaseMutationOptions<FollowUserMutationModel, FollowUserMutationVariables>;
+export type FollowUserMutationResult = Apollo.MutationResult<FollowUserMutation>;
+export type FollowUserMutationOptions = Apollo.BaseMutationOptions<FollowUserMutation, FollowUserMutationVariables>;
 export const UnfollowUserDocument = gql`
     mutation UnfollowUser($followeeId: ID!) {
   deleteFollow(followeeId: $followeeId) {
@@ -1346,7 +1363,7 @@ export const UnfollowUserDocument = gql`
   }
 }
     `;
-export type UnfollowUserMutationFn = Apollo.MutationFunction<UnfollowUserMutationModel, UnfollowUserMutationVariables>;
+export type UnfollowUserMutationFn = Apollo.MutationFunction<UnfollowUserMutation, UnfollowUserMutationVariables>;
 
 /**
  * __useUnfollowUserMutation__
@@ -1365,13 +1382,13 @@ export type UnfollowUserMutationFn = Apollo.MutationFunction<UnfollowUserMutatio
  *   },
  * });
  */
-export function useUnfollowUserMutation(baseOptions?: Apollo.MutationHookOptions<UnfollowUserMutationModel, UnfollowUserMutationVariables>) {
+export function useUnfollowUserMutation(baseOptions?: Apollo.MutationHookOptions<UnfollowUserMutation, UnfollowUserMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UnfollowUserMutationModel, UnfollowUserMutationVariables>(UnfollowUserDocument, options);
+        return Apollo.useMutation<UnfollowUserMutation, UnfollowUserMutationVariables>(UnfollowUserDocument, options);
       }
 export type UnfollowUserMutationHookResult = ReturnType<typeof useUnfollowUserMutation>;
-export type UnfollowUserMutationResult = Apollo.MutationResult<UnfollowUserMutationModel>;
-export type UnfollowUserMutationOptions = Apollo.BaseMutationOptions<UnfollowUserMutationModel, UnfollowUserMutationVariables>;
+export type UnfollowUserMutationResult = Apollo.MutationResult<UnfollowUserMutation>;
+export type UnfollowUserMutationOptions = Apollo.BaseMutationOptions<UnfollowUserMutation, UnfollowUserMutationVariables>;
 export const UserProfileScreenDocument = gql`
     query UserProfileScreen($userId: ID!) {
   viewer {
@@ -1406,14 +1423,14 @@ ${IdeasListFragmentDoc}`;
  *   },
  * });
  */
-export function useUserProfileScreenQuery(baseOptions: Apollo.QueryHookOptions<UserProfileScreenQueryModel, UserProfileScreenQueryVariables>) {
+export function useUserProfileScreenQuery(baseOptions: Apollo.QueryHookOptions<UserProfileScreenQuery, UserProfileScreenQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<UserProfileScreenQueryModel, UserProfileScreenQueryVariables>(UserProfileScreenDocument, options);
+        return Apollo.useQuery<UserProfileScreenQuery, UserProfileScreenQueryVariables>(UserProfileScreenDocument, options);
       }
-export function useUserProfileScreenLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserProfileScreenQueryModel, UserProfileScreenQueryVariables>) {
+export function useUserProfileScreenLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserProfileScreenQuery, UserProfileScreenQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<UserProfileScreenQueryModel, UserProfileScreenQueryVariables>(UserProfileScreenDocument, options);
+          return Apollo.useLazyQuery<UserProfileScreenQuery, UserProfileScreenQueryVariables>(UserProfileScreenDocument, options);
         }
 export type UserProfileScreenQueryHookResult = ReturnType<typeof useUserProfileScreenQuery>;
 export type UserProfileScreenLazyQueryHookResult = ReturnType<typeof useUserProfileScreenLazyQuery>;
-export type UserProfileScreenQueryResult = Apollo.QueryResult<UserProfileScreenQueryModel, UserProfileScreenQueryVariables>;
+export type UserProfileScreenQueryResult = Apollo.QueryResult<UserProfileScreenQuery, UserProfileScreenQueryVariables>;

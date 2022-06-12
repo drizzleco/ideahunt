@@ -104,7 +104,7 @@ const IdeasList = ({
   ideas: Idea[];
   hideLike?: boolean;
   onEndReachedThreshold?: number;
-  onEndReached?: () => any;
+  onEndReached?: () => void;
 }) => {
   const isMobile = useIsMobile();
   return (

@@ -30,9 +30,11 @@ const IdeaLikeItem = ({ idea }: { idea: Idea | Comment }) => {
   const [createLike] = useMutation(IdeaLikeItem.createMutation, {
     update(cache, { data: { createLike } }) {
       cache.modify({
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        //@ts-ignore
         id: cache.identify(idea),
         fields: {
-          viewerLike(existingViewerLike = null) {
+          viewerLike() {
             const newLikeRef = cache.writeFragment({
               data: createLike,
               fragment: gql`
@@ -52,11 +54,13 @@ const IdeaLikeItem = ({ idea }: { idea: Idea | Comment }) => {
     },
   });
   const [deleteLike] = useMutation(IdeaLikeItem.deleteMutation, {
-    update(cache, { data: { deleteLike } }) {
+    update(cache) {
       cache.modify({
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        //@ts-ignore
         id: cache.identify(idea),
         fields: {
-          viewerLike(existingViewerLike = null) {
+          viewerLike() {
             return null;
           },
           likeCount(originalCount = 0) {

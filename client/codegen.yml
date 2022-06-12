@@ -1,5 +1,5 @@
 overwrite: true
-schema: "../schema.graphql"
+schema: "../schema.json"
 documents:
   - "**/*.tsx"
 generates:
@@ -8,5 +8,3 @@ generates:
       - "typescript"
       - "typescript-operations"
       - "typescript-react-apollo"
-    config:
-      operationResultSuffix: "Model"

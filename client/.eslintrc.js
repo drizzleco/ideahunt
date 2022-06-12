@@ -3,6 +3,11 @@ module.exports = {
     browser: true,
     es2021: true,
   },
+  settings: {
+    react: {
+      version: "17"
+    }
+  },
   extends: [
     "eslint:recommended",
     "plugin:react/recommended",

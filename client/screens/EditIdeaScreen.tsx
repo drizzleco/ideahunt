@@ -31,7 +31,11 @@ type EditIdeaScreenProps = StackScreenProps<
 const EditIdeaScreen = ({ route }: EditIdeaScreenProps) => {
   const { id } = route.params;
   const navigation = useNavigation();
-  const { loading, error, data: queryData } = useQuery(IdeaScreen.query, {
+  const {
+    loading,
+    error,
+    data: queryData,
+  } = useQuery(IdeaScreen.query, {
     variables: { id },
   });
   const [editIdea] = useMutation(EditIdeaScreen.mutation);
